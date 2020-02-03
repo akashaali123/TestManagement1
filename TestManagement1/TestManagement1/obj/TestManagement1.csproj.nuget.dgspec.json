@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\TestManagement1\\TestManagement1\\TestManagement1.csproj": {}
+    "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj": {}
   },
   "projects": {
-    "E:\\TestManagement1\\TestManagement1\\TestManagement1.csproj": {
+    "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
+        "projectUniqueName": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
         "projectName": "TestManagement1",
-        "projectPath": "E:\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
+        "projectPath": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
         "packagesPath": "C:\\Users\\akasha.nasir\\.nuget\\packages\\",
-        "outputPath": "E:\\TestManagement1\\TestManagement1\\obj\\",
+        "outputPath": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akasha.nasir\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[3.1.1, )"
@@ -55,6 +59,18 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[3.1.1, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "NLog.Web.AspNetCore": {
+              "target": "Package",
+              "version": "[4.9.0, )"
             }
           },
           "imports": [

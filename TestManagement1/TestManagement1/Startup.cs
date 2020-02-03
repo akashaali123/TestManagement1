@@ -14,7 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+
 using TestManagement1.Model;
+using TestManagement1.RepositoryInterface;
+using TestManagement1.SqlRepository;
 
 namespace TestManagement1
 {
@@ -31,14 +34,48 @@ namespace TestManagement1
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //Inject App settings to access appsettingJson Setting to access in controller.... ApplicationSettings class Inject 
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+
+
+
+
+
+
             //InjectDbContext
             services.AddDbContext<TestManagementContext>(option =>
            option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+
+            //Repository Inject
+            services.AddScoped<IUser, SqlUser>();
+            services.AddScoped<ICandidateRepository, SqlCandidateRepository>();
 
             services.AddIdentity<TblUser, IdentityRole>()
                     .AddEntityFrameworkStores<TestManagementContext>();
-           
+
+
+            //add scoped for user Repository
+            
+            //services.AddTransient<IUser, SqlUser>();
+            //services.AddSingleton<IUser, SqlUser>();
+
+
             services.AddControllers();
+
+
+            //To remove identity Validation 
+
+            services.Configure<IdentityOptions>(option =>
+            {
+                option.Password.RequireDigit = false;
+                option.Password.RequireLowercase = false;
+                option.Password.RequireNonAlphanumeric = false;
+                option.Password.RequireUppercase = false;
+                option.Password.RequiredLength = 4;
+
+            });
+
 
 
             //For Cors

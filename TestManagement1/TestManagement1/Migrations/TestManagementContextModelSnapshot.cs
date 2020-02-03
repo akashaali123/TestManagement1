@@ -331,6 +331,39 @@ namespace TestManagement1.Migrations
                     b.ToTable("TblExperienceLevel");
                 });
 
+            modelBuilder.Entity("TestManagement1.Model.TblLogging", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Application")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CallSite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Exception")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Level")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logged")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logger")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TblLogging");
+                });
+
             modelBuilder.Entity("TestManagement1.Model.TblOption", b =>
                 {
                     b.Property<int>("OptionId")

@@ -36,6 +36,8 @@ namespace TestManagement1.Model
 
         public DbSet<TblUserRole> TblUserRole { get; set; }
 
+        public DbSet<TblLogging> TblLogging { get; set; }
+
 
 
     }
