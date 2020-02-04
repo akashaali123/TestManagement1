@@ -43,10 +43,19 @@ namespace TestManagement1.Controllers
         //public ActionResult<int> Get()
         //{
 
-        //    _logger.LogInformation("Info Log");
-        //    int a = 2;
-        //    int b = 0;
-        //    return a / b;
+        //    try
+        //    {
+        //        int a = 2;
+        //        int b = 0;
+        //        return a / b;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError("Error in Weather Controller" + ex);
+        //        return null;
+
+        //    }
+
 
         //}
     }

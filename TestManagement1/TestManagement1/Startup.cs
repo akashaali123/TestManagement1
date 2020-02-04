@@ -50,7 +50,15 @@ namespace TestManagement1
             //Repository Inject
             services.AddScoped<IUser, SqlUser>();
             services.AddScoped<ICandidateRepository, SqlCandidateRepository>();
+            services.AddScoped<ICategory, SqlCategoryRepository>();
+            services.AddScoped<IExperienceLevel, SqlExperienceLevelRepository>();
 
+
+
+
+
+
+            //Use Identity
             services.AddIdentity<TblUser, IdentityRole>()
                     .AddEntityFrameworkStores<TestManagementContext>();
 
