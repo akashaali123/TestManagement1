@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.RepositoryInterface
 {
@@ -12,7 +13,7 @@ namespace TestManagement1.RepositoryInterface
 
         IEnumerable<TblCategory> GetAllCategory();
 
-        TblCategory Add(TblCategory category);
+        TblCategory Add(CategoryViewModel category);
 
         TblCategory Update(TblCategory category);
 

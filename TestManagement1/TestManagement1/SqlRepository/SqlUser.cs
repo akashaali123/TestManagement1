@@ -23,21 +23,25 @@ namespace TestManagement1.SqlRepository
 
         private readonly ApplicationSettings _appSettings;
 
+        private readonly RoleManager<IdentityRole> _roleManager;
+
 
         
-        public SqlUser(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings)
+        public SqlUser(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
 
             _signInManager = signInManager;
 
             _appSettings = appSettings.Value;
+            
+            _roleManager = roleManager;
 
         }
        
-        
-        
-        
+       
+
+
         
         
         public async Task<Object> Login(LoginModel model)
@@ -131,5 +135,35 @@ namespace TestManagement1.SqlRepository
                 throw;
             }
         }
+
+
+
+
+
+
+
+        public async Task<object> RoleCreate(RoleModel model)
+        {
+
+            try
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = model.roleName
+                };
+
+                IdentityResult result = await _roleManager.CreateAsync(identityRole);
+                if (result.Succeeded)
+                {
+                    return result;
+                }
+                return model;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+           
+        }    
     }
 }

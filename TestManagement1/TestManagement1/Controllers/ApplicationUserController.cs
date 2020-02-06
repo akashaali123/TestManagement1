@@ -34,7 +34,7 @@ namespace TestManagement1.Controllers
 
         public async Task<object> PostApplicationUser(ApplicationUserModel model)
         {
-            var result =await _userRepository.PostApplicationUser(model);
+            var result = await _userRepository.PostApplicationUser(model);
             return Ok(result);
         }
 
@@ -50,6 +50,28 @@ namespace TestManagement1.Controllers
             var result = await _userRepository.Login(model);
 
             return Ok(new { result });
+        }
+
+
+
+      
+        
+        
+        [HttpPost]
+        [Route("createrole")]
+        //POST : api/ApplicationUser/createrole
+        public async Task<object> RoleCreate(RoleModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _userRepository.RoleCreate(model);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
+           
         }
 
 

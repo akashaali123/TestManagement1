@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Presenter
 {
@@ -35,7 +36,7 @@ namespace TestManagement1.Presenter
             }
         }
 
-        public TblCategory Add(TblCategory category)
+        public TblCategory Add(CategoryViewModel category)
         {
             try
             {

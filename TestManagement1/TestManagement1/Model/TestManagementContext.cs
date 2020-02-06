@@ -38,7 +38,10 @@ namespace TestManagement1.Model
 
         public DbSet<TblLogging> TblLogging { get; set; }
 
-
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    base.OnModelCreating(builder);
+        //}
 
     }
 }

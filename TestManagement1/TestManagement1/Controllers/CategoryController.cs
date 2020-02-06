@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Controllers
 {
@@ -39,7 +40,7 @@ namespace TestManagement1.Controllers
         [Route("create")]
         //POST : api/Category/create
 
-        public IActionResult Add(TblCategory category)
+        public IActionResult Add(CategoryViewModel category)
         {
             if (ModelState.IsValid)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.RepositoryInterface
 {
@@ -11,11 +12,11 @@ namespace TestManagement1.RepositoryInterface
         TblCandidate GetCandidate(int id);
         IEnumerable<TblCandidate> GetAllCandidate();
 
-        TblCandidate Add(TblCandidate candidate);
-
-        TblCandidate Update(TblCandidate candidate);
+       TblCandidate Update(CandidateViewModel candidateChanges);
 
         TblCandidate Delete(int id);
+
+        TblCandidate Add(CandidateViewModel candidateModel);
 
 
 

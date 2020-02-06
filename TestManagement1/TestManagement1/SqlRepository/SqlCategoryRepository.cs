@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
@@ -19,13 +20,22 @@ namespace TestManagement1.SqlRepository
             _logger = logger;
         }
 
-        public TblCategory Add(TblCategory category)
+        public TblCategory Add(CategoryViewModel categoryModel)
         {
             try
             {
-                category.IsActive = true;
-                category.CreatedBy = 1;
-                category.CreatedDate = DateTime.Now;
+
+                TblCategory category = new TblCategory
+                {
+                    
+                    Name = categoryModel.Name,
+                    IsActive = true,
+                    CreatedBy = 1,
+                    CreatedDate = DateTime.Now
+
+            };
+
+             
 
                 _context.TblCategory.Add(category);
                 _context.SaveChanges();

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Controllers
 {
@@ -34,11 +35,11 @@ namespace TestManagement1.Controllers
 
        
         
-        [HttpPost]
+       [HttpPost]
        [Route("create")]
         //POST : api/Candidate/create
-
-        public IActionResult add(TblCandidate candidate)
+        
+        public IActionResult add(CandidateViewModel candidate)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +57,7 @@ namespace TestManagement1.Controllers
         
         [HttpGet]
         [Route("getall")]
-        //POST : api/Candidate/getall
+        //POST :  
         public IActionResult GetAll()
         {
            if(ModelState.IsValid)
@@ -89,8 +90,28 @@ namespace TestManagement1.Controllers
         }
 
 
+        [HttpPut]
+        [Route("update")]
+      //PUT:  api/Candidate/update
+        public IActionResult Update(CandidateViewModel candidateChanges)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(cp.Update(candidateChanges));
+            }
+            else
+            {
+                return BadRequest();
+            }
 
-    
+        }
+
+        //[HttpGet]
+        //[Route("getallcandidate")]
+        //public JsonResult update()
+        //{
+        //    return new JsonResult(cp.GetAllCandidate());
+        //}
     
     
     }

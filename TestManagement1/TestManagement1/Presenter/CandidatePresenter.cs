@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Presenter
 {
@@ -39,10 +40,13 @@ namespace TestManagement1.Presenter
 
 
 
-        public TblCandidate Add(TblCandidate candidate)
+        public TblCandidate Add(CandidateViewModel candidate)
         {
             try
             {
+                
+               
+                 
                 return _repository.Add(candidate);
             }
             catch (Exception ex)
@@ -69,7 +73,19 @@ namespace TestManagement1.Presenter
         }
 
 
+        public TblCandidate Update(CandidateViewModel candidateChanges)
+        {
+            try
+            {
+                return _repository.Update(candidateChanges);
+            }
+            catch (Exception ex)
+            {
 
+                _logger.LogError("Error in Candidate Update Methode in CandidatePresenter" + ex);
+                return null;
+            }
+        }
 
 
     }

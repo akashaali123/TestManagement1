@@ -16,5 +16,8 @@ namespace TestManagement1.RepositoryInterface
 
         public  Task<IActionResult> Logout();
 
+
+        public Task<object> RoleCreate(RoleModel model);
+
     }
 }

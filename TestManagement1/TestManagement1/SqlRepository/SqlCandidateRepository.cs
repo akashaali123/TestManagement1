@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
@@ -22,16 +24,24 @@ namespace TestManagement1.SqlRepository
 
 
 
-        public TblCandidate Add(TblCandidate candidate)
+        public TblCandidate Add(CandidateViewModel candidateModel)
         {
             try
             {
-                candidate.CreatedDate = DateTime.Now;
-                candidate.IsActive = true;
-                candidate.CreatedBy = 1;
-
-
-
+                TblCandidate candidate = new TblCandidate
+                {
+                    CandidateId=candidateModel.CandidateId,
+                    FirstName = candidateModel.FirstName,
+                    LastName=candidateModel.LastName,
+                    Email=candidateModel.Email,
+                    CurrentCompany=candidateModel.CurrentCompany,
+                    TechStack=candidateModel.CurrentCompany,
+                   
+                    
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    CreatedBy = 1
+            };
                 _context.TblCandidate.Add(candidate);
                 _context.SaveChanges();
                 return candidate;
@@ -39,7 +49,6 @@ namespace TestManagement1.SqlRepository
             catch(Exception ex)
             {
                 _logger.LogError("Error in Candidate Add Methode in Sql Repository" + ex);
-                
                 return null;
             }
             
@@ -73,7 +82,11 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
+
                 return _context.TblCandidate;
+                 
+                    
+                
             }
             catch (Exception ex)
             {
@@ -97,10 +110,43 @@ namespace TestManagement1.SqlRepository
 
         }
 
-        public TblCandidate Update(TblCandidate candidate)
+        public TblCandidate Update(CandidateViewModel candidateModel)
         {
-            throw new NotImplementedException();
+            TblCandidate candidateChanges = new TblCandidate
+            {
+                CandidateId=candidateModel.CandidateId,
+                FirstName = candidateModel.FirstName,
+                LastName = candidateModel.LastName,
+                Email = candidateModel.Email,
+                CurrentCompany = candidateModel.CurrentCompany,
+                TechStack = candidateModel.CurrentCompany,
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                CreatedBy = 1
+            };
+
+            var candidate = _context.TblCandidate.Attach(candidateChanges);
+            candidate.State = EntityState.Modified;
+            _context.SaveChanges();
+            return candidateChanges;
+
         }
+
+        //public TblCandidate Update(int id, TblCandidate candidate)
+        //{
+
+
+        //    var candidateChanges = _context.TblCandidate.Where(x => x.CandidateId == id).FirstOrDefault();
+        //    candidateChanges.FirstName = candidate.FirstName;
+        //    candidateChanges.LastName = candidate.LastName;
+        //    candidateChanges.Email = candidate.Email;
+             
+
+        //}
+
+
+
+
     }
 
     
