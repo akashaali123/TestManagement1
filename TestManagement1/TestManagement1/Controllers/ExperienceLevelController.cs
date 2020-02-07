@@ -9,27 +9,26 @@ using Microsoft.Extensions.Logging;
 using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExperienceLevelController : ControllerBase
+    public class ExperienceLevelController : BaseController<ExperienceLevelPresenter>
     {
-        
+        //Generic Methode Explanation in Candidate Controller
 
-        private readonly IWebHostEnvironment _webHostEnvironment;
+       
 
         ExperienceLevelPresenter exP;
 
-        private readonly ILogger<ExperienceLevelPresenter> _logger;
+        
 
-        public ExperienceLevelController(IWebHostEnvironment webHostEnvironment,IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger)
+        public ExperienceLevelController(IWebHostEnvironment webHostEnvironment,IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger):base(webHostEnvironment,logger)
         {
-            _webHostEnvironment = webHostEnvironment;
-            _logger = logger;
-            exP = new ExperienceLevelPresenter(_webHostEnvironment, repository, _logger);
-
+          
+            exP = new ExperienceLevelPresenter(webHostEnvironment, repository, logger);
 
         }
 
@@ -38,7 +37,7 @@ namespace TestManagement1.Controllers
         [HttpPost]
         [Route("create")]
         //POST : api/ExperienceLevel/create
-        public IActionResult Add(TblExperienceLevel experienceLevel)
+        public IActionResult Add(ExperienceLevelViewModel experienceLevel)
         {
             
             if (ModelState.IsValid)

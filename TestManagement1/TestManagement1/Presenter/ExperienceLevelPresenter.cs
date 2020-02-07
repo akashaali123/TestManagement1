@@ -6,21 +6,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.Presenter
 {
-    public class ExperienceLevelPresenter
+    public class ExperienceLevelPresenter :BasePresenter<ExperienceLevelPresenter>
     {
-        private readonly IWebHostEnvironment _env;
+       
 
         private readonly IExperienceLevel _repository;
 
-        private readonly ILogger<ExperienceLevelPresenter> _logger;
-        public ExperienceLevelPresenter(IWebHostEnvironment env, IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger)
+       
+        public ExperienceLevelPresenter(IWebHostEnvironment env, IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger):base(env,logger)
         {
-            _env = env;
+           
             _repository = repository;
-            _logger = logger;
+            
         }
 
         public IEnumerable<TblExperienceLevel> GetAll()
@@ -36,7 +37,7 @@ namespace TestManagement1.Presenter
             }
         }
 
-        public TblExperienceLevel Add(TblExperienceLevel experienceLevel)
+        public TblExperienceLevel Add(ExperienceLevelViewModel experienceLevel)
         {
             try
             {

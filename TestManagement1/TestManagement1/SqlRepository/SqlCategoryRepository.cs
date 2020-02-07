@@ -9,17 +9,20 @@ using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlCategoryRepository : ICategory
+    public class SqlCategoryRepository : BaseRepository<SqlCategoryRepository>,ICategory
     {
-        private readonly ILogger<SqlCategoryRepository> _logger;
-        private readonly TestManagementContext _context;
+       
 
-        public SqlCategoryRepository(TestManagementContext context, ILogger<SqlCategoryRepository> logger)
+        public SqlCategoryRepository(TestManagementContext context, ILogger<SqlCategoryRepository> logger):base(context,logger)
         {
-            _context = context;
-            _logger = logger;
+           
         }
 
+       
+        
+        
+        
+        
         public TblCategory Add(CategoryViewModel categoryModel)
         {
             try
@@ -50,6 +53,11 @@ namespace TestManagement1.SqlRepository
             
         }
 
+      
+        
+        
+        
+        
         public TblCategory Delete(int id)
         {
             try
@@ -71,6 +79,10 @@ namespace TestManagement1.SqlRepository
            
         }
 
+       
+        
+        
+        
         public IEnumerable<TblCategory> GetAllCategory()
         {
             try 
@@ -84,6 +96,13 @@ namespace TestManagement1.SqlRepository
             }
         }
 
+       
+        
+        
+        
+        
+        
+        
         public TblCategory GetCategory(int id)
         {
             try 
@@ -97,9 +116,23 @@ namespace TestManagement1.SqlRepository
             }
         }
 
-        public TblCategory Update(TblCategory category)
+        
+        
+        
+        
+        
+        
+        
+        public TblCategory Update(CategoryViewModel category)
         {
             throw new NotImplementedException();
         }
+    
+    
+    
+    
+    
+    
+    
     }
 }

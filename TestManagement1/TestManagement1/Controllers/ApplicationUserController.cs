@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using TestManagement1.BindingModel;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
+
 
 namespace TestManagement1.Controllers
 {
@@ -34,8 +36,10 @@ namespace TestManagement1.Controllers
 
         public async Task<object> PostApplicationUser(ApplicationUserModel model)
         {
-            var result = await _userRepository.PostApplicationUser(model);
-            return Ok(result);
+            var data = await _userRepository.PostApplicationUser(model);
+            int status = StatusCodes.Status201Created;
+            bool success = true;
+            return Ok(new { success, status, message = "Success", data });
         }
 
 
@@ -47,9 +51,14 @@ namespace TestManagement1.Controllers
         //POST : api/ApplicationUser/Login
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var result = await _userRepository.Login(model);
+            var jwtToken = await _userRepository.Login(model);
+            
+           
+            int status = StatusCodes.Status200OK;
+            bool success = true;
+            return Ok(new { success, status, message = "Success",  jwtToken });
 
-            return Ok(new { result });
+           
         }
 
 
@@ -64,8 +73,11 @@ namespace TestManagement1.Controllers
         {
             if(ModelState.IsValid)
             {
-                var result = await _userRepository.RoleCreate(model);
-                return Ok(result);
+                var data = await _userRepository.RoleCreate(model);
+               
+                int status = StatusCodes.Status201Created;
+                bool success = true;
+                return Ok(new { success, status, message = "Success", data });
             }
             else
             {

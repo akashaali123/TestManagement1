@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,45 +9,56 @@ using Microsoft.Extensions.Logging;
 using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.Validation_Filter;
 using TestManagement1.ViewModel;
 
 namespace TestManagement1.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class CandidateController : ControllerBase
+    [ApiController]                                  //Pass the ILogger class
+    public class CandidateController : BaseController<CandidatePresenter> //generic methode implement for Logger and WebHostEnviroment
     {
-       
+        //When we need to implement WebHostEnviroment and Logger so Inherit from base controller in which
+        //we initialize and injected the logger and WebHostEnviroment so we get rid of duplication of code 
+        //if we did'nt do this so we fix it manually in all controller as we comment it
 
-        private readonly IWebHostEnvironment webHostEnvironment;
-       
-        CandidatePresenter cp;
+        //private readonly ILogger<CandidatePresenter> _logger;
+        //private readonly IWebHostEnvironment _webHostEnvironment;
         
-        private readonly ILogger<CandidatePresenter> _logger;
+        CandidatePresenter cp;
        
-        public CandidateController(IWebHostEnvironment webHostEnvironment,ICandidateRepository repository, ILogger<CandidatePresenter> logger)
+        public CandidateController(IWebHostEnvironment webHostEnvironment,ICandidateRepository repository, ILogger<CandidatePresenter> logger):base(webHostEnvironment,logger)
         {
-            _logger = logger;
-            this.webHostEnvironment = webHostEnvironment;
-            cp = new CandidatePresenter(this.webHostEnvironment,repository,_logger);
+            //_webHostEnvironment = webHostEnviroment;
+            //_Logger = Logger;
+            cp = new CandidatePresenter(webHostEnvironment,repository,logger);
         }
 
 
-       
-        
+
+      
        [HttpPost]
        [Route("create")]
         //POST : api/Candidate/create
         
-        public IActionResult add(CandidateViewModel candidate)
+        public IActionResult Add(CandidateViewModel candidate)
         {
-            if (ModelState.IsValid)
+            
+                if(ModelState.IsValid)
             {
-                return Ok(cp.Add(candidate));
+                var data = cp.Add(candidate);
+                int status = StatusCodes.Status201Created;
+                bool success = true;
+
+                return Ok(new { success, status, message = "SuccessFully Created", data });
             }
+
+
+
             else
             {
                 return BadRequest();
+
             }
         }
        
@@ -57,12 +68,19 @@ namespace TestManagement1.Controllers
         
         [HttpGet]
         [Route("getall")]
-        //POST :  
+        //GET :   api/Candidate/getall
         public IActionResult GetAll()
         {
            if(ModelState.IsValid)
             {
-                return Ok(cp.GetAllCandidate());
+                // return Ok(cp.GetAllCandidate());
+                var data = cp.GetAllCandidate();
+               
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+
+                return Ok(new { success, status, message = "Get All Candidate Works", data });
+
             }
            else
             {
@@ -72,6 +90,8 @@ namespace TestManagement1.Controllers
 
        
         
+        
+       
         
         [HttpDelete]
         [Route("Delete")]
@@ -90,6 +110,11 @@ namespace TestManagement1.Controllers
         }
 
 
+       
+        
+        
+        
+        
         [HttpPut]
         [Route("update")]
       //PUT:  api/Candidate/update
@@ -106,12 +131,7 @@ namespace TestManagement1.Controllers
 
         }
 
-        //[HttpGet]
-        //[Route("getallcandidate")]
-        //public JsonResult update()
-        //{
-        //    return new JsonResult(cp.GetAllCandidate());
-        //}
+        
     
     
     }

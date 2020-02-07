@@ -8,18 +8,28 @@ using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
 
+
 namespace TestManagement1.Presenter
 {
-    public class CandidatePresenter
+    public class CandidatePresenter : BasePresenter<CandidatePresenter>
     {
-        private readonly IWebHostEnvironment _env;
+
+        //When we need to implement WebHostEnviroment and Logger so Inherit from base Presenter in which
+        //we initialize and injected the logger and WebHostEnviroment so we get rid of duplication of code 
+        //if we did'nt do this so we fix it manually in all controller as we comment it
+
+        // private readonly IWebHostEnvironment _env;
+        //private readonly ILogger<CandidatePresenter> _logger;
+
+
         private readonly ICandidateRepository _repository;
-        private readonly ILogger<CandidatePresenter> _logger;
-        public CandidatePresenter(IWebHostEnvironment env, ICandidateRepository repository, ILogger<CandidatePresenter> logger)
+        
+        public CandidatePresenter(IWebHostEnvironment env, ICandidateRepository repository, ILogger<CandidatePresenter> logger):base(env,logger)
         {
-            _env = env;
+            //_env = env
+            //_logger = logger
             _repository = repository;
-            _logger = logger;
+            
         }
         
        
@@ -28,15 +38,17 @@ namespace TestManagement1.Presenter
         {
             try
             {
+                
                 return _repository.GetAllCandidate();
             }
             catch (Exception ex)
             {
+                
                 _logger.LogError("Error in Candidate GetAllCandidate Methode in CandidatePresenter" +ex);
                 return null;
             }           
         }
-
+        
 
 
 
@@ -45,13 +57,11 @@ namespace TestManagement1.Presenter
             try
             {
                 
-               
-                 
                 return _repository.Add(candidate);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in Candidate Add Methode in CandidatePresenter" + ex);
+               _logger.LogError("Error in Candidate Add Methode in CandidatePresenter" + ex);
                 return null;
             }            
         }

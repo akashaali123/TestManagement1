@@ -10,20 +10,29 @@ using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlCandidateRepository : ICandidateRepository
+                                        //Inherit with generic class and candidate Repository                
+    public class SqlCandidateRepository :BaseRepository<SqlCandidateRepository> ,ICandidateRepository
     {
 
+        //Make BaseRepository in which we initialize our logger as a generic and context class
+        //So we avoid duplication
 
-        private readonly TestManagementContext _context;
-        private readonly ILogger<SqlCandidateRepository> _logger;
-        public SqlCandidateRepository(TestManagementContext context, ILogger<SqlCandidateRepository> logger)
+        //TestManagementContext _context;
+        //ILogger<SqlCandidateRepository> _logger;
+        public SqlCandidateRepository(TestManagementContext context, ILogger<SqlCandidateRepository> logger):base(context,logger)
         {
-            _context = context;
-            _logger = logger;
+            //_logger = logger;
+            //_context = context;
+           
         }
 
 
 
+      
+        
+        
+        
+        
         public TblCandidate Add(CandidateViewModel candidateModel)
         {
             try
@@ -35,7 +44,7 @@ namespace TestManagement1.SqlRepository
                     LastName=candidateModel.LastName,
                     Email=candidateModel.Email,
                     CurrentCompany=candidateModel.CurrentCompany,
-                    TechStack=candidateModel.CurrentCompany,
+                    TechStack=candidateModel.TechStack,
                    
                     
                     CreatedDate = DateTime.Now,
@@ -49,11 +58,16 @@ namespace TestManagement1.SqlRepository
             catch(Exception ex)
             {
                 _logger.LogError("Error in Candidate Add Methode in Sql Repository" + ex);
-                return null;
+                 //throw ex;
+                 return null;
             }
             
         }
 
+        
+        
+        
+        
         public TblCandidate Delete(int id)
         {
             try
@@ -78,6 +92,10 @@ namespace TestManagement1.SqlRepository
 
         }
 
+       
+        
+        
+        
         public IEnumerable<TblCandidate> GetAllCandidate()
         {
             try
@@ -96,6 +114,12 @@ namespace TestManagement1.SqlRepository
 
         }
 
+       
+        
+        
+        
+        
+        
         public TblCandidate GetCandidate(int id)
         {
             try
@@ -110,6 +134,11 @@ namespace TestManagement1.SqlRepository
 
         }
 
+        
+        
+        
+        
+        
         public TblCandidate Update(CandidateViewModel candidateModel)
         {
             TblCandidate candidateChanges = new TblCandidate
@@ -132,6 +161,8 @@ namespace TestManagement1.SqlRepository
 
         }
 
+
+
         //public TblCandidate Update(int id, TblCandidate candidate)
         //{
 
@@ -143,10 +174,6 @@ namespace TestManagement1.SqlRepository
              
 
         //}
-
-
-
-
     }
 
     

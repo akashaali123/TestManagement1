@@ -14,23 +14,22 @@ using TestManagement1.ViewModel;
 namespace TestManagement1.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class CategoryController : ControllerBase
+    [ApiController]                                  //Pass the logger class
+    public class CategoryController : BaseController<CategoryPresenter>
     {
        
         //webHostEnviroment Declaration but not used I used for furture configuration it provides the property such
         //as webRootPath webRootFile Provider
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
+       
+        //Generic Methode Description in Candidate Controller
         CategoryPresenter cp;
 
-        private readonly ILogger<CategoryPresenter> _logger;
+        
 
-        public CategoryController(IWebHostEnvironment webHostEnvironment,ICategory repository, ILogger<CategoryPresenter> logger)
+        public CategoryController(IWebHostEnvironment webHostEnvironment,ICategory repository, ILogger<CategoryPresenter> logger):base(webHostEnvironment,logger)
         {
-            _webHostEnvironment = webHostEnvironment;
-            _logger = logger;
-            cp = new CategoryPresenter(_webHostEnvironment, repository, _logger);
+           
+            cp = new CategoryPresenter(webHostEnvironment, repository, logger);
         }
 
         

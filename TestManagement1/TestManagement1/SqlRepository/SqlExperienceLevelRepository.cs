@@ -5,29 +5,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlExperienceLevelRepository : IExperienceLevel
+    public class SqlExperienceLevelRepository : BaseRepository<SqlExperienceLevelRepository>,IExperienceLevel
     {
-        private readonly TestManagementContext _context;
-        private readonly ILogger<SqlExperienceLevelRepository> _logger;
+      
 
-        public SqlExperienceLevelRepository(TestManagementContext context, ILogger<SqlExperienceLevelRepository> logger)
+        public SqlExperienceLevelRepository(TestManagementContext context, ILogger<SqlExperienceLevelRepository> logger):base(context,logger)
         {
-            _context = context;
-            _logger = logger;
+           
         }
 
-        public TblExperienceLevel Add(TblExperienceLevel experienceLevel)
+       
+        
+        
+        
+        
+        public TblExperienceLevel Add(ExperienceLevelViewModel experienceLevelModel)
         {
            try
             {
-                experienceLevel.IsActive = true;
-                experienceLevel.CreatedBy = 1;
-                experienceLevel.CreatedDate = DateTime.Now;
-                experienceLevel.UpdatedBy = null;
-                experienceLevel.UpdatedDate = null;
+                TblExperienceLevel experienceLevel = new TblExperienceLevel
+                {
+                    Name = experienceLevelModel.Name,
+                    MinExp = experienceLevelModel.MinExp,
+                    MaxExp = experienceLevelModel.MaxExp,
+                    IsActive = true,
+                    CreatedBy = 1,
+                    CreatedDate = DateTime.Now,
+                    UpdatedBy = null,
+                    UpdatedDate = null
+                };
+
+               
                 _context.TblExperienceLevel.Add(experienceLevel);
                 _context.SaveChanges();
                 return experienceLevel;
@@ -40,6 +52,11 @@ namespace TestManagement1.SqlRepository
             }
         }
 
+       
+        
+        
+        
+        
         public TblExperienceLevel Delete(int id)
         {
             try
@@ -60,6 +77,12 @@ namespace TestManagement1.SqlRepository
             }
         }
 
+        
+        
+        
+        
+        
+        
         public IEnumerable<TblExperienceLevel> GetAll()
         {
             try
@@ -74,6 +97,11 @@ namespace TestManagement1.SqlRepository
             }
         }
 
+        
+        
+        
+        
+        
         public TblExperienceLevel GetExperience(int id)
         {
             try
@@ -88,9 +116,20 @@ namespace TestManagement1.SqlRepository
             }
         }
 
-        public TblExperienceLevel Update(TblExperienceLevel experienceLevel)
+       
+        
+        
+        
+        
+        
+        
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevel)
         {
             throw new NotImplementedException();
         }
+  
+    
+    
+    
     }
 }

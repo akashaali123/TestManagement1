@@ -46,40 +46,52 @@ namespace TestManagement1.SqlRepository
         
         public async Task<Object> Login(LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.userName);
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
+            try
             {
-                var tokenDescriptor = new SecurityTokenDescriptor
+                var user = await _userManager.FindByNameAsync(model.userName);
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
                         new Claim("userId", user.Id.ToString()) //We access this userID in UserProfile Controller
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(5),
+                        }),
+                        Expires = DateTime.UtcNow.AddMinutes(5),
 
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
 
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
-                var token = tokenHandler.WriteToken(securityToken);
+                    var token = tokenHandler.WriteToken(securityToken);
 
 
-                user.JwtToken= token; //take Jwt value in db for temporary
-                await _userManager.UpdateAsync(user);
+                    user.JwtToken = token; //take Jwt value in db for temporary
+                    await _userManager.UpdateAsync(user);
 
-                return token;
-                
-                
-
+                    return token;
+                }
+                else
+                {
+                    return (new { message = "Invalid UserName or password" });
+                    //return BadRequest(new { message = "Invalid User Name or Password" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return (new { message = "Invalid UserName or password" });
-                //return BadRequest(new { message = "Invalid User Name or Password" });
+                throw ex;
+                
+                
             }
+           
+                
+                
+
+            
+           
         }
 
         
@@ -129,10 +141,10 @@ namespace TestManagement1.SqlRepository
 
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 
@@ -161,9 +173,15 @@ namespace TestManagement1.SqlRepository
             }
             catch(Exception ex)
             {
-                throw;
+                throw ex;
             }
            
         }    
+  
+    
+    
+    
+    
+    
     }
 }

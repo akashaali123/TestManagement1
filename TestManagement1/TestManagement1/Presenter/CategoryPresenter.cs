@@ -9,17 +9,17 @@ using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
 
 namespace TestManagement1.Presenter
-{
-    public class CategoryPresenter
+{                                               //generic class For logger
+    public class CategoryPresenter:BasePresenter<CategoryPresenter>
     {
-        private readonly IWebHostEnvironment _env;
+     
         private readonly ICategory _repository;
-        private readonly ILogger<CategoryPresenter> _logger;
-        public CategoryPresenter(IWebHostEnvironment env, ICategory repository, ILogger<CategoryPresenter> logger)
+       
+        public CategoryPresenter(IWebHostEnvironment env, ICategory repository, ILogger<CategoryPresenter> logger):base(env,logger)
         {
-            _env = env;
+            
             _repository = repository;
-            _logger = logger;
+            
         }
 
         public IEnumerable<TblCategory> GetAllCategory()
