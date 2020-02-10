@@ -22,9 +22,9 @@ namespace TestManagement1.Presenter
         //private readonly ILogger<CandidatePresenter> _logger;
 
 
-        private readonly ICandidateRepository _repository;
+        private readonly ICandidate _repository;
         
-        public CandidatePresenter(IWebHostEnvironment env, ICandidateRepository repository, ILogger<CandidatePresenter> logger):base(env,logger)
+        public CandidatePresenter(IWebHostEnvironment env, ICandidate repository, ILogger<CandidatePresenter> logger):base(env,logger)
         {
             //_env = env
             //_logger = logger

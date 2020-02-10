@@ -42,7 +42,11 @@ namespace TestManagement1.Controllers
             
             if (ModelState.IsValid)
             {
-                return Ok(exP.Add(experienceLevel));
+                var data = exP.Add(experienceLevel);
+
+                int status = StatusCodes.Status201Created;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {
@@ -63,7 +67,11 @@ namespace TestManagement1.Controllers
            
             if(ModelState.IsValid)
             {
-                return Ok(exP.GetAll());
+                var data = exP.GetAll();
+                
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {
@@ -86,7 +94,11 @@ namespace TestManagement1.Controllers
 
             if (ModelState.IsValid)
             {
-                return Ok(exP.Delete(id));
+                var data = exP.Delete(id);
+               
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {

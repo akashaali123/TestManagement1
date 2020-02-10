@@ -9,13 +9,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using TestManagement1.BindingModel;
+using TestManagement1.ViewModel;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlUser : IUser
+    public class UserRepository : IUser
     {
         private UserManager<TblUser> _userManager;
 
@@ -27,7 +27,7 @@ namespace TestManagement1.SqlRepository
 
 
         
-        public SqlUser(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager)
+        public UserRepository(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
 
@@ -154,7 +154,7 @@ namespace TestManagement1.SqlRepository
 
 
 
-        public async Task<object> RoleCreate(RoleModel model)
+        public async Task<object> CreateRole(RoleModel model)
         {
 
             try

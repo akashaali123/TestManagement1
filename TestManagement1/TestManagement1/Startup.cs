@@ -48,10 +48,10 @@ namespace TestManagement1
             
 
             //Repository Inject
-            services.AddScoped<IUser, SqlUser>();
-            services.AddScoped<ICandidateRepository, SqlCandidateRepository>();
-            services.AddScoped<ICategory, SqlCategoryRepository>();
-            services.AddScoped<IExperienceLevel, SqlExperienceLevelRepository>();
+            services.AddScoped<IUser, UserRepository>();
+            services.AddScoped<ICandidate, CandidateRepository>();
+            services.AddScoped<ICategory, CategoryRepository>();
+            services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
 
 
 

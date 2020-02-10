@@ -27,7 +27,7 @@ namespace TestManagement1.Controllers
         
         CandidatePresenter cp;
        
-        public CandidateController(IWebHostEnvironment webHostEnvironment,ICandidateRepository repository, ILogger<CandidatePresenter> logger):base(webHostEnvironment,logger)
+        public CandidateController(IWebHostEnvironment webHostEnvironment,ICandidate repository, ILogger<CandidatePresenter> logger):base(webHostEnvironment,logger)
         {
             //_webHostEnvironment = webHostEnviroment;
             //_Logger = Logger;
@@ -50,7 +50,7 @@ namespace TestManagement1.Controllers
                 int status = StatusCodes.Status201Created;
                 bool success = true;
 
-                return Ok(new { success, status, message = "SuccessFully Created", data });
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
 
 
@@ -79,7 +79,7 @@ namespace TestManagement1.Controllers
                 int status = StatusCodes.Status200OK;
                 bool success = true;
 
-                return Ok(new { success, status, message = "Get All Candidate Works", data });
+                return Ok(new { success, status, message = "SuccessFull", data });
 
             }
            else
@@ -100,8 +100,12 @@ namespace TestManagement1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = cp.Delete(id);
-                return Ok(result);
+                var data = cp.Delete(id);
+
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {
@@ -122,7 +126,11 @@ namespace TestManagement1.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(cp.Update(candidateChanges));
+                var data = cp.Update(candidateChanges);
+               
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {

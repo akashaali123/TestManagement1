@@ -43,7 +43,12 @@ namespace TestManagement1.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(cp.Add(category));
+                var data = cp.Add(category);
+
+                int status = StatusCodes.Status201Created;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
+                
             }
             else
             {
@@ -61,7 +66,12 @@ namespace TestManagement1.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(cp.GetAllCategory());
+                var data = cp.GetAllCategory();
+
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
+                
             }
             else
             {
@@ -78,7 +88,11 @@ namespace TestManagement1.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(cp.Delete(id));
+                var data = cp.Delete(id);
+                
+                int status = StatusCodes.Status200OK;
+                bool success = true;
+                return Ok(new { success, status, message = "SuccessFull", data });
             }
             else
             {

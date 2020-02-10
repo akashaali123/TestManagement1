@@ -7,7 +7,7 @@ using TestManagement1.ViewModel;
 
 namespace TestManagement1.RepositoryInterface
 {
-    public interface ICandidateRepository
+    public interface ICandidate
     {
         TblCandidate GetCandidate(int id);
         IEnumerable<TblCandidate> GetAllCandidate();

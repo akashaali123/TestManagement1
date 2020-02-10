@@ -11,7 +11,7 @@ using TestManagement1.ViewModel;
 namespace TestManagement1.SqlRepository
 {
                                         //Inherit with generic class and candidate Repository                
-    public class SqlCandidateRepository :BaseRepository<SqlCandidateRepository> ,ICandidateRepository
+    public class CandidateRepository :BaseRepository<CandidateRepository> ,ICandidate
     {
 
         //Make BaseRepository in which we initialize our logger as a generic and context class
@@ -19,7 +19,7 @@ namespace TestManagement1.SqlRepository
 
         //TestManagementContext _context;
         //ILogger<SqlCandidateRepository> _logger;
-        public SqlCandidateRepository(TestManagementContext context, ILogger<SqlCandidateRepository> logger):base(context,logger)
+        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger):base(context,logger)
         {
             //_logger = logger;
             //_context = context;

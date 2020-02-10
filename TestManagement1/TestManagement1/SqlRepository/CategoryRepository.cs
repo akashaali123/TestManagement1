@@ -9,11 +9,11 @@ using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlCategoryRepository : BaseRepository<SqlCategoryRepository>,ICategory
+    public class CategoryRepository : BaseRepository<CategoryRepository>,ICategory
     {
        
 
-        public SqlCategoryRepository(TestManagementContext context, ILogger<SqlCategoryRepository> logger):base(context,logger)
+        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger):base(context,logger)
         {
            
         }

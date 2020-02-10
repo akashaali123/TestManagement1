@@ -8787,11 +8787,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
+      "projectUniqueName": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
       "projectName": "TestManagement1",
-      "projectPath": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
+      "projectPath": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
       "packagesPath": "C:\\Users\\akasha.nasir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\akasha.nasir\\Desktop\\TestManagement1\\TestManagement1\\obj\\",
+      "outputPath": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\akasha.nasir\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8871,7 +8871,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

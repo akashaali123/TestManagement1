@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestManagement1.BindingModel;
+using TestManagement1.ViewModel;
 
 namespace TestManagement1.RepositoryInterface
 {
@@ -17,7 +17,7 @@ namespace TestManagement1.RepositoryInterface
         public  Task<IActionResult> Logout();
 
 
-        public Task<object> RoleCreate(RoleModel model);
+        public Task<object> CreateRole(RoleModel model);
 
     }
 }

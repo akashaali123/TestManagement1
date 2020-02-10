@@ -9,11 +9,11 @@ using TestManagement1.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
-    public class SqlExperienceLevelRepository : BaseRepository<SqlExperienceLevelRepository>,IExperienceLevel
+    public class ExperienceLevelRepository : BaseRepository<ExperienceLevelRepository>,IExperienceLevel
     {
       
 
-        public SqlExperienceLevelRepository(TestManagementContext context, ILogger<SqlExperienceLevelRepository> logger):base(context,logger)
+        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger):base(context,logger)
         {
            
         }
