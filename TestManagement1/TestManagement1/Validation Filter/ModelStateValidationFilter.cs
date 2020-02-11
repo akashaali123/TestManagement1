@@ -3,29 +3,48 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+
+
 
 namespace TestManagement1.Validation_Filter
 {
     public class ModelStateValidationFilter : ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
+
+        public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
 
-            if (!context.ModelState.IsValid)
+            if (!actionContext.ModelState.IsValid)
             {
-                List<string> list = (from modelState in context.ModelState.Values from error in modelState.Errors select error.ErrorMessage).ToList();
-
-                //Also add exceptions.
-                list.AddRange(from modelState in context.ModelState.Values from error in modelState.Errors select error.Exception.ToString());
-
-                context.Result = new BadRequestObjectResult(list);
-
-
-               
+                actionContext.Result = new BadRequestObjectResult(actionContext.ModelState);
+                actionContext.Result = new BadRequestObjectResult(HttpStatusCode.OK);
             }
-
-            base.OnActionExecuting(context);
         }
+
+        //public  void OnActionExecuting(HttpActionContext actionContext)
+        //{
+        //    var modelState = actionContext.ModelState;
+
+        //    if (!modelState.IsValid)
+        //    {
+        //        actionContext.Response = actionContext.Request
+        //             .CreateErrorResponse(HttpStatusCode.BadRequest, modelState);
+        //    }
+        //}
+        //public override void OnException(HttpActionExecutedContext context)
+        //{
+        //    var exception = context.Exception as ApiException;
+        //    if (exception != null)
+        //    {
+        //        context.Response = context.Request.CreateErrorResponse(exception.StatusCode, exception.Message);
+        //    }
+        //}
+
+
+
     }
 }
+

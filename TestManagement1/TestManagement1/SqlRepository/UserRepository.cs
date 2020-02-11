@@ -76,21 +76,14 @@ namespace TestManagement1.SqlRepository
                 }
                 else
                 {
-                    return (new { message = "Invalid UserName or password" });
-                    //return BadRequest(new { message = "Invalid User Name or Password" });
+                    return null;
+                    
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
-                
-                
+                return new { message = "Exception found in User repository (Will change it later) : " + ex };
             }
-           
-                
-                
-
-            
            
         }
 
@@ -102,7 +95,7 @@ namespace TestManagement1.SqlRepository
         
         public async Task<IActionResult> Logout()
         {
-            throw new NotImplementedException();
+           throw  new NotImplementedException();
         }
 
        
@@ -118,12 +111,15 @@ namespace TestManagement1.SqlRepository
         
         public async Task<object> PostApplicationUser(ApplicationUserModel model)
         {
-            var applicationUser = new TblUser()
+            try
             {
+                var applicationUser = new TblUser()
+                {
 
                 UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
 
                 Email = model.email,
+                
 
                 IsActive = true,
 
@@ -131,20 +127,17 @@ namespace TestManagement1.SqlRepository
 
                 CreatedDate = System.DateTime.Now
 
-            };
+                };
 
-            try
-            {
+           
                 var result = await _userManager.CreateAsync(applicationUser, model.password); //password assign here
 
-                return result; //return object of new user
-
-                
+                return result; //return object of new user               
             }
             catch (Exception ex)
             {
 
-                throw ex;
+                return new { message = "Exception found in User repository PostApplication (Will change it later) : " + ex };
             }
         }
 
@@ -173,7 +166,7 @@ namespace TestManagement1.SqlRepository
             }
             catch(Exception ex)
             {
-                throw ex;
+                return new { message = "Exception found in User repository CreateRole (Will change it later) : " + ex };
             }
            
         }    

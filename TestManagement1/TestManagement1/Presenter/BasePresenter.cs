@@ -12,7 +12,7 @@ namespace TestManagement1.Presenter
     public class BasePresenter<T> where T : class
     {
 
-        private readonly IWebHostEnvironment _env;
+        protected readonly IWebHostEnvironment _env;
         
         protected  readonly ILogger<T> _logger;
 

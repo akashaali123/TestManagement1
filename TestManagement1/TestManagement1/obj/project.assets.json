@@ -8787,9 +8787,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
-      "projectName": "TestManagement1",
-      "projectPath": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagement1.csproj",
+      "projectUniqueName": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagementCore.csproj",
+      "projectName": "TestManagementCore",
+      "projectPath": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\TestManagementCore.csproj",
       "packagesPath": "C:\\Users\\akasha.nasir\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\akasha.nasir\\Desktop\\TestSystem\\TestManagement1\\TestManagement1\\obj\\",
       "projectStyle": "PackageReference",

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -45,15 +46,17 @@ namespace TestManagement1
             //InjectDbContext
             services.AddDbContext<TestManagementContext>(option =>
            option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
 
             //Repository Inject
+
+
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<ICandidate, CandidateRepository>();
             services.AddScoped<ICategory, CategoryRepository>();
             services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
 
-
+            
 
 
 
@@ -62,11 +65,10 @@ namespace TestManagement1
             services.AddIdentity<TblUser, IdentityRole>()
                     .AddEntityFrameworkStores<TestManagementContext>();
 
-
-            //add scoped for user Repository
             
-            //services.AddTransient<IUser, SqlUser>();
-            //services.AddSingleton<IUser, SqlUser>();
+            //add scoped for user Repository
+
+           
 
 
             services.AddControllers();
@@ -81,6 +83,7 @@ namespace TestManagement1
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
                 option.Password.RequiredLength = 4;
+                
 
             });
 

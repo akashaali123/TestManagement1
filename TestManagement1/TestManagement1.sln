@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestManagement1", "TestManagement1\TestManagement1.csproj", "{BA6B4485-F026-4608-B728-72BA208FC0C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestManagementCore", "TestManagement1\TestManagementCore.csproj", "{BA6B4485-F026-4608-B728-72BA208FC0C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestManagementApi", "TestManagementApi\TestManagementApi.csproj", "{7C9A5434-3A7F-4E85-BA14-1563858A376C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BA6B4485-F026-4608-B728-72BA208FC0C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA6B4485-F026-4608-B728-72BA208FC0C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA6B4485-F026-4608-B728-72BA208FC0C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C9A5434-3A7F-4E85-BA14-1563858A376C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9A5434-3A7F-4E85-BA14-1563858A376C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9A5434-3A7F-4E85-BA14-1563858A376C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9A5434-3A7F-4E85-BA14-1563858A376C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
