@@ -55,26 +55,16 @@ namespace TestManagementApi.Controllers
                     data.Add("candidate", model);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Candidate Created",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Candidate Created", data);
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                   
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
                 }
                 //Clear
 
@@ -88,14 +78,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
             //Function Ended                                         
@@ -122,27 +107,18 @@ namespace TestManagementApi.Controllers
                     data.Add("candidate", candidate);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Candidate List",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "All Candidate", data);
+
 
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
                 }
                 //Clear
             }
@@ -154,14 +130,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
 
@@ -193,26 +164,16 @@ namespace TestManagementApi.Controllers
                     data.Add("candidate", candidate);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "candidate deleted",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Candidate Delete", data);
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                   
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
                 }
                 //Clear
             }
@@ -225,14 +186,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
             //Function Ended                                  
@@ -262,26 +218,18 @@ namespace TestManagementApi.Controllers
                     data.Add("candidate", candidate);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Candidate Updated",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Canidate Updated", data);
+
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
                 }
                 //Clear  
 
@@ -295,14 +243,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+              
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
 

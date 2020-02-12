@@ -13,6 +13,7 @@ using TestManagement1.ViewModel;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 
+
 namespace TestManagement1.SqlRepository
 {
     public class UserRepository : IUser
@@ -56,8 +57,13 @@ namespace TestManagement1.SqlRepository
                     {
                         Subject = new ClaimsIdentity(new Claim[]
                         {
-                        new Claim("userId", user.Id.ToString()) //We access this userID in UserProfile Controller
+                        new Claim("userid", user.Id.ToString()),//We access this userID in UserProfile Controller
+                        new Claim("email", user.Email.ToString()),
+                        new Claim("roleid",user.RoleId.ToString()),
+                        new Claim("username",user.UserName.ToString()),
+                        new Claim("isactive",user.IsActive.ToString())
                         }),
+                        
                         Expires = DateTime.UtcNow.AddMinutes(5),
 
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
@@ -95,7 +101,12 @@ namespace TestManagement1.SqlRepository
         
         public async Task<IActionResult> Logout()
         {
-           throw  new NotImplementedException();
+
+            
+            throw  new NotImplementedException();
+            
+            //var userId = .Claims.FirstOrDefault(c => c.Type == "userid").Value;
+            //var user = await _userManager.FindByIdAsync(userId);
         }
 
        
@@ -116,21 +127,23 @@ namespace TestManagement1.SqlRepository
                 var applicationUser = new TblUser()
                 {
 
-                UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
+                    UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
 
-                Email = model.email,
+                    Email = model.email,
+
+                    RoleId = 1,
                 
+                    IsActive = true,
 
-                IsActive = true,
+                    JwtToken = null,
 
-                JwtToken = null,
-
-                CreatedDate = System.DateTime.Now
+                    CreatedDate = System.DateTime.Now
 
                 };
 
            
                 var result = await _userManager.CreateAsync(applicationUser, model.password); //password assign here
+                
 
                 return result; //return object of new user               
             }

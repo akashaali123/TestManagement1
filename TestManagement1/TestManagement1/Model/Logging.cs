@@ -25,5 +25,7 @@ namespace TestManagement1.Model
 
         public string Exception { get; set; }
 
+        public string FilePath { get; set; }
+
     }
 }

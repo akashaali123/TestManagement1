@@ -42,6 +42,9 @@ namespace TestManagement1.Model
         //{
         //    base.OnModelCreating(builder);
         //}
-
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+            // builder.Entity<TblCandidate>().MapToStoredProcedures();
+        //}
     }
 }

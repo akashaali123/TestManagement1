@@ -9,7 +9,7 @@ namespace TestManagement1.Model
 {
     public class TblUser:IdentityUser
     {
-        [StringLength(250)]
+        [StringLength(2000)]
         public string JwtToken { get; set; }
 
 

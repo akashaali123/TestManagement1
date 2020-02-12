@@ -21,5 +21,30 @@ namespace TestManagementApi.Controllers
             _logger = logger;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        public OkObjectResult MyReturnMethode(bool success, int status, string message, Dictionary<string, object> data)
+        {
+            return Ok(new
+            {
+                success,
+                status,
+                message,
+                data
+            });
+        }
+        
+        
+        //Above Function is replica of this return ok
+
+
+        //return Ok(
+        //new
+        //{
+        //    success = true,
+        //    status = StatusCodes.Status200OK,
+        //    message = "All Experience",
+        //    data
+        //});
+
     }
 }

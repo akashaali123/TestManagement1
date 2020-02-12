@@ -50,27 +50,18 @@ namespace TestManagementApi.Controllers
                     data.Add("category", model);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Category Created",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Category Created", data);
 
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
                 }
 
                 //Clear
@@ -84,14 +75,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+               
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
             //Function Ended                                     
@@ -119,25 +105,17 @@ namespace TestManagementApi.Controllers
                     data.Add("category", category);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "All Category",
-                        data
-                    });
+                  
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "All Category", data);
+
+
                 }
                 else
                 {
-                    return Ok(
-                  new
-                  {
-                      success = false,
-                      status = StatusCodes.Status400BadRequest,
-                      message = "Invalid Attempt",
-                      data
-                  });
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
                 }
                 //clear
             }
@@ -150,14 +128,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
             //Fuction Ended
@@ -186,26 +159,17 @@ namespace TestManagementApi.Controllers
                     data.Add("category", category);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Category Deleted",
-                        data
-                    });
+                   
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Category deleted", data);
+
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
                 }
                 //Clear
             }
@@ -218,14 +182,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+               
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
 
             }
             //Function Ended

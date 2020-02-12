@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.Presenter;
 
 namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController :BaseController<UserPresenter>
     {
-        private readonly IUser _userRepository; //User Repository Object
+        // private readonly IUser _userRepository; //User Repository Object
+        UserPresenter userPresenter;
 
-        public UserController(IUser userRepository)
+        public UserController(IWebHostEnvironment webHostEnvironment, IUser repository, ILogger<UserPresenter> logger) : base(webHostEnvironment, logger)
         {
-            _userRepository = userRepository; //Inject User Repository
+            userPresenter = new UserPresenter(webHostEnvironment, repository, logger);
 
         }
 
@@ -38,34 +42,27 @@ namespace TestManagementApi.Controllers
                 // Data Dictionary added as per the standard policy
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
-                var user = await _userRepository.PostApplicationUser(model);
-
+                
+                var user = await userPresenter.PostApplicationUser(model);
                 if (user != null)
                 {
                     // Add the data in the JSON Data field below
                     data.Add("user", user);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "User Created",
-                        data
-                    });
+
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base Controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User Created", data);
+
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base Controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                   
 
                 }
                 // Clear
@@ -76,17 +73,15 @@ namespace TestManagementApi.Controllers
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
                 // Add the data in the JSON Data field below
-                data.Add("exception", ex);
+                data.Add("exception", ex); 
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+
+
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+
+              
             }
             // Function Ended
         }
@@ -110,8 +105,8 @@ namespace TestManagementApi.Controllers
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
                 // calling JWT token from user Model
-                var jwtToken = await _userRepository.Login(model);
-
+                
+                var jwtToken = await userPresenter.Login(model);
 
                 if (jwtToken != null)
                 {
@@ -119,26 +114,20 @@ namespace TestManagementApi.Controllers
                     data.Add("jwtToken", jwtToken);
 
                     // Return Data
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "User Logged In Succcesfully",
-                        data
-                    });
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User Logged In Succcesfully", data);
+
+                   
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid User Name or Password",
-                        data
-                    });
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid User Name or Password", data);
+
+                    
 
                 }
             }
@@ -151,14 +140,11 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+
+               
             }
             // Function Ended
         }
@@ -183,34 +169,25 @@ namespace TestManagementApi.Controllers
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
 
-                var role = await _userRepository.CreateRole(model);
+               
+                var role = await userPresenter.CreateRole(model);
                 if (role != null)
                 {
                     // Add the data in the JSON Data field below
                     data.Add("role", role);
 
                     // Return Data
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "Role Created",
-                        data
-                    });
 
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Role Created", data);                
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
                 }
             }
             catch (Exception ex)
@@ -222,14 +199,10 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+               
             }
             // Function Ended     
         }
@@ -239,10 +212,7 @@ namespace TestManagementApi.Controllers
 
 
 
-
-
-
-
+        
 
 
 

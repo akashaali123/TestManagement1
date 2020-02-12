@@ -16,7 +16,7 @@ namespace TestManagementApi.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class ExperienceLevelController : BaseController<ExperienceLevelPresenter>
     {
         //Generic Methode Explanation in Candidate Controller
@@ -54,27 +54,19 @@ namespace TestManagementApi.Controllers
                     // Add the data in the JSON Data field below
                     data.Add("ExperienceLevel", experience);
 
+                   
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "ExperienceLevel Created",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "ExperienceLevel Created", data);                   
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                  
                 }
                 // Clear
 
@@ -88,14 +80,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+               
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
             }
             // Function Ended
         }
@@ -118,32 +105,25 @@ namespace TestManagementApi.Controllers
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
                 var experience = exP.GetAll();
-                if (experience != null)
+                if (experience.Count() != 0)
                 {
                     // Add the data in the JSON Data field below
                     data.Add("experience", experience);
 
+                    
+                    
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "All Users",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "All Experience Level", data);
+                                                                                              
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "No Record Found", data);                 
                 }
                 //Clear
             }
@@ -156,14 +136,10 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+               
             }
             //Function Ended
         }
@@ -192,26 +168,17 @@ namespace TestManagementApi.Controllers
                     data.Add("experience", experience);
 
                     // Return Data 
-                    return Ok(
-                    new
-                    {
-                        success = true,
-                        status = StatusCodes.Status200OK,
-                        message = "User Created",
-                        data
-                    });
+                    
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Deleted", data);
                 }
                 else
                 {
                     // Error Returned
-                    return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status400BadRequest,
-                        message = "Invalid Attempt",
-                        data
-                    });
+                   
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
                 }
                 //clear
             }
@@ -224,14 +191,9 @@ namespace TestManagementApi.Controllers
                 data.Add("exception", ex);
 
                 // Return Exception
-                return Ok(
-                    new
-                    {
-                        success = false,
-                        status = StatusCodes.Status502BadGateway,
-                        message = "Exception Found",
-                        data
-                    });
+                
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
             }
             // Function Ended
 
@@ -242,7 +204,7 @@ namespace TestManagementApi.Controllers
 
 
 
-
+       
 
 
 

@@ -51,12 +51,13 @@ namespace TestManagement1.Controllers
         //    }
         //    catch (Exception ex)
         //    {
-        //        _logger.LogError("Error in Weather Controller" + ex);
+
+        //       _logger.LogError("Error in Weather Controller" + ex);
         //        return null;
 
         //    }
-
-
         //}
+
+    
     }
 }
