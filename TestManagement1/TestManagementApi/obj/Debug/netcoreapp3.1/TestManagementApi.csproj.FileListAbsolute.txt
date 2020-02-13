@@ -130,8 +130,6 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\D
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.csprojAssemblyReference.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementApi.StaticWebAssets.Manifest.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementApi.StaticWebAssets.xml
-C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.AssemblyInfoInputs.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.AssemblyInfo.cs
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.RazorTargetAssemblyInfo.cache
@@ -141,3 +139,8 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\D
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\TestManagementCore.exe
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\TestManagementCore.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\TestManagementCore.pdb
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cache

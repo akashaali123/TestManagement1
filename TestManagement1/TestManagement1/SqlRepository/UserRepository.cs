@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 using TestManagement1.ViewModel;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
-
+using TestManagementCore.ViewModel;
+using System.Text.Json;
+using System.Collections;
 
 namespace TestManagement1.SqlRepository
 {
@@ -45,12 +47,21 @@ namespace TestManagement1.SqlRepository
 
         
         
-        public async Task<Object> Login(LoginModel model)
+        public async Task<object> Login(LoginModel model)
         {
             try
             {
                 var user = await _userManager.FindByNameAsync(model.userName);
 
+                
+                //Get the Role of signing User save in it a list
+                 var userRole = await _userManager.GetRolesAsync(user);
+               
+               
+                //Find the role Info by thier name which hold in userRole 0 index
+               // IdentityRole  roleInfo = await _roleManager.FindByNameAsync(userRole[0]);
+               
+                
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
                 {
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -59,9 +70,11 @@ namespace TestManagement1.SqlRepository
                         {
                         new Claim("userid", user.Id.ToString()),//We access this userID in UserProfile Controller
                         new Claim("email", user.Email.ToString()),
-                        new Claim("roleid",user.RoleId.ToString()),
+                        new Claim("role", userRole[0].ToString()),
                         new Claim("username",user.UserName.ToString()),
-                        new Claim("isactive",user.IsActive.ToString())
+                        new Claim("isactive",user.IsActive.ToString()),
+                        //new Claim(ClaimTypes.Role,roles.ToString())
+                        
                         }),
                         
                         Expires = DateTime.UtcNow.AddMinutes(5),
@@ -182,12 +195,81 @@ namespace TestManagement1.SqlRepository
                 return new { message = "Exception found in User repository CreateRole (Will change it later) : " + ex };
             }
            
-        }    
-  
-    
-    
-    
-    
-    
+        }
+
+      
+        
+        
+        public async Task<object> EditUserInRole(UserRoleViewModel model, string roleId)
+        {
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(roleId);
+                if (role == null )
+                {
+                    return new { message = "No Role Found" };
+                }
+                else
+                {
+                    IdentityResult result = null;
+                    var user = await _userManager.FindByIdAsync(model.userId);
+                    result = await _userManager.AddToRoleAsync(user, role.Name);
+
+
+                    return new { message = "Role is Assigned", data = new {role , model } };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository EditUserInRole  (Will change it later) : " + ex };
+            }
+               
+
+            #region check it later
+            //    for (int i = 0; i < model.Count; i++)
+            //    {
+            //        var user = await _userManager.FindByIdAsync(model[i].userId);
+            //        IdentityResult result = null;
+            //        if (model[i].isSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
+            //        {
+            //            result = await _userManager.AddToRoleAsync(user, role.Name);
+            //        }
+            //        else if (!model[i].isSelected && await _userManager.IsInRoleAsync(user, role.Name))
+            //        {
+            //            result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+            //        }
+            //        else
+            //        {
+            //            continue;
+            //        }
+            //        if (result.Succeeded)
+            //        {
+            //            if (i < (model.Count - 1))
+            //            {
+            //                continue;
+            //            }
+            //            else
+            //            {
+            //                return new { id = roleId };
+            //            }
+            //        }
+            //    }
+            //    return new { id = roleId };
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    return new { message = "Exception found in User repository EditUserInRole  (Will change it later) : " + ex };
+            //}
+            #endregion
+
+
+        }
+
+
+
+
+
     }
 }

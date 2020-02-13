@@ -89,7 +89,7 @@ namespace TestManagementApi
             });
 
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
 
             //For Jwt

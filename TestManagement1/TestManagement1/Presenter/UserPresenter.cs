@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.ViewModel;
 
 namespace TestManagementCore.Presenter
 {
@@ -64,6 +65,21 @@ namespace TestManagementCore.Presenter
             }
         }
 
+
+        public async Task<object> EditUserInRole(UserRoleViewModel model, string roleId)
+        {
+            try
+            {
+                return await _repository.EditUserInRole(model, roleId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in User EditUserInRole Methode in UserPresenter" + ex);
+                return null;
+
+            }
+           
+        }
 
 
 

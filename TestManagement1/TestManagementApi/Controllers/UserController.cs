@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
 using TestManagementCore.Presenter;
+using TestManagementCore.ViewModel;
 
 namespace TestManagementApi.Controllers
 {
@@ -35,7 +37,7 @@ namespace TestManagementApi.Controllers
         [HttpPost]
         [Route("/user/register")]
         //POST : api/User/Register
-        public async Task<object> PostApplicationUser(ApplicationUserModel model)
+        public async Task<IActionResult> PostApplicationUser(ApplicationUserModel model)
         {
             try
             {
@@ -161,7 +163,7 @@ namespace TestManagementApi.Controllers
         [HttpPost]
         [Route("/user/createrole")]
         //POST : api/User/createrole
-        public async Task<object> CreateRole(RoleModel model)
+        public async Task<IActionResult> CreateRole(RoleModel model)
         {
             try
             {
@@ -210,9 +212,43 @@ namespace TestManagementApi.Controllers
 
 
 
+        #region Edit role in User
+        [HttpPost]
+        [Route("/user/edituserinrole")]
+        public async Task<IActionResult> EditUserInRole(UserRoleViewModel model, string roleId)
+        {
+            try
+            {
+              //  model  = JsonConvert.DeserializeObject<UserRoleViewModel>(json);
+                // Data Dictionary added as per the standard policy
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                
+                var editUserInRole = await userPresenter.EditUserInRole(model, roleId);
+
+                if (editUserInRole!=null)
+                {
+                    data.Add("Edit User In Role", editUserInRole);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Assigned Role to User SuccessFully", data);
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+        }
 
 
-        
+        #endregion
+
+
 
 
 

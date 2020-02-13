@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   // [Authorize(Roles = "SuperAdmin")]
     public class CategoryController : BaseController<CategoryPresenter>
     {
 
@@ -57,6 +59,7 @@ namespace TestManagementApi.Controllers
                 }
                 else
                 {
+                    
                     // Error Returned
                     
                     //MyReturnMethode Return the data in Ok result its implementation in base controller
