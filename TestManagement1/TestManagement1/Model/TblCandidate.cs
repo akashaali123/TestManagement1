@@ -44,7 +44,7 @@ namespace TestManagement1.Model
 
         public int? VacancyId { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
 
         [DataType(DataType.DateTime)]

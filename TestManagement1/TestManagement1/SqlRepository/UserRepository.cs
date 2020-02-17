@@ -15,6 +15,8 @@ using TestManagement1.RepositoryInterface;
 using TestManagementCore.ViewModel;
 using System.Text.Json;
 using System.Collections;
+using Microsoft.AspNetCore.Http;
+using TestManagementCore.SessionManager;
 
 namespace TestManagement1.SqlRepository
 {
@@ -28,9 +30,16 @@ namespace TestManagement1.SqlRepository
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        SessionManager sessionManager;
 
-        
-        public UserRepository(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager)
+       private readonly TestManagementContext _context;
+
+        //For Session
+        //private readonly IHttpContextAccessor _httpContextAccessor;
+        //private ISession _session => _httpContextAccessor.HttpContext.Session;
+
+
+        public UserRepository(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager ,IHttpContextAccessor httpContextAccessor, TestManagementContext context)
         {
             _userManager = userManager;
 
@@ -39,6 +48,11 @@ namespace TestManagement1.SqlRepository
             _appSettings = appSettings.Value;
             
             _roleManager = roleManager;
+
+            //For session
+            //_httpContextAccessor = httpContextAccessor;
+          sessionManager =   new SessionManager(httpContextAccessor);
+            _context = context;
 
         }
        
@@ -77,7 +91,7 @@ namespace TestManagement1.SqlRepository
                         
                         }),
                         
-                        Expires = DateTime.UtcNow.AddMinutes(5),
+                        Expires = DateTime.UtcNow.AddMinutes(10),
 
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                     };
@@ -89,9 +103,16 @@ namespace TestManagement1.SqlRepository
 
 
                     user.JwtToken = token; //take Jwt value in db for temporary
-                    await _userManager.UpdateAsync(user);
+                    var result = await _userManager.UpdateAsync(user);
+                    if(result.Succeeded)
+                    {
+                        
+                        //Session Created its implementation in SessionManager Class
+                        sessionManager.SetSession("userid",user.Id.ToString());
+                        //sessionManager.getSession("userid");
 
-                    return token;
+                    }
+                    return token;  
                 }
                 else
                 {
@@ -101,6 +122,7 @@ namespace TestManagement1.SqlRepository
             }
             catch (Exception ex)
             {
+               
                 return new { message = "Exception found in User repository (Will change it later) : " + ex };
             }
            
@@ -266,6 +288,14 @@ namespace TestManagement1.SqlRepository
 
 
         }
+
+        public IEnumerable<TblUser> UserList()
+        {
+            var user = _userManager.Users;
+            return user;
+        }
+
+
 
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +7,18 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.SessionManager;
 
 namespace TestManagement1.SqlRepository
 {
     public class ExperienceLevelRepository : BaseRepository<ExperienceLevelRepository>,IExperienceLevel
     {
-      
 
-        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger):base(context,logger)
+                                                                                                                   //Required For Get Session implementation in baseClass
+        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
         {
-           
+            
+
         }
 
        
@@ -25,6 +28,7 @@ namespace TestManagement1.SqlRepository
         
         public TblExperienceLevel Add(ExperienceLevelViewModel experienceLevelModel)
         {
+            
            try
             {
                 TblExperienceLevel experienceLevel = new TblExperienceLevel
@@ -33,7 +37,7 @@ namespace TestManagement1.SqlRepository
                     MinExp = experienceLevelModel.MinExp,
                     MaxExp = experienceLevelModel.MaxExp,
                     IsActive = true,
-                    CreatedBy = 1,
+                    CreatedBy =sessionManager.getSession("userid"),
                     CreatedDate = DateTime.Now,
                     UpdatedBy = null,
                     UpdatedDate = null

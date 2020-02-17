@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestManagement1.Model;
 using TestManagement1.ViewModel;
 using TestManagementCore.ViewModel;
 
@@ -21,6 +23,8 @@ namespace TestManagement1.RepositoryInterface
         public Task<object> CreateRole(RoleModel model);
 
         public Task<object> EditUserInRole(UserRoleViewModel model, string roleId);
+
+        public IEnumerable<TblUser> UserList();
 
     }
 }

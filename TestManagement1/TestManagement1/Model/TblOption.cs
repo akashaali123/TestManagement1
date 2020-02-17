@@ -31,13 +31,13 @@ namespace TestManagement1.Model
 
         public bool? IsActive { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
 
         [DataType(DataType.DateTime)]
         public DateTime? CreatedDate { get; set; }
 
-        public int? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
 
 
         [DataType(DataType.DateTime)]

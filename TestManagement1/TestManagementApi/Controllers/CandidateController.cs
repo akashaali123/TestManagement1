@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]                                  //Pass the ILogger class
+    [Authorize]
     public class CandidateController : BaseController<CandidatePresenter> //generic methode implement for Logger and WebHostEnviroment
     {
         //When we need to implement WebHostEnviroment and Logger so Inherit from base controller in which

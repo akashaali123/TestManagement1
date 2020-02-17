@@ -19,7 +19,7 @@ namespace TestManagement1.Model
         public bool IsActive { get; set; }
 
 
-        public int? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
 
         [DataType(DataType.DateTime)]

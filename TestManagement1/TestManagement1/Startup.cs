@@ -19,6 +19,8 @@ using Microsoft.IdentityModel.Tokens;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
+using TestManagementCore.RepositoryInterface;
+using TestManagementCore.SqlRepository;
 
 namespace TestManagement1
 {
@@ -55,8 +57,9 @@ namespace TestManagement1
             services.AddScoped<ICandidate, CandidateRepository>();
             services.AddScoped<ICategory, CategoryRepository>();
             services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
+            services.AddScoped<IQuestionAndOption,QuestionAndOptionRepository>();
 
-            
+
 
 
 
@@ -65,14 +68,17 @@ namespace TestManagement1
             services.AddIdentity<TblUser, IdentityRole>()
                     .AddEntityFrameworkStores<TestManagementContext>();
 
+            //For Session Create of User id
+
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
+
+
+
+            services.AddControllers().AddNewtonsoftJson();
+
+
             
-            //add scoped for user Repository
-
-           
-
-
-            services.AddControllers();
-
 
             //To remove identity Validation 
 
@@ -142,11 +148,16 @@ namespace TestManagement1
                 app.UseDeveloperExceptionPage();
             }
 
+
+            // IMPORTANT: This session call MUST go before UseMvc()
+             app.UseSession();
+
             app.UseRouting();
 
             app.UseCors(myAllowSpecificOrigin);
 
-
+            
+            
             app.UseAuthentication();
 
             app.UseAuthorization();

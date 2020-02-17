@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace TestManagement1.SqlRepository
         //So we avoid duplication
 
         //TestManagementContext _context;
-        //ILogger<SqlCandidateRepository> _logger;
-        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger):base(context,logger)
+        //ILogger<SqlCandidateRepository> _logger;                                                      //Required For Get Session implementation in baseClass
+        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
         {
             //_logger = logger;
             //_context = context;
@@ -37,6 +38,7 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
+                
                 TblCandidate candidate = new TblCandidate
                 {
                     CandidateId=candidateModel.CandidateId,
@@ -49,8 +51,8 @@ namespace TestManagement1.SqlRepository
                     
                     CreatedDate = DateTime.Now,
                     IsActive = true,
-                    CreatedBy = 1
-            };
+                    CreatedBy = sessionManager.getSession("userid"),
+                };
                 _context.TblCandidate.Add(candidate);
                 _context.SaveChanges();
                 return candidate;
@@ -151,7 +153,8 @@ namespace TestManagement1.SqlRepository
                 TechStack = candidateModel.CurrentCompany,
                 CreatedDate = DateTime.Now,
                 IsActive = true,
-                CreatedBy = 1
+                CreatedBy = sessionManager.getSession("userid")
+
             };
 
             var candidate = _context.TblCandidate.Attach(candidateChanges);

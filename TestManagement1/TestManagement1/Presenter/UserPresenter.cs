@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
@@ -20,7 +22,7 @@ namespace TestManagementCore.Presenter
             _repository = repository;
         }
 
-        public async Task<Object> Login(LoginModel model)
+        public async Task<object> Login(LoginModel model)
         {
             try
             {
@@ -80,7 +82,10 @@ namespace TestManagementCore.Presenter
             }
            
         }
-
+        public IEnumerable<TblUser> UserList()
+        {
+            return _repository.UserList();
+        }
 
 
     }

@@ -7,6 +7,9 @@ namespace TestManagement1.ViewModel
 {
     public class LoginModel
     {
+
+        
+
         public string userName { get; set; }
 
 

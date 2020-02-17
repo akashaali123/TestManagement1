@@ -15,7 +15,8 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "SuperAdmin")]
+    // [Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     public class CategoryController : BaseController<CategoryPresenter>
     {
 

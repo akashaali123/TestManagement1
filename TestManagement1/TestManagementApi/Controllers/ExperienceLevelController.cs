@@ -16,7 +16,7 @@ namespace TestManagementApi.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-   
+    [Authorize]
     public class ExperienceLevelController : BaseController<ExperienceLevelPresenter>
     {
         //Generic Methode Explanation in Candidate Controller

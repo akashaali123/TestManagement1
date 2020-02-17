@@ -20,10 +20,8 @@ using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
 using TestManagementApi.Controllers;
-
-
-
-
+using TestManagementCore.RepositoryInterface;
+using TestManagementCore.SqlRepository;
 
 namespace TestManagementApi
 {
@@ -54,6 +52,7 @@ namespace TestManagementApi
             services.AddScoped<ICandidate, CandidateRepository>();
             services.AddScoped<ICategory, CategoryRepository>();
             services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
+            services.AddScoped<IQuestionAndOption, QuestionAndOptionRepository>();
 
 
 
@@ -88,6 +87,11 @@ namespace TestManagementApi
                 });
             });
 
+
+            //For Session Create of User id
+
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
 
             services.AddControllers().AddNewtonsoftJson();
 
@@ -126,7 +130,8 @@ namespace TestManagementApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSession();
+            
             app.UseRouting();
 
 

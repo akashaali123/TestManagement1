@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace TestManagement1.SqlRepository
 {
     public class CategoryRepository : BaseRepository<CategoryRepository>,ICategory
     {
-       
 
-        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger):base(context,logger)
+                                                                                                      //Required For Get Session implementation in baseClass
+        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger, httpContextAccessor)
         {
            
         }
@@ -33,7 +34,7 @@ namespace TestManagement1.SqlRepository
                     
                     Name = categoryModel.Name,
                     IsActive = true,
-                    CreatedBy = 1,
+                    CreatedBy = sessionManager.getSession("userid"),
                     CreatedDate = DateTime.Now
 
             };

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -50,10 +51,8 @@ namespace TestManagementApi.Controllers
                 {
                     // Add the data in the JSON Data field below
                     data.Add("user", user);
-
+                   
                     // Return Data 
-
-
                     //MyReturnMethode Return the data in Ok result its implementation in base Controller
                     return MyReturnMethode(true, StatusCodes.Status200OK, "User Created", data);
 
@@ -114,6 +113,12 @@ namespace TestManagementApi.Controllers
                 {
                     // Add the data in the JSON Data field below
                     data.Add("jwtToken", jwtToken);
+
+
+                    //create Session
+
+                   //HttpContext.Session.SetString("User", "True");
+                   // var user = HttpContext.Session.GetString("User");
 
                     // Return Data
 
@@ -249,6 +254,14 @@ namespace TestManagementApi.Controllers
         #endregion
 
 
+        [HttpGet]
+        [Route("/user/getall")]
+        public  IActionResult Getall()
+        {
+
+            return Ok(userPresenter.UserList());
+
+        }
 
 
 
