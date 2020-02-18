@@ -82,9 +82,80 @@ namespace TestManagementCore.Presenter
             }
            
         }
-        public IEnumerable<TblUser> UserList()
+        public List<UserListViewModel> UserList()
         {
-            return _repository.UserList();
+            try
+            {
+                return _repository.UserList();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User UserList Methode in UserPresenter" + ex);
+                return null;
+            }
+           
+        }
+
+        public async Task<object> DeleteUser(string id)
+        {
+            try
+            {
+                return await _repository.DeleteUser(id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User DeleteUser Methode in UserPresenter" + ex);
+                return null;
+            }
+           
+
+        }
+
+        public async Task<object> GetUserById(string id)
+        {
+            try
+            {
+                return await _repository.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User GetUserById Methode in UserPresenter" + ex);
+                return null;
+            }
+            
+        }
+
+        public async Task<object> UpdateUser(UserViewModelById model, string id)
+        {
+            try
+            {
+                return await _repository.UpdateUser(model, id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User UpdateUser Methode in UserPresenter" + ex);
+                return null;
+            }
+            
+        }
+
+        public async Task<object> ChangePassword(ChangePasswordViewModel model, string id)
+        {
+            try
+            {
+                return await _repository.ChangePassword(model, id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ChangePassword Methode in UserPresenter" + ex);
+                return null;
+            }
+            
         }
 
 

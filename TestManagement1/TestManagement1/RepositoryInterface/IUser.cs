@@ -24,7 +24,18 @@ namespace TestManagement1.RepositoryInterface
 
         public Task<object> EditUserInRole(UserRoleViewModel model, string roleId);
 
-        public IEnumerable<TblUser> UserList();
+        public List<UserListViewModel> UserList();
+
+        public  Task<object> DeleteUser(string id);
+
+        public  Task<object> GetUserById(string id);
+
+        public  Task<object> UpdateUser(UserViewModelById model, string id);
+
+        public  Task<object> ChangePassword(ChangePasswordViewModel model, string id);
+
+
+
 
     }
 }

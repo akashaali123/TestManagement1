@@ -51,7 +51,22 @@ namespace TestManagementCore.Presenter
 
         public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
         {
-            return _repository.Update(questionAndOptionViewModel, id);
+            try
+            {
+                return _repository.Update(questionAndOptionViewModel, id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionPresenter Update Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+           
+        }
+
+        public QuestionOptionByIdViewModel GetQuestionById(int id)
+        {
+            return _repository.GetQuestionById(id);
         }
 
     }

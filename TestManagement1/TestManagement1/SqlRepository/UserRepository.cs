@@ -91,7 +91,7 @@ namespace TestManagement1.SqlRepository
                         
                         }),
                         
-                        Expires = DateTime.UtcNow.AddMinutes(10),
+                        Expires = DateTime.UtcNow.AddHours(5),
 
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                     };
@@ -128,13 +128,13 @@ namespace TestManagement1.SqlRepository
            
         }
 
-        
-        
-        
-       
-        
-        
-        public async Task<IActionResult> Logout()
+
+
+
+
+
+
+        public /*async*/ Task<IActionResult> Logout()
         {
 
             
@@ -289,10 +289,152 @@ namespace TestManagement1.SqlRepository
 
         }
 
-        public IEnumerable<TblUser> UserList()
+        public List<UserListViewModel> UserList()
         {
-            var user = _userManager.Users;
-            return user;
+            try
+            {
+                
+                var allusers =  _context.Users.ToList();
+                var userVM = allusers.Select(user => new UserListViewModel { id = user.Id, userName = user.UserName, email = user.Email }).ToList();
+                return userVM;
+            }
+            catch (Exception)
+            {
+                return null;
+
+            }
+            
+
+
+        }
+
+        public async Task<object> GetUserById(string id)
+        {
+            try
+            {
+                UserViewModelById userList = new UserViewModelById();
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return new { message = "No Result Found" };
+                }
+                else
+                {
+                    userList.userName = user.UserName;
+                    userList.email = user.Email;
+                    return userList;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository GetUserById (Will change it later) : " + ex };
+            }
+           
+
+        }
+
+
+        public async Task<object> DeleteUser(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                if (user == null)
+                {
+                    return new { message = "Not Found" };
+                }
+                else
+                {
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        return new { message = "Some Error Occurs" };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { message = "Exception found in User repository DeleteUser  (Will change it later) : " + ex };
+
+            }
+           
+               
+            
+        }
+
+        public async Task<object> UpdateUser(UserViewModelById model,string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user != null)
+                {
+                    user.UserName = model.userName;
+                    user.Email = model.email;
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return model;
+                    }
+                    else
+                    {
+                        return new { message = "Error Occured" };
+                    }
+
+
+                }
+                else
+                {
+                    return new { message = "No Result Found" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository UpdateUser  (Will change it later) : " + ex };
+            }
+           
+
+        }
+
+
+        public async Task<object> ChangePassword(ChangePasswordViewModel model,string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user != null)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, model.oldpassword, model.newpassword);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.RefreshSignInAsync(user);
+                        return result;
+                    }
+                    else
+                    {
+                        return new { message = "In Correct Old Password" };
+                    }
+                }
+                else
+                {
+                    return new { message = "No User Found" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { message = "Exception found in User repository ChangePassword  (Will change it later) : " + ex };
+
+            }
+           
+
         }
 
 

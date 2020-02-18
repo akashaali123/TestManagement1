@@ -4,19 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestManagement1.Model
+namespace TestManagementCore.ViewModel
 {
-    public class TblTestDetails
+    public class TestDetailsViewModel
     {
-        public TblTestDetails()
-        {
-            IsActive = true;
-        }
-
         [Key]
         public int TestId { get; set; }
 
-        public int CandidateId { get; set; }
+        public int Candidateid { get; set; }
         public int? QuestionId { get; set; }
 
         public int? SelectedOptionId { get; set; }
@@ -28,18 +23,6 @@ namespace TestManagement1.Model
 
         public bool? IsActive { get; set; }
 
-        public string CreatedBy { get; set; }
-
-
-        [DataType(DataType.DateTime)]
-        public DateTime? CreatedDate { get; set; }
-
-        public string UpdatedBy { get; set; }
-
-
-        [DataType(DataType.DateTime)]
-        public DateTime? UpdatedDate { get; set; }
-
-
+        
     }
 }

@@ -17,5 +17,7 @@ namespace TestManagementCore.RepositoryInterface
 
         QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,int id);
 
+        public QuestionOptionByIdViewModel GetQuestionById(int id);
+
     }
 }

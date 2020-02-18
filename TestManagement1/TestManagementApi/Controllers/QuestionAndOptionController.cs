@@ -130,10 +130,56 @@ namespace TestManagementApi.Controllers
         [Route("/question/update")]
         public IActionResult Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
         {
+            try
+            {
+                // Data Dictionary added as per the standard policy
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                var update = questionAndOptionPresenter.Update(questionAndOptionViewModel, id);
+                if(update != null)
+                {
+                    // Add the data in the JSON Data field below
+                    data.Add("Question and Options Updated", update);
 
-            return Ok(questionAndOptionPresenter.Update(questionAndOptionViewModel, id));
+
+                    // Return Data 
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "Question and Options Updated", data);
+                }
+                else
+                {
+                    // Error Returned
+
+                    //MyReturnMethode Return the data in Ok result its implementation in base controller
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                // Exception thrown
+                Dictionary<string, object> data = new Dictionary<string, object>();
+
+                // Add the data in the JSON Data field below
+                data.Add("exception", ex);
+
+                // Return Exception
+
+                //MyReturnMethode Return the data in Ok result its implementation in base controller
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+            
         }
 
+
+        [HttpGet]
+        [Route("/question/getquestbyid")]
+        public IActionResult GetQuestById(int id)
+        {
+            return Ok(questionAndOptionPresenter.GetQuestionById(id));
+        }
 
 
 

@@ -164,6 +164,9 @@ namespace TestManagementApi.Controllers
 
 
 
+      
+        
+        
         #region CreateRole
         [HttpPost]
         [Route("/user/createrole")]
@@ -217,6 +220,10 @@ namespace TestManagementApi.Controllers
 
 
 
+       
+        
+        
+        
         #region Edit role in User
         [HttpPost]
         [Route("/user/edituserinrole")]
@@ -224,7 +231,7 @@ namespace TestManagementApi.Controllers
         {
             try
             {
-              //  model  = JsonConvert.DeserializeObject<UserRoleViewModel>(json);
+              
                 // Data Dictionary added as per the standard policy
                 Dictionary<string, object> data = new Dictionary<string, object>();
                 
@@ -254,14 +261,205 @@ namespace TestManagementApi.Controllers
         #endregion
 
 
+
+
+
+        #region Getall
         [HttpGet]
         [Route("/user/getall")]
-        public  IActionResult Getall()
+        public IActionResult Getall()
         {
+            try
+            {
+                // Data Dictionary added as per the standard policy
+                Dictionary<string, object> data = new Dictionary<string, object>();
 
-            return Ok(userPresenter.UserList());
+                var user = userPresenter.UserList();
+
+                if (user != null)
+                {
+                    data.Add("userList", user);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User List", data);
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+
+
 
         }
+        #endregion
+
+
+
+
+
+
+
+
+        #region DeleteUser
+        [HttpDelete]
+        [Route("/user/delete")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                var deleteUser = await userPresenter.DeleteUser(id);
+                if (deleteUser != null)
+                {
+                    data.Add("DeleteUser", deleteUser);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User List", data);
+
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+
+            }
+
+        }
+        #endregion
+
+
+
+
+
+
+        #region GetUserById
+        [HttpGet]
+        [Route("/user/getbyid")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                var getUser = await userPresenter.GetUserById(id);
+                if (getUser != null)
+                {
+                    data.Add("User By ID", getUser);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User List", data);
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+
+
+        }
+        #endregion
+
+
+
+
+
+
+
+
+        #region Update
+        [HttpPut]
+        [Route("/user/update")]
+        public async Task<IActionResult> Update(UserViewModelById model, string id)
+        {
+            try
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                var updateUser = await userPresenter.UpdateUser(model, id);
+                if (updateUser != null)
+                {
+                    data.Add("updated User", updateUser);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User List", data);
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+
+
+        }
+        #endregion
+
+
+
+
+
+
+        #region ChangePassword
+        [HttpPost]
+        [Route("/user/changepassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model, string id)
+        {
+            try
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                var password = await userPresenter.ChangePassword(model, id);
+                if (password != null)
+                {
+                    data.Add("change Password", password);
+
+                    return MyReturnMethode(true, StatusCodes.Status200OK, "User List", data);
+                }
+                else
+                {
+                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("exception", ex);
+                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
+            }
+
+
+        }
+        #endregion
+
+
+
+
+
+
 
 
 
