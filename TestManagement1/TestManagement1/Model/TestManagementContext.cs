@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestManagementCore.StoredProcedure;
 
 namespace TestManagement1.Model
 {
@@ -38,13 +39,16 @@ namespace TestManagement1.Model
 
         public DbSet<TblLogging> TblLogging { get; set; }
 
+
+       // public virtual DbSet<RetriveQuestionAndOptionById> RetriveQuestionAndOptionById { get; set; } //For sp no need to run migration
+
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
         //    base.OnModelCreating(builder);
         //}
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
-            // builder.Entity<TblCandidate>().MapToStoredProcedures();
+        // builder.Entity<TblCandidate>().MapToStoredProcedures();
         //}
     }
 }

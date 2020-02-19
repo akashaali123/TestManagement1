@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TestManagement1.Model;
 
 namespace TestManagementCore.ViewModel
 {
     public class QuestionOptionByIdViewModel
     {
 
-        //For question
-        [Required]
-        [StringLength(1000)]
-        public string Description { get; set; }
+       
+        public TblQuestion question { get; set; }
 
        
-     
-        public string option { get; set; }
+
+       public List<TblOption> option { get; set; } 
 
         
-        
+
+
 
 
 

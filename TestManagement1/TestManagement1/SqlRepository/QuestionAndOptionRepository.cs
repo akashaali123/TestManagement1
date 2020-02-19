@@ -78,12 +78,38 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public IEnumerable<QuestionAndOptionViewModel> GetAll()
+        public List<QuestionOptionByIdViewModel> GetAll()
         {
-            
+            try
+            {
+                var vmList = new List<QuestionOptionByIdViewModel>();//list object
 
+                var question = _context.TblQuestion.ToList();//All Question
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//Object of vm
 
-            throw new NotImplementedException();
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();//all Option regarding their Question
+
+                    model.question = item;// Question set to model question item have current iterate question
+
+                    model.option = option;//Option set in model option
+
+                    vmList.Add(model);//add model in list         
+
+                }
+
+                return vmList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository  GetAll Methode in Sql Repository" + ex);
+
+                return null;
+            }          
+           
+           
         }
 
         
@@ -140,26 +166,107 @@ namespace TestManagementCore.SqlRepository
         }
         public QuestionOptionByIdViewModel GetQuestionById(int id)
         {
-
-          QuestionOptionByIdViewModel model = new  QuestionOptionByIdViewModel();
-
-            var question = _context.TblQuestion.Find(id);
-            
-                
-                model.Description = question.Description;
-                
-                
-            
-            
-
-            var option = _context.TblOption.Where(e => e.QuestionId == id);
-            foreach (var item in option)
+            try
             {
-                model.option = item.OptionDescription;
-               
+                var question = _context.TblQuestion.Find(id);//get Question
+
+                var options = _context.TblOption.Where(x => x.QuestionId == id).ToList();//get option assign to option
+
+                QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
+
+                model.question = question;//assign question in vm question 
+                model.option = options;//assign option in vm option
+
+                return model;
             }
-            return model;
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in QuestionAndOptionRepository GetQuestionById Methode in Sql Repository" + ex);
+
+                return null;
+
+            }
            
+            
+        }
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
+        {
+            try
+            {
+                var questionList = new List<QuestionOptionByIdViewModel>();//For returning
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId).ToList();
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
+                    model.question = item;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.option = option;//set list of option in vm model option list
+                    questionList.Add(model);
+                }
+                return questionList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository GetQuestionByCategory Methode in Sql Repository" + ex);
+
+                return null;
+            }
+        }
+
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId,int experienceLevelId)
+        {
+            try
+            {
+                var questionList = new List<QuestionOptionByIdViewModel>();//For returning
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId==experienceLevelId).ToList();
+
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
+                    model.question = item;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.option = option;//set list of option in vm model option list
+                    questionList.Add(model);
+                }
+                return questionList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository GetQuestionByCategory Methode in Sql Repository" + ex);
+
+                return null;
+            }
+        }
+
+        
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId,int number)
+        {
+            try
+            {
+                var questionList = new List<QuestionOptionByIdViewModel>();//For returning
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Take(number).ToList();
+
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
+                    model.question = item;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.option = option;//set list of option in vm model option list
+                    questionList.Add(model);
+                }
+                return questionList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository GetQuestionByCategory Methode in Sql Repository" + ex);
+
+                return null;
+            }
         }
 
 

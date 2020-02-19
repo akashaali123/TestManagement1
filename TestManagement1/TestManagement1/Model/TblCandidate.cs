@@ -50,6 +50,8 @@ namespace TestManagement1.Model
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
+        public int? ExperienceLevelId { get; set; }
+
 
 
     }

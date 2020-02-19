@@ -39,7 +39,11 @@ namespace TestManagement1.Model
 
 
         [DataType(DataType.DateTime)]
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        public int? ExperienceLevelId { get; set; }
 
 
 

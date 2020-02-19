@@ -66,8 +66,59 @@ namespace TestManagementCore.Presenter
 
         public QuestionOptionByIdViewModel GetQuestionById(int id)
         {
-            return _repository.GetQuestionById(id);
+            try
+            {
+                return _repository.GetQuestionById(id);
+            }
+            catch (Exception ex)
+            {
+
+               _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionById Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+            
         }
+
+
+        public List<QuestionOptionByIdViewModel> GetAll()
+        {
+            try
+            {
+                return _repository.GetAll();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in QuestionAndOptionPresenter GetAll Methode in ExperienceLevelPresenter" + ex);
+                return null;
+
+            }
+            
+        }
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
+        {
+            try
+            {
+                return _repository.GetQuestionByCategory(categoryId);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+           
+        }
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
+        {
+            return _repository.GetQuestionByCategoryAndExperience(categoryId, experienceLevelId);
+        }
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
+        {
+            return _repository.GetQuestionByCategoryAndExperienceAndNo(categoryId, experienceLevelId,number);
+        }
+
 
     }
 }

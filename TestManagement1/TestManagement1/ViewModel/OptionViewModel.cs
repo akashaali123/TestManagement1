@@ -7,8 +7,8 @@ namespace TestManagementCore.ViewModel
 {
     public class OptionViewModel
     {
-        public string OptionDescription { get; set; }
+        public string OptionDescription { get; set; } 
 
-        public bool? IsCorrect { get; set; }
+        public bool? IsCorrect { get; set; } 
     }
 }

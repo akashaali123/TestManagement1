@@ -11,13 +11,22 @@ namespace TestManagementCore.RepositoryInterface
     {
         QuestionAndOptionViewModel Add(QuestionAndOptionViewModel model);
 
-        IEnumerable<QuestionAndOptionViewModel> GetAll();
+        public List<QuestionOptionByIdViewModel> GetAll();
 
         TblQuestion Delete(int id);
 
         QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,int id);
 
+        //public QuestionOptionByIdViewModel GetQuestionById(int id);
+
+        //public QuestionOptionByIdViewModel GetQuestionById(int id);
+
         public QuestionOptionByIdViewModel GetQuestionById(int id);
 
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId);
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId);
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number);
     }
 }

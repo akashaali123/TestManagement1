@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20200203043518_Add Table Logging.Designer.cs" />
     <Compile Remove="Migrations\20200218111937_add primary key in tblTestDetails.cs" />
     <Compile Remove="Migrations\20200218111937_add primary key in tblTestDetails.Designer.cs" />
+    <Compile Remove="Migrations\20200219104652_add categoryId in TblQuestion.cs" />
+    <Compile Remove="Migrations\20200219104652_add categoryId in TblQuestion.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
