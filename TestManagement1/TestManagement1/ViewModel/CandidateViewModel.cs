@@ -34,6 +34,10 @@ namespace TestManagement1.ViewModel
         [StringLength(250)]
         public string TechStack { get; set; }
 
+        public int categoryId { get; set; }
+
+        public int ExperienceLevelId { get; set; }
+
 
 
     }

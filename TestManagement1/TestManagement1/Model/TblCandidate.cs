@@ -52,6 +52,8 @@ namespace TestManagement1.Model
 
         public int? ExperienceLevelId { get; set; }
 
+        public int? CategoryId { get; set; }
+
 
 
     }

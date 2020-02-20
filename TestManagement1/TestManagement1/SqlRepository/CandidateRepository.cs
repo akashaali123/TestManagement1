@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
@@ -15,16 +20,25 @@ namespace TestManagement1.SqlRepository
     public class CandidateRepository :BaseRepository<CandidateRepository> ,ICandidate
     {
 
+
         //Make BaseRepository in which we initialize our logger as a generic and context class
         //So we avoid duplication
-
         //TestManagementContext _context;
-        //ILogger<SqlCandidateRepository> _logger;                                                      //Required For Get Session implementation in baseClass
-        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
+        //ILogger<SqlCandidateRepository> _logger; 
+        //Required For Get Session implementation in baseClass
+
+       
+        
+        
+        private readonly ApplicationSettings _appSettings;//For Jwt
+                                                                                                        //For jwt
+        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IOptions<ApplicationSettings> appSettings, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
         {
             //_logger = logger;
             //_context = context;
-           
+
+            _appSettings = appSettings.Value;//For jwt
+
         }
 
 
@@ -47,8 +61,8 @@ namespace TestManagement1.SqlRepository
                     Email=candidateModel.Email,
                     CurrentCompany=candidateModel.CurrentCompany,
                     TechStack=candidateModel.TechStack,
-                   
-                    
+                   CategoryId=candidateModel.categoryId,
+                    ExperienceLevelId = candidateModel.ExperienceLevelId,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
                     CreatedBy = sessionManager.getSession("userid"),
@@ -150,7 +164,9 @@ namespace TestManagement1.SqlRepository
                 LastName = candidateModel.LastName,
                 Email = candidateModel.Email,
                 CurrentCompany = candidateModel.CurrentCompany,
-                TechStack = candidateModel.CurrentCompany,
+                //TechStack = candidateModel.CurrentCompany,
+                CategoryId = candidateModel.categoryId,
+                ExperienceLevelId = candidateModel.ExperienceLevelId,
                 CreatedDate = DateTime.Now,
                 IsActive = true,
                 CreatedBy = sessionManager.getSession("userid")
@@ -174,9 +190,59 @@ namespace TestManagement1.SqlRepository
         //    candidateChanges.FirstName = candidate.FirstName;
         //    candidateChanges.LastName = candidate.LastName;
         //    candidateChanges.Email = candidate.Email;
-             
+
 
         //}
+
+        public  object JwtForCandidate(int candidateId)
+        {
+            try
+            {
+                var candidate = _context.TblCandidate.Find(candidateId);
+                if (candidate != null)
+                {
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                           {
+                                new Claim("role", "candidate"),//We access this userID in UserProfile Controller
+                                 new Claim("candidateid", candidate.CandidateId.ToString())
+
+
+                           }),
+
+                        Expires = DateTime.UtcNow.AddHours(5),
+
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return token;
+
+                }
+                else
+                {
+                    return new { message = "Invalid Candidate" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate JwtForCandidate Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+
+        
+        }
+
+
+
+
+
     }
 
     

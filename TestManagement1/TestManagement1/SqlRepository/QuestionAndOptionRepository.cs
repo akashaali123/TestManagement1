@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
+using TestManagementCore.Extension;//For Shuffling
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
 
@@ -89,16 +90,17 @@ namespace TestManagementCore.SqlRepository
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//Object of vm
 
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();//all Option regarding their Question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();//all Option regarding their Question
 
-                    model.question = item;// Question set to model question item have current iterate question
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;// Question set to model question item have current iterate question
 
                     model.option = option;//Option set in model option
 
                     vmList.Add(model);//add model in list         
 
                 }
-
+               // vmList.Shuffle(); For Shuffling
                 return vmList;
             }
             catch (Exception ex)
@@ -107,15 +109,15 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in QuestionAndOptionRepository  GetAll Methode in Sql Repository" + ex);
 
                 return null;
-            }          
-           
-           
+            }
+
+
         }
 
-        
-        
-        
-        
+
+
+
+
         public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
         {
             try
@@ -128,6 +130,8 @@ namespace TestManagementCore.SqlRepository
                     questionChanges.Type = questionAndOptionViewModel.question.Type;
                     questionChanges.Time = questionAndOptionViewModel.question.Time;
                     questionChanges.IsActive = questionAndOptionViewModel.question.IsActive;
+                    questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
+                    questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
 
                 }
                 var question = _context.TblQuestion.Attach(questionChanges);
@@ -168,14 +172,19 @@ namespace TestManagementCore.SqlRepository
         {
             try
             {
-                var question = _context.TblQuestion.Find(id);//get Question
+                //var question = _context.TblQuestion.Find(id);//get Question
 
-                var options = _context.TblOption.Where(x => x.QuestionId == id).ToList();//get option assign to option
+                var question = _context.TblQuestion.Where(e=>e.QuestionId == id).Select(x=> new { x.Description,x.QuestionId}).SingleOrDefault();
+
+                var options = _context.TblOption.Where(x => x.QuestionId == id).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();//get option assign to option
 
                 QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
-
-                model.question = question;//assign question in vm question 
+                model.questionId = question.QuestionId;
+                model.question= question.Description;//assign question in vm question 
+                
                 model.option = options;//assign option in vm option
+                
+               
 
                 return model;
             }
@@ -195,12 +204,13 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId).Select(x=>new {x.QuestionId,x.Description }).ToList();
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
-                    model.question = item;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
@@ -216,18 +226,19 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId,int experienceLevelId)
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
         {
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId==experienceLevelId).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Select(x=> new {x.Description,x.QuestionId }).ToList();
 
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
-                    model.question = item;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
@@ -242,22 +253,24 @@ namespace TestManagementCore.SqlRepository
             }
         }
 
-        
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId,int number)
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
         {
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Take(number).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Select(x=>new {x.QuestionId,x.Description }).Take(number).ToList();
 
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
-                    model.question = item;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).ToList();
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
+                
                 return questionList;
             }
             catch (Exception ex)
@@ -268,6 +281,41 @@ namespace TestManagementCore.SqlRepository
                 return null;
             }
         }
+
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,  int number)
+        {
+            try
+            {
+
+                var candidate = _context.TblCandidate.Where(e => e.CandidateId == candidateId).Select(x=> new {x.CategoryId,x.ExperienceLevelId }).SingleOrDefault();
+                int? categoryId = candidate.CategoryId;
+                int? experienceLevelId = candidate.ExperienceLevelId;
+                var questionList = new List<QuestionOptionByIdViewModel>();//For returning
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId && e.IsActive == true).Select(x => new { x.QuestionId, x.Description }).Take(number).ToList();
+
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;//item contain the iterated question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel {optionId =x.OptionId,option=x.OptionDescription}).ToList();
+                    model.option = option;//set list of option in vm model option list
+                    questionList.Add(model);
+                }
+
+                questionList.Shuffle();
+                return questionList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository GetQuestionByCategory Methode in Sql Repository" + ex);
+
+                return null;
+            }
+        }
+
 
 
 

@@ -98,5 +98,21 @@ namespace TestManagement1.Presenter
         }
 
 
+        public object JwtForCandidate(int candidateId)
+        {
+            try
+            {
+                return _repository.JwtForCandidate(candidateId);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate JwtForCandidate Methode in CandidatePresenter" + ex);
+                return null;
+            }
+            
+        }
+
+
     }
 }

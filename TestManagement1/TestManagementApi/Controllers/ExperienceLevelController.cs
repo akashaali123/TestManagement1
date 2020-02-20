@@ -42,49 +42,11 @@ namespace TestManagementApi.Controllers
         //POST : api/ExperienceLevel/create
         public IActionResult Add(ExperienceLevelViewModel experienceLevel)
         {
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
+            
+            var experience = exP.Add(experienceLevel);
+            return helperMethode(experience, "experience");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
 
-                var experience = exP.Add(experienceLevel);
-
-                if (experience != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("ExperienceLevel", experience);
-
-                   
-                    // Return Data 
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "ExperienceLevel Created", data);                   
-                }
-                else
-                {
-                    // Error Returned
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-                  
-                }
-                // Clear
-
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-               
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-            }
-            // Function Ended
         }
         #endregion
 
@@ -99,49 +61,10 @@ namespace TestManagementApi.Controllers
         //GET : api/ExperienceLevel/getall
         public IActionResult GetAll()
         {
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                var experience = exP.GetAll();
-                if (experience.Count() != 0)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("experience", experience);
-
-                    
-                    
-                    // Return Data 
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "All Experience Level", data);
-                                                                                              
-                }
-                else
-                {
-                    // Error Returned
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "No Record Found", data);                 
-                }
-                //Clear
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-                
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-               
-            }
-            //Function Ended
+            
+            var experience = exP.GetAll();
+            return helperMethode(experience, "experiences");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
         }
         #endregion
 
@@ -155,47 +78,10 @@ namespace TestManagementApi.Controllers
         //DELETE : api/ExperienceLevel/Delete
         public IActionResult Delete(int id)
         {
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                var experience = exP.Delete(id);
-
-                if (experience != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("experience", experience);
-
-                    // Return Data 
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "Deleted", data);
-                }
-                else
-                {
-                    // Error Returned
-                   
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-
-                }
-                //clear
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-                
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-            }
-            // Function Ended
+           
+            var experience = exP.Delete(id);
+            return helperMethode(experience, "experience");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
 
         }
         #endregion
@@ -204,7 +90,7 @@ namespace TestManagementApi.Controllers
 
 
 
-       
+
 
 
 

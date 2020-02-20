@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestManagementCore.Extension
+namespace TestManagementCore.RepositoryInterface
 {
-    public class MyExtensions
+    public interface ITestResult
     {
     }
 }

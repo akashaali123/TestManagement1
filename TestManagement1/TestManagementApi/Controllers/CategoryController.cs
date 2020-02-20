@@ -15,8 +15,8 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Roles = "SuperAdmin")]
-    [Authorize]
+   // [Authorize(Roles = "SuperAdmin")]
+   [Authorize]
     public class CategoryController : BaseController<CategoryPresenter>
     {
 
@@ -40,51 +40,13 @@ namespace TestManagementApi.Controllers
         //POST : api/Category/create
         public IActionResult Add(CategoryViewModel category)
         {
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
+             
 
-                var model = cp.Add(category);
+            var model = cp.Add(category);
+            
+            return helperMethode(model, "category");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
 
-                if (model != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("category", model);
-
-                    // Return Data 
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "Category Created", data);
-
-                }
-                else
-                {
-                    
-                    // Error Returned
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-
-                }
-
-                //Clear
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-               
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-
-            }
-            //Function Ended                                     
         }
         #endregion
 
@@ -96,48 +58,10 @@ namespace TestManagementApi.Controllers
         //GET : api/Category/getall
         public IActionResult GetAll()
         {
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                var category = cp.GetAllCategory();
-
-                if (category != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("category", category);
-
-                    // Return Data 
-                  
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "All Category", data);
-
-
-                }
-                else
-                {
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-
-                }
-                //clear
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-                
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-
-            }
-            //Fuction Ended
+           
+            var category = cp.GetAllCategory();
+            return helperMethode(category, "categories");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
         }
         #endregion
 
@@ -151,47 +75,10 @@ namespace TestManagementApi.Controllers
         public IActionResult Delete(int id)
         {
 
-            try
-            {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                var category = cp.Delete(id);
-                if (category != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add("category", category);
-
-                    // Return Data 
-                   
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, "Category deleted", data);
-
-                }
-                else
-                {
-                    // Error Returned
-                    
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-                }
-                //Clear
-            }
-            catch (Exception ex)
-            {
-                // Exception thrown
-                Dictionary<string, object> data = new Dictionary<string, object>();
-
-                // Add the data in the JSON Data field below
-                data.Add("exception", ex);
-
-                // Return Exception
-               
-                //MyReturnMethode Return the data in Ok result its implementation in base controller
-                return MyReturnMethode(false, StatusCodes.Status502BadGateway, "Exception Found", data);
-
-            }
-            //Function Ended
+            
+            var category = cp.Delete(id);
+            return helperMethode(category, "category");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
 
         }
         #endregion

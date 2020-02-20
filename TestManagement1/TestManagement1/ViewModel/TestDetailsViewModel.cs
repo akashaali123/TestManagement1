@@ -14,9 +14,9 @@ namespace TestManagementCore.ViewModel
         public int Candidateid { get; set; }
         public int? QuestionId { get; set; }
 
-        public int? SelectedOptionId { get; set; }
+        public string SelectedOptionId { get; set; }
 
-        public int? CorrectOptionId { get; set; }
+        //public int[] CorrectOptionId { get; set; }
 
         [DataType(DataType.Time)]
         public DateTime? AttemptedInDuration { get; set; }

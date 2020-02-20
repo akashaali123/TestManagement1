@@ -17,9 +17,7 @@ namespace TestManagementCore.RepositoryInterface
 
         QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,int id);
 
-        //public QuestionOptionByIdViewModel GetQuestionById(int id);
-
-        //public QuestionOptionByIdViewModel GetQuestionById(int id);
+        
 
         public QuestionOptionByIdViewModel GetQuestionById(int id);
 
@@ -28,5 +26,11 @@ namespace TestManagementCore.RepositoryInterface
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId);
 
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number);
+
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number);
+
+
+
     }
 }

@@ -92,8 +92,9 @@ namespace TestManagementCore.Presenter
                 return null;
 
             }
-            
         }
+
+        
         public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
         {
             try
@@ -106,19 +107,54 @@ namespace TestManagementCore.Presenter
                 _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
                 return null;
             }
-           
+
         }
 
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
         {
-            return _repository.GetQuestionByCategoryAndExperience(categoryId, experienceLevelId);
+            try
+            {
+                return _repository.GetQuestionByCategoryAndExperience(categoryId, experienceLevelId);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in GetQuestionByCategoryAndExperience GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+            
         }
 
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
         {
-            return _repository.GetQuestionByCategoryAndExperienceAndNo(categoryId, experienceLevelId,number);
+            try
+            {
+                return _repository.GetQuestionByCategoryAndExperienceAndNo(categoryId, experienceLevelId, number);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in GetQuestionByCategoryAndExperienceAndNo GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                return null;
+
+            }
+           
         }
 
+
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number)
+        {
+            try
+            {
+                return _repository.GetQuestionByCategoryAndExperienceAndNumberAndShuffling(candidateId, number);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in GetQuestionByCategoryAndExperienceAndNumberAndShuffling GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+
+        }
 
     }
 }
