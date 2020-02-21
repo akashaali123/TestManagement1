@@ -59,6 +59,7 @@ namespace TestManagement1
             services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
             services.AddScoped<IQuestionAndOption,QuestionAndOptionRepository>();
             services.AddScoped<ITestDetails, TestDetailsRepository>();
+            services.AddScoped<ITestResult, TestResultRepository>();
 
 
 

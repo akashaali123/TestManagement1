@@ -12,6 +12,8 @@
     <Compile Remove="Migrations\20200218111937_add primary key in tblTestDetails.Designer.cs" />
     <Compile Remove="Migrations\20200219104652_add categoryId in TblQuestion.cs" />
     <Compile Remove="Migrations\20200219104652_add categoryId in TblQuestion.Designer.cs" />
+    <Compile Remove="Migrations\20200221104210_change data type DateTime to Date of createdDate in TblTest.cs" />
+    <Compile Remove="Migrations\20200221104210_change data type DateTime to Date of createdDate in TblTest.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

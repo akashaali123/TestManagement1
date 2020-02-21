@@ -8,38 +8,32 @@ namespace TestManagementCore.ViewModel
 {
     public class TestResultViewModel
     {
-       
+        public int candidateId { get; set; }
+        public string candidateName { get; set; }
+        public string category { get; set; }
 
-        public int? CandidateId { get; set; }
-
-        public int? CategoryId { get; set; }
-
-        public int? ExpLevelId { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? TestDate { get; set; }
+        public string experienceLevel { get; set; }
 
 
-        [StringLength(500)]
-        public string TestStatus { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? testDate { get; set; }
 
-        public int? TotalQuestion { get; set; }
+        public string testStatus { get; set; }
 
-        public int? AttemptedQuestion { get; set; }
+        public int? totalQuestion { get; set; }
 
-        public float? Percentage { get; set; }
+        public int? attemptedQuestion { get; set; }
 
-        public int? CorrectAnswer { get; set; }
+        public int? correctAnswer { get; set; }
 
-        public int? WrongAnswer { get; set; }
+        public int? wrongQuestion { get; set; }
 
-        public int? QuestionSkipped { get; set; }
+        public int? skippedQuestion { get; set; }
+
+        public double? percentage { get; set; }
+
 
         [DataType(DataType.Time)]
         public DateTime? Duration { get; set; }
-
-        public bool? IsActive { get; set; }
-
-       
     }
 }

@@ -98,11 +98,11 @@ namespace TestManagement1.Presenter
         }
 
 
-        public object JwtForCandidate(int candidateId)
+        public object JwtForCandidate(int candidateId, int numberOfQuestion)
         {
             try
             {
-                return _repository.JwtForCandidate(candidateId);
+                return _repository.JwtForCandidate(candidateId,numberOfQuestion);
             }
             catch (Exception ex)
             {

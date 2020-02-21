@@ -54,6 +54,8 @@ namespace TestManagementApi
             services.AddScoped<IExperienceLevel, ExperienceLevelRepository>();
             services.AddScoped<IQuestionAndOption, QuestionAndOptionRepository>();
             services.AddScoped<ITestDetails, TestDetailsRepository>();
+            services.AddScoped<ITestResult, TestResultRepository>();
+
 
 
             services.AddIdentity<TblUser, IdentityRole>()

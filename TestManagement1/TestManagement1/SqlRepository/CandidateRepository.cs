@@ -194,7 +194,7 @@ namespace TestManagement1.SqlRepository
 
         //}
 
-        public  object JwtForCandidate(int candidateId)
+        public  object JwtForCandidate(int candidateId,int numberOfQuestion)
         {
             try
             {
@@ -206,7 +206,8 @@ namespace TestManagement1.SqlRepository
                         Subject = new ClaimsIdentity(new Claim[]
                            {
                                 new Claim("role", "candidate"),//We access this userID in UserProfile Controller
-                                 new Claim("candidateid", candidate.CandidateId.ToString())
+                                 new Claim("candidateid", candidate.CandidateId.ToString()),
+                                 new Claim("number",numberOfQuestion.ToString())//sending no of question in jwt which is used to get test question
 
 
                            }),
@@ -225,7 +226,7 @@ namespace TestManagement1.SqlRepository
                 }
                 else
                 {
-                    return new { message = "Invalid Candidate" };
+                    return new { message = "Invalid Candidate" +candidateId };
                 }
             }
             catch (Exception ex)

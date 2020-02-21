@@ -111,9 +111,9 @@ namespace TestManagementApi.Controllers
 
         [HttpPost]
         [Route("/candidate/generatetest")]
-        public IActionResult JwtForCandidate(int candidateId)
+        public IActionResult JwtForCandidate(int candidateId,int numberOfQuestion)
         {
-            var jwt = cp.JwtForCandidate(candidateId);
+            var jwt = cp.JwtForCandidate(candidateId, numberOfQuestion);
             return helperMethode(jwt,"jwttoken");
         }
 

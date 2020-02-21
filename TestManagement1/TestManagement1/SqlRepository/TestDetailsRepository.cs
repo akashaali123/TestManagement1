@@ -38,7 +38,7 @@ namespace TestManagementCore.SqlRepository
             
             TblTestDetails testDetails = new TblTestDetails
             {
-                TestId = model.TestId,
+               // TestId = model.TestId,
                 CandidateId = model.Candidateid,
                 QuestionId = model.QuestionId,
                 SelectedOptionId = model.SelectedOptionId,

@@ -169,7 +169,7 @@ namespace TestManagementApi.Controllers
 
 
         #region Get Question By Shuffling
-        [HttpGet]
+        [HttpPost]
         [Route("/question/getbyshuffle")]
         public IActionResult GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number)
         {

@@ -22,6 +22,7 @@ namespace TestManagement1.Model
         public int? ExpLevelId { get; set; }
 
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? TestDate { get; set; }
 
 
@@ -32,7 +33,7 @@ namespace TestManagement1.Model
 
         public int? AttemptedQuestion { get; set; }
 
-        public float? Percentage { get; set; }
+        public double? Percentage { get; set; }
 
         public int? CorrectAnswer { get; set; }
 
@@ -47,8 +48,8 @@ namespace TestManagement1.Model
 
         public string CreatedBy { get; set; }
 
-
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime? CreatedDate { get; set; }
 
         public string UpdatedBy { get; set; }
