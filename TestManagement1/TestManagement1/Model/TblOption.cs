@@ -24,7 +24,7 @@ namespace TestManagement1.Model
 
         public int? QuestionId { get; set; }
 
-
+        
         [DataType(DataType.Time)]
         public DateTime? Duration { get; set; }
 
@@ -33,13 +33,13 @@ namespace TestManagement1.Model
 
         public string CreatedBy { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
         public DateTime? CreatedDate { get; set; }
 
         public string UpdatedBy { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
         public DateTime? UpdatedDate { get; set; }
     }

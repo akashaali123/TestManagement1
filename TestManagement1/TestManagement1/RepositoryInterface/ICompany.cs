@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestManagement1.Model;
-using TestManagementCore.ViewModel;
+using TestManagementCore.Model;
 
 namespace TestManagementCore.RepositoryInterface
 {
-    public interface ITestDetails
+    public interface ICompany
     {
-        public bool Add(TestDetailsViewModel model);
 
+        public IEnumerable<TblCompany> GetAllCompany();
     }
 }

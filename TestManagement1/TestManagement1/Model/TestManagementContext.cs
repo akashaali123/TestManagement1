@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestManagementCore.Model;
 using TestManagementCore.StoredProcedure;
 
 namespace TestManagement1.Model
@@ -39,6 +40,8 @@ namespace TestManagement1.Model
 
         public DbSet<TblLogging> TblLogging { get; set; }
 
+
+        public DbSet<TblCompany> TblCompany { get; set; }
 
        // public virtual DbSet<RetriveQuestionAndOptionById> RetriveQuestionAndOptionById { get; set; } //For sp no need to run migration
 

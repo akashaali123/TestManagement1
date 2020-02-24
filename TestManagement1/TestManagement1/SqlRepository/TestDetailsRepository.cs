@@ -18,42 +18,64 @@ namespace TestManagementCore.SqlRepository
         {
 
         }
-        public TblTestDetails Add(TestDetailsViewModel model)
+        public bool Add(TestDetailsViewModel model)
         {
-            //get correct option Id of attempted question and save in array
-            var correctoption = _context.TblOption.Where(e => e.QuestionId == model.QuestionId && e.IsCorrect == true).Select(x=>x.OptionId).ToArray();
-
-            
-            //Convert correctOption Array into , separated string
-            var correctOptionString = string.Join(",",correctoption);
-
-            //int[] myArray = Array.ConvertAll(correctOptionString.Split(','), s => int.Parse(s));
-            //int[] myArray2 = Array.ConvertAll(model.SelectedOptionId.Split(','), s => int.Parse(s));
-
-            //if (myArray.ItemsEqual(myArray2))
-            //{
-
-            //}
-            
-            
-            TblTestDetails testDetails = new TblTestDetails
+            try
             {
-               // TestId = model.TestId,
-                CandidateId = model.Candidateid,
-                QuestionId = model.QuestionId,
-                SelectedOptionId = model.SelectedOptionId,
-                CorrectOptionId = correctOptionString,
-                AttemptedInDuration = model.AttemptedInDuration,
-                IsActive = model.IsActive
+                //get correct option Id of attempted question and save in array
+                var correctoption = _context.TblOption.Where(e => e.QuestionId == model.QuestionId && e.IsCorrect == true)
+                    .Select(x => x.OptionId)
+                    .ToArray();
 
 
-            };
+                //Convert correctOption Array into , separated string
+                var correctOptionString = string.Join(",", correctoption);
 
-            //int[] myArray = StringToIntArray(myNumbers);
+                //int[] myArray = Array.ConvertAll(correctOptionString.Split(','), s => int.Parse(s));
+                //int[] myArray2 = Array.ConvertAll(model.SelectedOptionId.Split(','), s => int.Parse(s));
 
-            _context.TblTestDetails.Add(testDetails);
-            _context.SaveChanges();
-            return testDetails;
+                //if (myArray.ItemsEqual(myArray2))
+                //{
+
+                //}
+
+
+                TblTestDetails testDetails = new TblTestDetails
+                {
+                    // TestId = model.TestId,
+                    CandidateId = model.Candidateid,
+                    QuestionId = model.QuestionId,
+                    SelectedOptionId = model.SelectedOptionId,
+                    CorrectOptionId = correctOptionString,
+                    AttemptedInDuration = model.AttemptedInDuration,
+                    IsActive = model.IsActive,
+
+
+
+
+                };
+
+                //int[] myArray = StringToIntArray(myNumbers);
+
+                _context.TblTestDetails.Add(testDetails);
+               int count =  _context.SaveChanges();
+                if (count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestDetailsRepository Add Methode in Sql Repository" + ex);
+
+                return false;
+            }
+            
 
         }
     }

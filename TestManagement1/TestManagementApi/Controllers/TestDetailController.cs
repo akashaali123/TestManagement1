@@ -27,7 +27,8 @@ namespace TestManagementApi.Controllers
         [Route("/testdetail/create")]
         public IActionResult Add(TestDetailsViewModel model)
         {
-            return Ok(detailPresenter.Add(model));
+            var test = detailPresenter.Add(model);
+            return helperMethode(test,"test");
         }
 
     }

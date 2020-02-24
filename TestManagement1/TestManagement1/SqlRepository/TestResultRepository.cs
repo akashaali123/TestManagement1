@@ -37,7 +37,9 @@ namespace TestManagementCore.SqlRepository
                 double roundof = 0;//For round Of percentage
 
                 //For avoid the duplicate Record of candidate
-               int checkCandidate =  _context.TblTest.Where(e => e.CandidateId == candidateId).Select(x=>x.CandidateId).Count();
+               int checkCandidate =  _context.TblTest.Where(e => e.CandidateId == candidateId)
+                    .Select(x=>x.CandidateId)
+                    .Count();
 
                 //If test Not Found in TblTest than added 
                 if (checkCandidate == 0) 
@@ -46,7 +48,13 @@ namespace TestManagementCore.SqlRepository
                     if (candidate != null)//If candidate not register so we did'nt save his result
                     {
                         //get their data of test Table
-                        var test = _context.TblTestDetails.Where(e => e.CandidateId == candidateId).Select(x => new { x.SelectedOptionId, x.CorrectOptionId, x.CandidateId });
+                        var test = _context.TblTestDetails.Where(e => e.CandidateId == candidateId)
+                            .Select(x => new 
+                            {
+                                x.SelectedOptionId,
+                                x.CorrectOptionId,
+                                x.CandidateId 
+                            });
 
                         foreach (var item in test)
                         {
@@ -173,49 +181,36 @@ namespace TestManagementCore.SqlRepository
         }
 
        
-        
-        
-        
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <returns></returns>
         public List<TestResultViewModel> DisplayResultAllCandidate()
         {
-
-
             try
             {
-                var result = new List<TestResultViewModel>();
+
+                var test = _context.TblTest 
+                    .Select(x => new TestResultMapModel//select statement give anonyms type so we map it in TestResultMapModel
+                    {                                  //which is pass as a parameter in helperMethode which implementation is below
+                        candidateId = x.CandidateId,
+                        CategoryId=x.CategoryId,
+                        ExpLevelId=x.ExpLevelId,
+                        testDate=x.TestDate,
+                        testStatus=x.TestStatus,
+                        totalQuestion=x.TotalQuestion,
+                        correctAnswer=x.CorrectAnswer,
+                        wrongQuestion=x.WrongAnswer,
+                        skippedQuestion=x.QuestionSkipped,
+                        attemptedQuestion=x.AttemptedQuestion,
+                        percentage=x.Percentage,
+                        Duration=x.Duration
+                    })
+                    .ToList();
 
 
-
-                var test = _context.TblTest.Select(x => new { x.CandidateId, x.CategoryId, x.ExpLevelId, x.TestDate, x.TestStatus, x.TotalQuestion, x.CorrectAnswer, x.WrongAnswer, x.QuestionSkipped, x.AttemptedQuestion, x.Percentage, x.Duration }).ToList();
-
-                foreach (var item in test)
-                {
-                    TestResultViewModel model = new TestResultViewModel();
-
-                    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.CandidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
-                    model.candidateName = candidate.FirstName;
-                    model.candidateId = candidate.CandidateId;
-
-                    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
-                    model.category = categoryName;
-
-                    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
-                    model.experienceLevel = experience;
-
-                    model.testDate = item.TestDate;
-                    model.testStatus = item.TestStatus;
-                    model.totalQuestion = item.TotalQuestion;
-                    model.attemptedQuestion = item.AttemptedQuestion;
-                    model.skippedQuestion = item.QuestionSkipped;
-                    model.wrongQuestion = item.WrongAnswer;
-                    model.correctAnswer = item.CorrectAnswer;
-                    model.percentage = item.Percentage;
-                    model.Duration = item.Duration;
-                    result.Add(model);
-
-
-                }
-                return result;
+                return helperMethode(test);
+                
             }
             catch (Exception ex)
             {
@@ -223,31 +218,66 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultAllCandidate Methode in Sql Repository" + ex);
                  return null;
             }
-            
-           
+                
 
         }
 
+        
+        
         public TestResultViewModel DisplayResultcandidateById(int candidateId)
         {
 
             try
             {
-                var test = _context.TblTest.Where(e => e.CandidateId == candidateId).Select(x => new { x.CandidateId, x.CategoryId, x.ExpLevelId, x.TestDate, x.TestStatus, x.TotalQuestion, x.CorrectAnswer, x.WrongAnswer, x.QuestionSkipped, x.AttemptedQuestion, x.Percentage, x.Duration }).SingleOrDefault();
+                var test = _context.TblTest.Where(e => e.CandidateId == candidateId)
+                    .Select(x => new 
+                    {
+                        x.CandidateId,
+                        x.CategoryId,
+                        x.ExpLevelId,
+                        x.TestDate,
+                        x.TestStatus,
+                        x.TotalQuestion,
+                        x.CorrectAnswer,
+                        x.WrongAnswer,
+                        x.QuestionSkipped, 
+                        x.AttemptedQuestion,
+                        x.Percentage,
+                        x.Duration 
+                    })
+                    .SingleOrDefault();
 
 
                 TestResultViewModel model = new TestResultViewModel();
 
-                var candidate = _context.TblCandidate.Where(e => e.CandidateId == test.CandidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
+                var candidate = _context.TblCandidate.Where(e => e.CandidateId == test.CandidateId)
+                    .Select(x => new
+                    { 
+                        x.FirstName,
+                        x.CandidateId 
+                    })
+                    .SingleOrDefault();
+               
+                
                 model.candidateName = candidate.FirstName;
                 model.candidateId = candidate.CandidateId;
 
-                string categoryName = _context.TblCategory.Where(e => e.CategoryId == test.CategoryId).Select(x => x.Name).SingleOrDefault();
+                string categoryName = _context.TblCategory.Where(e => e.CategoryId == test.CategoryId)
+                    .Select(x => x.Name)
+                    .SingleOrDefault();
+               
+                
                 model.category = categoryName;
 
-                string experience = _context.TblExperienceLevel.Where(e => e.Id == test.ExpLevelId).Select(x => x.Name).SingleOrDefault();
+                string experience = _context.TblExperienceLevel.Where(e => e.Id == test.ExpLevelId)
+                    .Select(x => x.Name)
+                    .SingleOrDefault();
+                
+                
                 model.experienceLevel = experience;
 
+                
+                
                 model.testDate = test.TestDate;
                 model.testStatus = test.TestStatus;
                 model.totalQuestion = test.TotalQuestion;
@@ -279,41 +309,31 @@ namespace TestManagementCore.SqlRepository
         {
             try
             {
-                var result = new List<TestResultViewModel>();
+                                                                                                                                 //Map anonyms methode to TestResultMap which is pass in parameter                              
                 //Use For Between data
-                var test = _context.TblTest.Where(e => e.TestDate >= fromDate).Where(e => e.TestDate <= toDate).Select(x => new { x.CandidateId, x.CategoryId, x.ExpLevelId, x.TestDate, x.TestStatus, x.TotalQuestion, x.CorrectAnswer, x.WrongAnswer, x.QuestionSkipped, x.AttemptedQuestion, x.Percentage, x.Duration }).ToList();
-
-                foreach (var item in test)
-                {
-                    TestResultViewModel model = new TestResultViewModel();
-
-                    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.CandidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
-                    model.candidateName = candidate.FirstName;
-                    model.candidateId = candidate.CandidateId;
-
-                    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
-                    model.category = categoryName;
-
-                    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
-                    model.experienceLevel = experience;
-
-                    model.testDate = item.TestDate;
-                    model.testStatus = item.TestStatus;
-                    model.totalQuestion = item.TotalQuestion;
-                    model.attemptedQuestion = item.AttemptedQuestion;
-                    model.skippedQuestion = item.QuestionSkipped;
-                    model.wrongQuestion = item.WrongAnswer;
-                    model.correctAnswer = item.CorrectAnswer;
-                    model.percentage = item.Percentage;
-                    model.Duration = item.Duration;
-                    result.Add(model);
-                }
-
-
-
-
-
-                return result;
+                var test = _context.TblTest
+                    .Where(e => e.TestDate >= fromDate)
+                    .Where(e => e.TestDate <= toDate).
+                    Select(x => 
+                    new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                    {
+                        candidateId = x.CandidateId,
+                        CategoryId = x.CategoryId,
+                        ExpLevelId = x.ExpLevelId,
+                        testDate = x.TestDate,
+                        testStatus = x.TestStatus,
+                        totalQuestion = x.TotalQuestion,
+                        correctAnswer = x.CorrectAnswer,
+                        wrongQuestion = x.WrongAnswer,
+                        skippedQuestion = x.QuestionSkipped,
+                        attemptedQuestion = x.AttemptedQuestion,
+                        percentage = x.Percentage,
+                        Duration = x.Duration
+                    })
+                    .ToList();
+                
+                return helperMethode(test);
+               
             }
             catch (Exception ex)
             {
@@ -324,6 +344,1016 @@ namespace TestManagementCore.SqlRepository
            
 
         }
+
+
+      
+        
+        
+        public List<TestResultViewModel> DisplayResultbyPercentage()
+        {
+            try
+            {
+                var test = _context.TblTest
+                               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                               {
+                                   candidateId = x.CandidateId,
+                                   CategoryId = x.CategoryId,
+                                   ExpLevelId = x.ExpLevelId,
+                                   testDate = x.TestDate,
+                                   testStatus = x.TestStatus,
+                                   totalQuestion = x.TotalQuestion,
+                                   correctAnswer = x.CorrectAnswer,
+                                   wrongQuestion = x.WrongAnswer,
+                                   skippedQuestion = x.QuestionSkipped,
+                                   attemptedQuestion = x.AttemptedQuestion,
+                                   percentage = x.Percentage,
+                                   Duration = x.Duration
+                               })
+                               .OrderByDescending(x => x.percentage).ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentage Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+            
+        }
+
+        public List<TestResultViewModel> DisplayResultbyPercentageAndCategory(int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId)
+               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+               {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .OrderByDescending(x => x.percentage).ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndCategory Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+        }
+
+        public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId,int experienceLevelId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceLevelId)
+               .Select(x => new TestResultMapModel//select statement give anonyms type so we map it in TestResultMapModel
+               {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .OrderByDescending(x => x.percentage).ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndCategoryAndExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyPercentageAndExperience(int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.ExpLevelId == experienceId)
+                               .Select(x => new TestResultMapModel//select statement give anonyms type so we map it in TestResultMapModel
+                               {
+                                   candidateId = x.CandidateId,
+                                   CategoryId = x.CategoryId,
+                                   ExpLevelId = x.ExpLevelId,
+                                   testDate = x.TestDate,
+                                   testStatus = x.TestStatus,
+                                   totalQuestion = x.TotalQuestion,
+                                   correctAnswer = x.CorrectAnswer,
+                                   wrongQuestion = x.WrongAnswer,
+                                   skippedQuestion = x.QuestionSkipped,
+                                   attemptedQuestion = x.AttemptedQuestion,
+                                   percentage = x.Percentage,
+                                   Duration = x.Duration
+                               })
+                               .OrderByDescending(x => x.percentage)
+                               .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyCategory(int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId)
+               .Select(x => new TestResultMapModel//select statement give anonyms type so we map it in TestResultMapModel
+               {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+            
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyExperience(int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.ExpLevelId == experienceId)
+               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+               {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+           
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId,int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceId)
+                               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                               {
+                                   candidateId = x.CandidateId,
+                                   CategoryId = x.CategoryId,
+                                   ExpLevelId = x.ExpLevelId,
+                                   testDate = x.TestDate,
+                                   testStatus = x.TestStatus,
+                                   totalQuestion = x.TotalQuestion,
+                                   correctAnswer = x.CorrectAnswer,
+                                   wrongQuestion = x.WrongAnswer,
+                                   skippedQuestion = x.QuestionSkipped,
+                                   attemptedQuestion = x.AttemptedQuestion,
+                                   percentage = x.Percentage,
+                                   Duration = x.Duration
+                               })
+                               .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyCategoryAndExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+            
+            
+            
+           
+           
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                var test = _context.TblTest
+                     .Where(e => e.CategoryId == categoryId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                     .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                     {
+                               candidateId = x.CandidateId,
+                               CategoryId = x.CategoryId,
+                               ExpLevelId = x.ExpLevelId,
+                               testDate = x.TestDate,
+                               testStatus = x.TestStatus,
+                               totalQuestion = x.TotalQuestion,
+                               correctAnswer = x.CorrectAnswer,
+                               wrongQuestion = x.WrongAnswer,
+                               skippedQuestion = x.QuestionSkipped,
+                               attemptedQuestion = x.AttemptedQuestion,
+                               percentage = x.Percentage,
+                               Duration = x.Duration
+                     })
+                     .ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyCategoryFromDate Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                var test = _context.TblTest
+               .Where(e => e.ExpLevelId == experienceId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .ToList();
+
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyExpFromDate Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                var test = _context.TblTest
+                     .Where(e => e.ExpLevelId == experienceId && e.CategoryId == categoryId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                     .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                     {
+                               candidateId = x.CandidateId,
+                               CategoryId = x.CategoryId,
+                               ExpLevelId = x.ExpLevelId,
+                               testDate = x.TestDate,
+                               testStatus = x.TestStatus,
+                               totalQuestion = x.TotalQuestion,
+                               correctAnswer = x.CorrectAnswer,
+                               wrongQuestion = x.WrongAnswer,
+                               skippedQuestion = x.QuestionSkipped,
+                               attemptedQuestion = x.AttemptedQuestion,
+                               percentage = x.Percentage,
+                               Duration = x.Duration
+                     })
+                     .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyCatAndExpFromDate Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+            
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTestStatus(string status)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatus Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+           
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status,int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.CategoryId == categoryId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusAndCat Methode in Sql Repository" + ex);
+                return null;
+
+            }
+            
+            
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status, int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusAndCat Methode in Sql Repository" + ex);
+                return null;
+
+            }  
+            
+            
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status, int experienceId,int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId && e.CategoryId == categoryId)
+                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                 {
+                     candidateId = x.CandidateId,
+                     CategoryId = x.CategoryId,
+                     ExpLevelId = x.ExpLevelId,
+                     testDate = x.TestDate,
+                     testStatus = x.TestStatus,
+                     totalQuestion = x.TotalQuestion,
+                     correctAnswer = x.CorrectAnswer,
+                     wrongQuestion = x.WrongAnswer,
+                     skippedQuestion = x.QuestionSkipped,
+                     attemptedQuestion = x.AttemptedQuestion,
+                     percentage = x.Percentage,
+                     Duration = x.Duration
+                 })
+                 .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusAndExpAndCat Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+           
+
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+              var test = _context.TblTest.Where(e => e.TestStatus == status && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                { 
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .ToList();
+            
+            
+            return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusFromDate Methode in Sql Repository" + ex);
+                return null;
+
+            }
+           
+           
+
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status,int categoryId, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.TestStatus == status && (e.TestDate >= fromDate && e.TestDate <= toDate))
+               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusandCatFromDate Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+           
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status, int categoryId,int experienceId, DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.TestStatus == status && e.ExpLevelId == experienceId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+               .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusandCatAndExpFromDate Methode in Sql Repository" + ex);
+                return null;
+
+            }
+           
+          
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10Percentage()
+        {
+
+            try
+            {
+                var test = _context.TblTest
+                .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .OrderByDescending(x => x.percentage)
+                .Take(10)
+                .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10Percentage Methode in Sql Repository" + ex);
+                return null;
+
+            }
+            
+           
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategory(int categoryId)
+        {
+            try
+            {
+             var test = _context.TblTest.Where(e => e.CategoryId == categoryId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                { 
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId, 
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate, 
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer, 
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration 
+                })
+                .OrderByDescending(x => x.percentage)
+                .Take(10)
+                .ToList();
+            
+            return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10PercentageAndCategory Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+           
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceLevelId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .OrderByDescending(x => x.percentage)
+                .Take(10)
+                .ToList();
+              return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10PercentageAndCategoryAndExperience Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+            
+            
+            
+            
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndExperience(int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.ExpLevelId == experienceId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .OrderByDescending(x => x.percentage)
+                .Take(10)
+                .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10PercentageAndExperience Methode in Sql Repository" + ex);
+                return null;
+
+            }
+            
+            
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatus(string status)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status)
+                .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .Take(10)
+                .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatus Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+           
+
+        }
+
+
+
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status, int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.CategoryId == categoryId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .Take(10)
+                .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndCat Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+            
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status, int experienceId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId)
+               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                   candidateId = x.CandidateId,
+                   CategoryId = x.CategoryId,
+                   ExpLevelId = x.ExpLevelId,
+                   testDate = x.TestDate,
+                   testStatus = x.TestStatus,
+                   totalQuestion = x.TotalQuestion,
+                   correctAnswer = x.CorrectAnswer,
+                   wrongQuestion = x.WrongAnswer,
+                   skippedQuestion = x.QuestionSkipped,
+                   attemptedQuestion = x.AttemptedQuestion,
+                   percentage = x.Percentage,
+                   Duration = x.Duration
+               })
+               .Take(10)
+               .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndExp Methode in Sql Repository" + ex);
+                return null;
+            }
+            
+           
+            
+
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        {
+            try
+            {
+                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId && e.CategoryId == categoryId)
+                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                {
+                    candidateId = x.CandidateId,
+                    CategoryId = x.CategoryId,
+                    ExpLevelId = x.ExpLevelId,
+                    testDate = x.TestDate,
+                    testStatus = x.TestStatus,
+                    totalQuestion = x.TotalQuestion,
+                    correctAnswer = x.CorrectAnswer,
+                    wrongQuestion = x.WrongAnswer,
+                    skippedQuestion = x.QuestionSkipped,
+                    attemptedQuestion = x.AttemptedQuestion,
+                    percentage = x.Percentage,
+                    Duration = x.Duration
+                })
+                .Take(10)
+                .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndExpAndCat Methode in Sql Repository" + ex);
+                return null;
+            }
+           
+          
+        }
+
+        //helper methode which is return List of query
+
+        //TestResultMapModel which is map during query 
+        public List<TestResultViewModel> helperMethode(List<TestResultMapModel> test)
+        {
+            var result = new List<TestResultViewModel>();
+          
+             
+            foreach (var item in test)
+            {
+                TestResultViewModel model = new TestResultViewModel();
+                
+                var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.candidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
+                model.candidateName = candidate.FirstName;
+                model.candidateId = candidate.CandidateId;
+
+                string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
+                model.category = categoryName;
+
+                string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
+                model.experienceLevel = experience;
+
+                model.testDate = item.testDate;
+                model.testStatus = item.testStatus;
+                model.totalQuestion = item.totalQuestion;
+                model.attemptedQuestion = item.attemptedQuestion;
+                model.skippedQuestion = item.skippedQuestion;
+                model.wrongQuestion = item.wrongQuestion;
+                model.correctAnswer = item.correctAnswer;
+                model.percentage = item.percentage;
+                model.Duration = item.Duration;
+                
+                result.Add(model);
+
+
+            }
+            return result;
+
+        }
+
+
+       //above function is replica of this code
+        
+        //var result = new List<TestResultViewModel>();
+        //var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId && e.CategoryId == categoryId).Select(x => new TestResultMapModel { candidateId = x.CandidateId, CategoryId = x.CategoryId, ExpLevelId = x.ExpLevelId, testDate = x.TestDate, testStatus = x.TestStatus, totalQuestion = x.TotalQuestion, correctAnswer = x.CorrectAnswer, wrongQuestion = x.WrongAnswer, skippedQuestion = x.QuestionSkipped, attemptedQuestion = x.AttemptedQuestion, percentage = x.Percentage, Duration = x.Duration }).Take(10).ToList();
+        //foreach (var item in test)
+        //{
+        //    TestResultViewModel model = new TestResultViewModel();
+
+        //    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.CandidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
+        //    model.candidateName = candidate.FirstName;
+        //    model.candidateId = candidate.CandidateId;
+
+        //    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
+        //    model.category = categoryName;
+
+        //    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
+        //    model.experienceLevel = experience;
+
+        //    model.testDate = item.TestDate;
+        //    model.testStatus = item.TestStatus;
+        //    model.totalQuestion = item.TotalQuestion;
+        //    model.attemptedQuestion = item.AttemptedQuestion;
+        //    model.skippedQuestion = item.QuestionSkipped;
+        //    model.wrongQuestion = item.WrongAnswer;
+        //    model.correctAnswer = item.CorrectAnswer;
+        //    model.percentage = item.Percentage;
+        //    model.Duration = item.Duration;
+        //    result.Add(model);
+
+
+        //}
+        //return result;
 
 
 

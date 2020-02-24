@@ -55,6 +55,7 @@ namespace TestManagementApi
             services.AddScoped<IQuestionAndOption, QuestionAndOptionRepository>();
             services.AddScoped<ITestDetails, TestDetailsRepository>();
             services.AddScoped<ITestResult, TestResultRepository>();
+            services.AddScoped<ICompany, CompanyRepository>();
 
 
 

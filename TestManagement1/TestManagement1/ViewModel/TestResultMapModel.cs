@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TestManagementCore.ViewModel
 {
-    public class TestResultViewModel
+    public class TestResultMapModel
     {
         public int? candidateId { get; set; }
 
-       // public int? CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
-        //public int? ExpLevelId { get; set; }
+        public int? ExpLevelId { get; set; }
         public string candidateName { get; set; }
         public string category { get; set; }
 
@@ -39,5 +39,6 @@ namespace TestManagementCore.ViewModel
 
         [DataType(DataType.Time)]
         public DateTime? Duration { get; set; }
+
     }
 }

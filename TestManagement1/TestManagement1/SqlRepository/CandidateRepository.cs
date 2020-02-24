@@ -61,9 +61,9 @@ namespace TestManagement1.SqlRepository
                     Email=candidateModel.Email,
                     CurrentCompany=candidateModel.CurrentCompany,
                     TechStack=candidateModel.TechStack,
-                   CategoryId=candidateModel.categoryId,
+                    CategoryId=candidateModel.categoryId,
                     ExperienceLevelId = candidateModel.ExperienceLevelId,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Today,
                     IsActive = true,
                     CreatedBy = sessionManager.getSession("userid"),
                 };
@@ -167,7 +167,7 @@ namespace TestManagement1.SqlRepository
                 //TechStack = candidateModel.CurrentCompany,
                 CategoryId = candidateModel.categoryId,
                 ExperienceLevelId = candidateModel.ExperienceLevelId,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.Today,
                 IsActive = true,
                 CreatedBy = sessionManager.getSession("userid")
 

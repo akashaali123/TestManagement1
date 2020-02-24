@@ -38,7 +38,7 @@ namespace TestManagement1.SqlRepository
                     MaxExp = experienceLevelModel.MaxExp,
                     IsActive = true,
                     CreatedBy =sessionManager.getSession("userid"),
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Today,
                     UpdatedBy = null,
                     UpdatedDate = null
                 };

@@ -60,6 +60,7 @@ namespace TestManagement1
             services.AddScoped<IQuestionAndOption,QuestionAndOptionRepository>();
             services.AddScoped<ITestDetails, TestDetailsRepository>();
             services.AddScoped<ITestResult, TestResultRepository>();
+            services.AddScoped<ICompany, CompanyRepository>();
 
 
 

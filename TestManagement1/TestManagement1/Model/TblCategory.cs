@@ -26,7 +26,7 @@ namespace TestManagement1.Model
 
         public string CreatedBy { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
         public DateTime? CreatedDate { get; set; }
 

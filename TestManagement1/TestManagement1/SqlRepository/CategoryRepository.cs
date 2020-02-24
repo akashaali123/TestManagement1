@@ -35,7 +35,7 @@ namespace TestManagement1.SqlRepository
                     Name = categoryModel.Name,
                     IsActive = true,
                     CreatedBy = sessionManager.getSession("userid"),
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Today
 
             };
 

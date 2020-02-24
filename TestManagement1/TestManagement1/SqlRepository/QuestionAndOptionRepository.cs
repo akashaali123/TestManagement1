@@ -122,7 +122,11 @@ namespace TestManagementCore.SqlRepository
         {
             try
             {
-                var questionChanges = _context.TblQuestion.Where(e => e.QuestionId == id).SingleOrDefault();
+                var questionChanges = _context.TblQuestion
+                    .Where(e => e.QuestionId == id)
+                    .SingleOrDefault();
+                
+                
                 if (questionChanges != null)
                 {
 
@@ -174,8 +178,15 @@ namespace TestManagementCore.SqlRepository
             {
                 //var question = _context.TblQuestion.Find(id);//get Question
 
-                var question = _context.TblQuestion.Where(e=>e.QuestionId == id).Select(x=> new { x.Description,x.QuestionId}).SingleOrDefault();
+                var question = _context.TblQuestion.Where(e=>e.QuestionId == id)
+                    .Select(x=> new 
+                    { 
+                        x.Description
+                        ,x.QuestionId
+                    })
+                    .SingleOrDefault();
 
+               
                 var options = _context.TblOption.Where(x => x.QuestionId == id).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();//get option assign to option
 
                 QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
@@ -204,7 +215,14 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId).Select(x=>new {x.QuestionId,x.Description }).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId)
+                    .Select(x=>new 
+                    {
+                        x.QuestionId,
+                        x.Description 
+                    })
+                    .ToList();
+                
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
@@ -231,7 +249,13 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Select(x=> new {x.Description,x.QuestionId }).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId)
+                    .Select(x=> new
+                    {
+                        x.Description,
+                        x.QuestionId
+                    })
+                    .ToList();
 
                 foreach (var item in question)
                 {
@@ -259,7 +283,14 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId).Select(x=>new {x.QuestionId,x.Description }).Take(number).ToList();
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId)
+                    .Select(x=>new 
+                    {
+                        x.QuestionId,
+                        x.Description 
+                    })
+                    .Take(number)
+                    .ToList();
 
                 foreach (var item in question)
                 {
@@ -288,7 +319,15 @@ namespace TestManagementCore.SqlRepository
             try
             {
 
-                var candidate = _context.TblCandidate.Where(e => e.CandidateId == candidateId).Select(x=> new {x.CategoryId,x.ExperienceLevelId }).SingleOrDefault();
+                var candidate = _context.TblCandidate.Where(e => e.CandidateId == candidateId)
+                    .Select(x=> new 
+                    {
+                        x.CategoryId,
+                        x.ExperienceLevelId 
+                    })
+                    .SingleOrDefault();
+               
+                
                 int? categoryId = candidate.CategoryId;
                 int? experienceLevelId = candidate.ExperienceLevelId;
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning

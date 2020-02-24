@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20200219104652_add categoryId in TblQuestion.Designer.cs" />
     <Compile Remove="Migrations\20200221104210_change data type DateTime to Date of createdDate in TblTest.cs" />
     <Compile Remove="Migrations\20200221104210_change data type DateTime to Date of createdDate in TblTest.Designer.cs" />
+    <Compile Remove="Migrations\20200224114821_Formatting Of date in all table.cs" />
+    <Compile Remove="Migrations\20200224114821_Formatting Of date in all table.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

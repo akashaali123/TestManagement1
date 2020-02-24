@@ -20,9 +20,20 @@ namespace TestManagementCore.Presenter
             _repository = repository;
         }
 
-        public TblTestDetails Add(TestDetailsViewModel model)
+        public bool Add(TestDetailsViewModel model)
         {
-            return _repository.Add(model);
+            try
+            {
+                return _repository.Add(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestDetailPresenter Add Methode in TestDetailPresenter" + ex);
+
+                return false ;
+
+            }
+            
         }
 
     }
