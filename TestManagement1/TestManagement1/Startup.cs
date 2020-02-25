@@ -61,7 +61,7 @@ namespace TestManagement1
             services.AddScoped<ITestDetails, TestDetailsRepository>();
             services.AddScoped<ITestResult, TestResultRepository>();
             services.AddScoped<ICompany, CompanyRepository>();
-
+            services.AddScoped<ITestResultByReviewer, TestResultByReviewerRepository>();
 
 
 
@@ -74,8 +74,14 @@ namespace TestManagement1
             //For Session Create of User id
 
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
-            services.AddSession();
-
+                                                  //services.AddSession();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.  
+                options.IdleTimeout = TimeSpan.FromHours(4);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
 
             services.AddControllers().AddNewtonsoftJson();

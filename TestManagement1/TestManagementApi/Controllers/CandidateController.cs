@@ -37,6 +37,47 @@ namespace TestManagementApi.Controllers
         }
 
 
+
+
+        /// <summary>
+        /// url : http://localhost:55377/candidate/create
+        /// 
+        /// Body
+        /// {
+        ///"FirstName":"aaaaaa",
+        ///"LastName":"bbbbb",
+        ///"Email":"aa@gmail.com",
+        ///"CurrentCompany":"aaaa",
+        ///"categoryId":22,
+        ///"ExperienceLevelId":21
+        ///}  
+        /// </summary>
+        /// <param name="candidate">CandidateViewModel</param>
+        /// <returns>
+        /// {
+        /// "success": true,
+        ///"status": 200,
+        ///"message": "candidate",
+        ///"data": {
+        /// "candidate": {
+        ///  "candidateId": 50,
+        ///"firstName": "aaaaaa",
+        ///"lastName": "bbbbb",
+        ///"email": "aa@gmail.com",
+        ///"currentCompany": "aaaa",
+        ///"techStack": null,
+        ///"isActive": true,
+        ///"vacancyId": null,
+        ///"createdBy": null,
+        ///"createdDate": "2020-02-25T00:00:00+05:00",
+        ///"experienceLevelId": 21,
+        ///"categoryId": 22
+        ///}
+        ///}
+        ///}
+        /// </returns>
+
+
         #region Candidate Create
         // [ModelStateValidationFilter]
         [HttpPost]
@@ -53,7 +94,34 @@ namespace TestManagementApi.Controllers
         }
         #endregion
 
-
+        /// <summary>
+        /// url: http://localhost:55377/candidate/getall
+        /// </summary>
+        /// <returns>
+        /// {
+        ///"success": true,
+        ///"status": 200,
+        ///"message": "candidates",
+        ///"data": {
+        ///"candidates": [
+        /// {
+        ///  "candidateId": 45,
+        ///"firstName": "Akasha ",
+        ///"lastName": "Nasir",
+        ///"email": "akashanasir@gmail.com",
+        ///"currentCompany": "Arpatech",
+        ///"techStack": null,
+        ///"isActive": true,
+        ///"vacancyId": null,
+        ///"createdBy": null,
+        ///"createdDate": "2020-02-24T00:00:00",
+        ///"experienceLevelId": 21,
+        ///"categoryId": 19
+        ///}
+        ///]
+        ///}
+        ///}
+        /// </returns>
 
         #region Candidate Get All
         [HttpGet]
@@ -73,7 +141,33 @@ namespace TestManagementApi.Controllers
 
 
 
-
+        /// <summary>
+        /// url : http://localhost:55377/candidate/delete?id=50
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// {
+        ///"success": true,
+        ///"status": 200,
+        ///"message": "candidate",
+        ///"data": {
+        /// "candidate": {
+        ///  "candidateId": 50,
+        ///"firstName": "aaaaaa",
+        ///"lastName": "bbbbb",
+        ///"email": "aa@gmail.com",
+        ///"currentCompany": "aaaa",
+        ///"techStack": null,
+        ///"isActive": true,
+        ///"vacancyId": null,
+        ///"createdBy": null,
+        ///"createdDate": "2020-02-25T00:00:00",
+        ///"experienceLevelId": 21,
+        ///"categoryId": 22
+        ///}
+        ///}
+        ///}
+        /// </returns>
 
         #region Candidate Delete
         [HttpDelete]
@@ -91,7 +185,31 @@ namespace TestManagementApi.Controllers
 
 
 
-
+        /// <summary>
+        /// url: http://localhost:55377/candidate/update
+        /// Body:
+        /// {
+        ///"CandidateId":41,
+        ///"FirstName":"aaaaaa",
+        ///"LastName":"bbbbb",
+        ///"Email":"aa@gmail.com",
+        ///"CurrentCompany":"aaaa",
+        ///"categoryId":20,
+        ///"experienceLevelId":21
+        ///}
+        /// </summary>
+        /// <param name="candidateChanges"></param>
+        /// <returns>
+        ///{
+        ///"CandidateId":41,
+        ///"FirstName":"aaaaaa",
+        ///"LastName":"bbbbb",
+        ///"Email":"aa@gmail.com",
+        ///"CurrentCompany":"aaaa",
+        ///"categoryId":20,
+        ///"experienceLevelId":21
+        ///}
+        /// </returns>
 
         #region Candidate Update
         [HttpPut]
@@ -108,7 +226,23 @@ namespace TestManagementApi.Controllers
         #endregion
 
 
-
+        /// <summary>
+        /// Url : http://localhost:55377/candidate/generatetest?candidateId=45&numberOfQuestion=1
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="candidateId"></param>
+        /// <param name="numberOfQuestion"></param>
+        /// <returns>
+        /// {
+        ///"success": true,
+        ///"status": 200,
+        ///"message": "jwttoken",
+        ///"data": {
+        /// "jwttoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiY2FuZGlkYXRlIiwiY2FuZGlkYXRlaWQiOiI0NSIsIm51bWJlciI6IjEiLCJuYmYiOjE1ODI2MDQ3MDIsImV4cCI6MTU4MjYyMjcwMiwiaWF0IjoxNTgyNjA0NzAyfQ.umslX50cMEkNscJCsG_5uBhoXmvocHWYERFG8YSMyyY"
+        ///}
+        ///}
+        /// </returns>
         [HttpPost]
         [Route("/candidate/generatetest")]
         public IActionResult JwtForCandidate(int candidateId,int numberOfQuestion)

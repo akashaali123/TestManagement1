@@ -13,7 +13,7 @@ namespace TestManagement1.Model
         public string JwtToken { get; set; }
 
 
-        public int? RoleId { get; set; }
+        public string RoleId { get; set; }
 
 
         public bool IsActive { get; set; }
@@ -25,6 +25,7 @@ namespace TestManagement1.Model
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
+        public String CategoryId { get; set; }
 
 
     }

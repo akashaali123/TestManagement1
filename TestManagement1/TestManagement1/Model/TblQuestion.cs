@@ -46,7 +46,7 @@ namespace TestManagement1.Model
 
         public int? ExperienceLevelId { get; set; }
 
-
+        public string Roleid { get; set; }
 
     }
 }

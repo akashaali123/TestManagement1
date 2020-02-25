@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestManagement1.Model;
 
 namespace TestManagement1.Migrations
 {
     [DbContext(typeof(TestManagementContext))]
-    partial class TestManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200225102041_add CategoryId in tblUser")]
+    partial class addCategoryIdintblUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -671,27 +673,6 @@ namespace TestManagement1.Migrations
                     b.HasKey("CompanyId");
 
                     b.ToTable("TblCompany");
-                });
-
-            modelBuilder.Entity("TestManagementCore.Model.TblVerifierCategoryAndRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TblVerifierCategoryAndRole");
                 });
 
             modelBuilder.Entity("TestManagement1.Model.TblUser", b =>

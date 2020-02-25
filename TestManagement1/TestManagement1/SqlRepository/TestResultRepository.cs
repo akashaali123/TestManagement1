@@ -222,8 +222,14 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        
-        
+
+       
+
+
+
+
+
+
         public TestResultViewModel DisplayResultcandidateById(int candidateId)
         {
 

@@ -15,6 +15,7 @@ namespace TestManagement1.SqlRepository
         protected readonly ILogger<T> _logger;
         
         //SessionManager Class Contain the Definition Of Set and get Session 
+      
         protected SessionManager sessionManager;//Obj Of the SessionManager
         public BaseRepository(TestManagementContext context, ILogger<T> logger, IHttpContextAccessor httpContextAccessor)
         {

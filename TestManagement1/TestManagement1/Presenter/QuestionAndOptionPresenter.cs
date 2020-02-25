@@ -28,7 +28,7 @@ namespace TestManagementCore.Presenter
             catch (Exception ex)
             {
 
-                _logger.LogError("Error in QuestionAndOptionPresenter Add Methode in ExperienceLevelPresenter" + ex);
+                _logger.LogError("Error in QuestionAndOptionPresenter Add Methode in QuestionAndOptionPresenter" + ex);
                 return null;
             }
            
@@ -42,7 +42,7 @@ namespace TestManagementCore.Presenter
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in QuestionAndOptionPresenter Delete Methode in ExperienceLevelPresenter" + ex);
+                _logger.LogError("Error in QuestionAndOptionPresenter Delete Methode in QuestionAndOptionPresenter" + ex);
                 return null;
 
             }
@@ -58,7 +58,7 @@ namespace TestManagementCore.Presenter
             catch (Exception ex)
             {
 
-                _logger.LogError("Error in QuestionAndOptionPresenter Update Methode in ExperienceLevelPresenter" + ex);
+                _logger.LogError("Error in QuestionAndOptionPresenter Update Methode in QuestionAndOptionPresenter" + ex);
                 return null;
             }
            
@@ -73,7 +73,7 @@ namespace TestManagementCore.Presenter
             catch (Exception ex)
             {
 
-               _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionById Methode in ExperienceLevelPresenter" + ex);
+               _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionById Methode in QuestionAndOptionPresenter" + ex);
                 return null;
             }
             
@@ -88,7 +88,7 @@ namespace TestManagementCore.Presenter
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in QuestionAndOptionPresenter GetAll Methode in ExperienceLevelPresenter" + ex);
+                _logger.LogError("Error in QuestionAndOptionPresenter GetAll Methode in QuestionAndOptionPresenter" + ex);
                 return null;
 
             }
@@ -104,7 +104,7 @@ namespace TestManagementCore.Presenter
             catch (Exception ex)
             {
 
-                _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionByCategory Methode in QuestionAndOptionPresenter" + ex);
                 return null;
             }
 
@@ -154,6 +154,20 @@ namespace TestManagementCore.Presenter
                 return null;
             }
 
+        }
+
+        public List<QuestionOptionByIdViewModel> GetAllByRole()
+        {
+            try
+            {
+                return _repository.GetAllByRole();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in GetAllByRole GetQuestionByCategory Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
         }
 
     }

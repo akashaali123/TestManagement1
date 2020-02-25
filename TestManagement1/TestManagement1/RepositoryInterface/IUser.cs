@@ -17,7 +17,7 @@ namespace TestManagement1.RepositoryInterface
         public Task<object> Login(LoginModel model);
 
 
-        public Task<IActionResult> Logout();
+        public Task<bool> Logout();
 
 
         public Task<object> CreateRole(RoleModel model);
@@ -33,6 +33,7 @@ namespace TestManagement1.RepositoryInterface
         public  Task<object> UpdateUser(UserViewModelById model, string id);
 
         public  Task<object> ChangePassword(ChangePasswordViewModel model, string id);
+        public List<RoleViewModel> ListRole();
 
 
 

@@ -15,8 +15,8 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "SuperAdmin")]
-   [Authorize]
+   
+   
     public class CategoryController : BaseController<CategoryPresenter>
     {
 
@@ -33,7 +33,33 @@ namespace TestManagementApi.Controllers
             cp = new CategoryPresenter(webHostEnvironment, repository, logger);
         }
 
-
+       
+        
+        /// <summary>
+        /// url: http://localhost:55377/category/create
+        /// Body
+        /// 
+        ///{
+        ///"Name": "PHPa",
+        ///}
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns>
+        /// {
+        /// "success": true,
+        ///"status": 200,
+        ///"message": "category",
+        ///"data": {
+        /// "category": {
+        ///  "categoryId": 29,
+        ///"name": "PHPa",
+        ///"isActive": true,
+        ///"createdBy": null,
+        ///"createdDate": "2020-02-25T00:00:00+05:00"
+        ///}
+        ///}
+        ///}
+        /// </returns>
         #region Category Create
         [HttpPost]
         [Route("/category/create")]
@@ -52,6 +78,28 @@ namespace TestManagementApi.Controllers
 
 
 
+
+
+
+        /// <summary>
+        /// url : http://localhost:55377/category/getall
+        /// </summary>
+        /// <returns>
+        /// {
+        /// "success": true,
+        ///"status": 200,
+        ///"message": "categories",
+        ///"data": {
+        /// "categories": [
+        ///  {
+        ///   "categoryId": 19,
+        ///"name": "PHP",
+        ///"isActive": true,
+        ///"createdBy": null,
+        ///"createdDate": "2020-02-19T14:57:31.6765813"
+        ///}
+        /// </returns>
+
         #region Category get all
         [HttpGet]
         [Route("/category/getall")]
@@ -67,7 +115,26 @@ namespace TestManagementApi.Controllers
 
 
 
-
+        /// <summary>
+        /// url : http://localhost:55377/category/delete?id=29
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// {
+        ///"success": true,
+        ///"status": 200,
+        ///"message": "category",
+        ///"data": {
+        ///"category": {
+        ///"categoryId": 29,
+        ///"name": "PHPa",
+        ///"isActive": true,
+        ///"createdBy": null,
+        ///   "createdDate": "2020-02-25T00:00:00"
+        ///  }
+        /// }
+        ///}
+        /// </returns>
         #region Category Delete
         [HttpDelete]
         [Route("/category/delete")]

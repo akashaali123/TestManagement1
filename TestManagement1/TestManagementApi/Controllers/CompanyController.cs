@@ -22,7 +22,10 @@ namespace TestManagementApi.Controllers
             companyPresenter = new CompanyPresenter(webHostEnvironment, repository, logger);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("/company/getall")]
         public IActionResult GetAllCompany()

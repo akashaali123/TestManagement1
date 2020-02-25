@@ -23,6 +23,21 @@ namespace TestManagementApi.Controllers
             detailPresenter = new TestDetailPresenter(webHostEnvironment, repository, logger);
         }
 
+
+        /// <summary>
+        /// url : http://localhost:55377/testdetail/create
+        /// Body
+        /// {
+        ///"CandidateId":41,
+        ///"QuestionId":44,
+        ///"SelectedOptionId":"61,64"
+        ///}
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>
+        /// true
+        /// </returns>
+
         [HttpPost]
         [Route("/testdetail/create")]
         public IActionResult Add(TestDetailsViewModel model)

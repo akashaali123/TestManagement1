@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using TestManagement1.SqlRepository;
 using TestManagementCore.Extension;//For Shuffling
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
+//using TestManagementCore.SessionManager;
 
 namespace TestManagementCore.SqlRepository
 {
@@ -18,15 +20,35 @@ namespace TestManagementCore.SqlRepository
     {
         int counter = 0;
 
+        
+
+
         public QuestionAndOptionRepository(TestManagementContext context, ILogger<QuestionAndOptionRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context, logger, httpContextAccessor)
         {
 
         }
+
+
+
         public QuestionAndOptionViewModel Add(QuestionAndOptionViewModel model)
         {
             try
             {
-                _context.TblQuestion.Add(model.question);
+               
+               
+
+                model.question.CreatedBy = sessionManager.getSession("userid"); //set userid in created by
+                model.question.CreatedDate = DateTime.Today;//set date in created date
+                
+                //get role id of current login user
+                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
+                    .Select(x => x.RoleId)
+                    .SingleOrDefault();
+
+
+                model.question.Roleid = roleId; //set rolr in question RoleId
+
+                _context.TblQuestion.Add(model.question);//add question
                 _context.SaveChanges();
 
                 int questionId = _context.TblQuestion.Max(item => item.QuestionId);
@@ -52,6 +74,10 @@ namespace TestManagementCore.SqlRepository
            
         }
 
+      
+        
+        
+        
         public TblQuestion Delete(int id)
         {
 
@@ -79,6 +105,69 @@ namespace TestManagementCore.SqlRepository
 
         }
 
+        public List<QuestionOptionByIdViewModel> GetAllByRole()
+        {
+            try
+            {
+
+                //get role id of current user
+                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid")) 
+                    .Select(x => x.RoleId)
+                    .SingleOrDefault();
+                
+
+
+                var vmList = new List<QuestionOptionByIdViewModel>();//list object
+
+                //get only those question which is created by user 
+                var question = _context.TblQuestion
+                    .Where(e => e.Roleid == roleId && e.CreatedBy == sessionManager.getSession("userid"))
+                    .ToList();
+
+
+
+                foreach (var item in question)
+                {
+                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//Object of vm
+
+
+                    //all Option regarding their Question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                        .Select(x => new OptionViewModel 
+                        {
+                            optionId = x.OptionId,
+                            option = x.OptionDescription 
+                        })
+                        .ToList();
+
+
+
+
+                    model.questionId = item.QuestionId;
+                    model.question = item.Description;// Question set to model question item have current iterate question
+
+                    model.option = option;//Option set in model option
+
+                    vmList.Add(model);//add model in list         
+
+                }
+                // vmList.Shuffle(); For Shuffling
+                return vmList;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository  GetAll Methode in Sql Repository" + ex);
+
+                return null;
+            }
+
+        }
+
+
+
+
+
         public List<QuestionOptionByIdViewModel> GetAll()
         {
             try
@@ -89,8 +178,16 @@ namespace TestManagementCore.SqlRepository
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//Object of vm
+                    //all Option regarding their Question
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                        .Select(x => new OptionViewModel 
+                        { 
+                            optionId = x.OptionId,
+                            option = x.OptionDescription 
+                        })
+                        .ToList();
 
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();//all Option regarding their Question
+
 
                     model.questionId = item.QuestionId;
                     model.question = item.Description;// Question set to model question item have current iterate question
@@ -118,10 +215,22 @@ namespace TestManagementCore.SqlRepository
 
 
 
+       
+        
+        
+        
         public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
         {
             try
             {
+                //get role id of current user
+                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
+                    .Select(x => x.RoleId)
+                    .SingleOrDefault();
+
+
+
+
                 var questionChanges = _context.TblQuestion
                     .Where(e => e.QuestionId == id)
                     .SingleOrDefault();
@@ -136,6 +245,14 @@ namespace TestManagementCore.SqlRepository
                     questionChanges.IsActive = questionAndOptionViewModel.question.IsActive;
                     questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
                     questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
+                    
+                    questionChanges.CreatedBy = sessionManager.getSession("userid");
+                    questionChanges.CreatedDate = DateTime.Today;
+                    questionChanges.UpdatedBy = sessionManager.getSession("userid");
+                    questionChanges.UpdatedDate = DateTime.Today;
+                    questionChanges.Roleid = roleId;
+
+
 
                 }
                 var question = _context.TblQuestion.Attach(questionChanges);
@@ -172,6 +289,11 @@ namespace TestManagementCore.SqlRepository
             }
           
         }
+       
+        
+        
+        
+        
         public QuestionOptionByIdViewModel GetQuestionById(int id)
         {
             try
@@ -210,6 +332,10 @@ namespace TestManagementCore.SqlRepository
             
         }
 
+       
+        
+        
+        
         public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
         {
             try
@@ -244,6 +370,10 @@ namespace TestManagementCore.SqlRepository
         }
 
 
+        
+        
+        
+        
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
         {
             try
@@ -278,6 +408,10 @@ namespace TestManagementCore.SqlRepository
         }
 
 
+       
+        
+        
+        
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
         {
             try
@@ -314,6 +448,10 @@ namespace TestManagementCore.SqlRepository
         }
 
 
+       
+        
+        
+        
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,  int number)
         {
             try

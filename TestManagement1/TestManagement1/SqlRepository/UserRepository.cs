@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Collections;
 using Microsoft.AspNetCore.Http;
 using TestManagementCore.SessionManager;
+using TestManagementCore.Model;
 
 namespace TestManagement1.SqlRepository
 {
@@ -67,15 +68,15 @@ namespace TestManagement1.SqlRepository
             {
                 var user = await _userManager.FindByNameAsync(model.userName);
 
-                
-                //Get the Role of signing User save in it a list
-                 var userRole = await _userManager.GetRolesAsync(user);
-               
-               
+
+                ////Get the Role of signing User save in it a list
+                var userRole = await _userManager.GetRolesAsync(user);
+
+
                 //Find the role Info by thier name which hold in userRole 0 index
-               // IdentityRole  roleInfo = await _roleManager.FindByNameAsync(userRole[0]);
-               
-                
+                // IdentityRole  roleInfo = await _roleManager.FindByNameAsync(userRole[0]);
+
+
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
                 {
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -84,7 +85,7 @@ namespace TestManagement1.SqlRepository
                         {
                         new Claim("userid", user.Id.ToString()),//We access this userID in UserProfile Controller
                         new Claim("email", user.Email.ToString()),
-                        new Claim("role", userRole[0].ToString()),
+                        new Claim("role",  userRole[0].ToString()),
                         new Claim("username",user.UserName.ToString()),
                         new Claim("isactive",user.IsActive.ToString()),
                         //new Claim(ClaimTypes.Role,roles.ToString())
@@ -101,14 +102,17 @@ namespace TestManagement1.SqlRepository
 
                     var token = tokenHandler.WriteToken(securityToken);
 
-
+                    
                     user.JwtToken = token; //take Jwt value in db for temporary
                     var result = await _userManager.UpdateAsync(user);
-                    if(result.Succeeded)
+                    if (result.Succeeded)
                     {
-                        
+
                         //Session Created its implementation in SessionManager Class
                         sessionManager.SetSession("userid",user.Id.ToString());
+                        
+                       
+                        
                         //sessionManager.getSession("userid");
 
                     }
@@ -134,14 +138,31 @@ namespace TestManagement1.SqlRepository
 
 
 
-        public /*async*/ Task<IActionResult> Logout()
+        public async Task<bool> Logout()
         {
+            try
+            {
+                var userId = sessionManager.getSession("userid");
+                var user = await _userManager.FindByIdAsync(userId);
+                sessionManager._session.Remove("userid");
+                user.JwtToken = null;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
 
+            }
+            catch (Exception)
+            {
+                return false;
+                
+            }
             
-            throw  new NotImplementedException();
-            
-            //var userId = .Claims.FirstOrDefault(c => c.Type == "userid").Value;
-            //var user = await _userManager.FindByIdAsync(userId);
         }
 
        
@@ -159,14 +180,20 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
+               
+
+
+
                 var applicationUser = new TblUser()
                 {
-
+                    
                     UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
 
                     Email = model.email,
 
-                    RoleId = 1,
+                    RoleId = model.roleId,
+                   
+                    //CategoryId = model.categoryId.ToString(),
                 
                     IsActive = true,
 
@@ -178,7 +205,62 @@ namespace TestManagement1.SqlRepository
 
            
                 var result = await _userManager.CreateAsync(applicationUser, model.password); //password assign here
-                
+               
+                if(result.Succeeded)
+                {
+                    
+                    var role = await _roleManager.FindByIdAsync(model.roleId);
+                    if (role == null)
+                    {
+                        return new { message = "No Role Found" };
+                    }
+                    else
+                    {
+                        if (role.Name == "verifier")
+                        {
+                            
+                            
+                            IdentityResult identityResult = null;
+                            
+                            identityResult = await _userManager.AddToRoleAsync(applicationUser, role.Name);
+                            if(identityResult.Succeeded)
+                            {
+                                TblVerifierCategoryAndRole map = new TblVerifierCategoryAndRole
+                                {
+                                    UserId = applicationUser.Id,
+                                    CategoryId = model.categoryId,
+                                    RoleId = role.Id
+                                };
+                                _context.TblVerifierCategoryAndRole.Add(map);
+                                _context.SaveChanges();
+                                return new { message = "Role is Assigned", data = new { role, model, map } };
+                            }
+                            else
+                            {
+                                return new { message = "Error in Assigning Role" };
+                            }
+                            
+
+                           
+
+                        }
+                        else
+                        {
+
+                            IdentityResult identityResult = null;
+                            
+                            identityResult = await _userManager.AddToRoleAsync(applicationUser, role.Name);
+                            return new { message = "Role is Assigned", data = new { role, model } };
+                        }
+
+                        
+                    }
+
+                    
+                    
+                        
+                       
+                }
 
                 return result; //return object of new user               
             }
@@ -437,7 +519,20 @@ namespace TestManagement1.SqlRepository
 
         }
 
+        public  List<RoleViewModel> ListRole()
+        {
+            var vmList = new List<RoleViewModel>();
+            var role = _context.Roles.Select(e => new { e.Id,e.Name}).ToList();
 
+            foreach (var item in role)
+            {
+                RoleViewModel model = new RoleViewModel();
+                model.Id = item.Id;
+                model.name = item.Name;
+                vmList.Add(model);
+            }
+            return vmList;
+        }
 
 
 

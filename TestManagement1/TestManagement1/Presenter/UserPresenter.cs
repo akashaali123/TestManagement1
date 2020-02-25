@@ -158,6 +158,26 @@ namespace TestManagementCore.Presenter
             
         }
 
+        public async Task<bool> Logout()
+        {
+            try
+            {
+                return await _repository.Logout();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in User Logout Methode in UserPresenter" + ex);
+                return false;
+
+            }
+        }
+
+
+        public List<RoleViewModel> ListRole()
+        {
+            return _repository.ListRole();
+        }
 
     }
 }

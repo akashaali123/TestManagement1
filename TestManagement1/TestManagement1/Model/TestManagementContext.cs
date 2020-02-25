@@ -43,6 +43,8 @@ namespace TestManagement1.Model
 
         public DbSet<TblCompany> TblCompany { get; set; }
 
+        public DbSet<TblVerifierCategoryAndRole> TblVerifierCategoryAndRole { get; set; }
+
        // public virtual DbSet<RetriveQuestionAndOptionById> RetriveQuestionAndOptionById { get; set; } //For sp no need to run migration
 
         //protected override void OnModelCreating(ModelBuilder builder)
