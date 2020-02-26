@@ -9,5 +9,13 @@ namespace TestManagementCore.RepositoryInterface
     public interface ITestResultByReviewer
     {
         public List<TestResultViewModel> DisplayResultAllCandidate();
+
+
+        public TestResultViewModel DisplayResultcandidateById(int candidateId);
+
+
+        public List<TestQuestionOptionViewModel> DisplayCandidateQuestion(int candidateId);
+
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate, DateTime toDate);
     }
 }

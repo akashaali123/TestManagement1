@@ -276,7 +276,7 @@ namespace TestManagementApi.Controllers
         //}
 
         [HttpGet]
-        [Route("/user/role")]
+        [Route("/user/rolelist")]
         public IActionResult ListRole()
         {
             var role = userPresenter.ListRole();

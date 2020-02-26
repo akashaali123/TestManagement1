@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
+using TestManagementCore.Email_Services;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.SqlRepository;
 
@@ -62,6 +63,7 @@ namespace TestManagement1
             services.AddScoped<ITestResult, TestResultRepository>();
             services.AddScoped<ICompany, CompanyRepository>();
             services.AddScoped<ITestResultByReviewer, TestResultByReviewerRepository>();
+            services.AddScoped<IEmailSender,EmailSender>();
 
 
 
@@ -145,6 +147,15 @@ namespace TestManagement1
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+
+
+            //For Email Services
+            var emailConfig = Configuration
+                                .GetSection("EmailConfiguration")
+                                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            
 
 
         }

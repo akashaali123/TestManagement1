@@ -37,6 +37,54 @@ namespace TestManagementCore.Presenter
         }
 
 
+        public TestResultViewModel DisplayResultcandidateById(int candidateId)
+        {
+            try
+            {
+                return _repository.DisplayResultcandidateById(candidateId);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultByReviewer DisplayResultcandidateById Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+            }
+        }
+
+
+
+
+        public List<TestQuestionOptionViewModel> DisplayCandidateQuestion(int candidateId)
+        {
+
+            try
+            {
+                return _repository.DisplayCandidateQuestion(candidateId);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultByReviewer DisplayCandidateQuestion Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+            }
+
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate, DateTime toDate)
+        {
+            try
+            {
+                return _repository.DisplayResultbyDate(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultByReviewer DisplayResultbyDate Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+            }
+        }
 
     }
 }

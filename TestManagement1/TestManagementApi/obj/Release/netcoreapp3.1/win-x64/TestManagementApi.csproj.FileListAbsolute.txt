@@ -137,3 +137,7 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\R
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Release\netcoreapp3.1\win-x64\TestManagementApi.csproj.CopyComplete
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Release\netcoreapp3.1\win-x64\TestManagementApi.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Release\netcoreapp3.1\win-x64\TestManagementApi.pdb
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Release\netcoreapp3.1\win-x64\MailKit.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Release\netcoreapp3.1\win-x64\MimeKit.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Release\netcoreapp3.1\win-x64\NETCore.MailKit.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Release\netcoreapp3.1\win-x64\BouncyCastle.Crypto.dll

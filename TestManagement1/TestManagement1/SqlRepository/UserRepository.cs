@@ -72,6 +72,7 @@ namespace TestManagement1.SqlRepository
                 ////Get the Role of signing User save in it a list
                 var userRole = await _userManager.GetRolesAsync(user);
 
+                var role = await _roleManager.FindByNameAsync(userRole[0]);
 
                 //Find the role Info by thier name which hold in userRole 0 index
                 // IdentityRole  roleInfo = await _roleManager.FindByNameAsync(userRole[0]);
@@ -85,7 +86,8 @@ namespace TestManagement1.SqlRepository
                         {
                         new Claim("userid", user.Id.ToString()),//We access this userID in UserProfile Controller
                         new Claim("email", user.Email.ToString()),
-                        new Claim("role",  userRole[0].ToString()),
+                        new Claim("role",  role.Name.ToString()),
+                        new Claim("roleid",  role.Id.ToString()),
                         new Claim("username",user.UserName.ToString()),
                         new Claim("isactive",user.IsActive.ToString()),
                         //new Claim(ClaimTypes.Role,roles.ToString())
@@ -233,7 +235,7 @@ namespace TestManagement1.SqlRepository
                                 };
                                 _context.TblVerifierCategoryAndRole.Add(map);
                                 _context.SaveChanges();
-                                return new { message = "Role is Assigned", data = new { role, model, map } };
+                                return new { message = "Role verifier is Assigned and user created" };
                             }
                             else
                             {
@@ -250,19 +252,19 @@ namespace TestManagement1.SqlRepository
                             IdentityResult identityResult = null;
                             
                             identityResult = await _userManager.AddToRoleAsync(applicationUser, role.Name);
-                            return new { message = "Role is Assigned", data = new { role, model } };
+                            return new { message = "Role is Assigned and user is created" };
                         }
 
                         
-                    }
-
-                    
-                    
-                        
+                    }                      
                        
                 }
+                else
+                {
+                    return new { message = "Problem in User Creation" };
+                }
 
-                return result; //return object of new user               
+                //return result; //return object of new user               
             }
             catch (Exception ex)
             {
@@ -521,17 +523,27 @@ namespace TestManagement1.SqlRepository
 
         public  List<RoleViewModel> ListRole()
         {
-            var vmList = new List<RoleViewModel>();
-            var role = _context.Roles.Select(e => new { e.Id,e.Name}).ToList();
-
-            foreach (var item in role)
+            try
             {
-                RoleViewModel model = new RoleViewModel();
-                model.Id = item.Id;
-                model.name = item.Name;
-                vmList.Add(model);
+                var vmList = new List<RoleViewModel>();
+                var role = _context.Roles.Select(e => new { e.Id, e.Name }).ToList();
+
+                foreach (var item in role)
+                {
+                    RoleViewModel model = new RoleViewModel();
+                    model.Id = item.Id;
+                    model.name = item.Name;
+                    vmList.Add(model);
+                }
+                return vmList;
             }
-            return vmList;
+            catch (Exception)
+            {
+
+               
+                return null;
+            }
+          
         }
 
 

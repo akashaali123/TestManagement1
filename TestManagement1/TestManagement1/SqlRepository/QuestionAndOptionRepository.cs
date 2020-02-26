@@ -18,7 +18,7 @@ namespace TestManagementCore.SqlRepository
 {
     public class QuestionAndOptionRepository : BaseRepository<QuestionAndOptionRepository>, IQuestionAndOption
     {
-        int counter = 0;
+        
 
         
 
@@ -33,10 +33,7 @@ namespace TestManagementCore.SqlRepository
         public QuestionAndOptionViewModel Add(QuestionAndOptionViewModel model)
         {
             try
-            {
-               
-               
-
+            {             
                 model.question.CreatedBy = sessionManager.getSession("userid"); //set userid in created by
                 model.question.CreatedDate = DateTime.Today;//set date in created date
                 
@@ -51,11 +48,12 @@ namespace TestManagementCore.SqlRepository
                 _context.TblQuestion.Add(model.question);//add question
                 _context.SaveChanges();
 
-                int questionId = _context.TblQuestion.Max(item => item.QuestionId);
+               
+                
 
                 foreach (var item in model.option)
                 {
-                    item.QuestionId = questionId;
+                    item.QuestionId = model.question.QuestionId;
                     _context.TblOption.AddRange(model.option);
 
                 }
@@ -259,6 +257,7 @@ namespace TestManagementCore.SqlRepository
                 question.State = EntityState.Modified;
                 _context.SaveChanges();//Question Updated
 
+                int counter = 0; 
 
                 //var optionChanges = _context.TblOption.Where(e => e.QuestionId == id).ToList();
                 foreach (var item in questionAndOptionViewModel.option) //get value from Model 

@@ -176,7 +176,17 @@ namespace TestManagementCore.Presenter
 
         public List<RoleViewModel> ListRole()
         {
-            return _repository.ListRole();
+            try
+            {
+                return _repository.ListRole();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ListRole Methode in UserPresenter" + ex);
+                return null;
+            }
+          
         }
 
     }

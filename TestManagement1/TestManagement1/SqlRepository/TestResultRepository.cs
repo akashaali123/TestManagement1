@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
+using TestManagementCore.Email_Services;
 using TestManagementCore.Extension;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
@@ -14,9 +15,11 @@ namespace TestManagementCore.SqlRepository
 {
     public class TestResultRepository : BaseRepository<TestResultRepository>, ITestResult
     {
-        public TestResultRepository(TestManagementContext context, ILogger<TestResultRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context, logger, httpContextAccessor)
-        {
 
+        private readonly IEmailSender _emailSender;
+        public TestResultRepository(TestManagementContext context, ILogger<TestResultRepository> logger, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender) :base(context, logger, httpContextAccessor)
+        {
+            _emailSender = emailSender;
         }
 
        
@@ -136,10 +139,20 @@ namespace TestManagementCore.SqlRepository
                             postTest.TestStatus = "Fail";
                         }
 
+                        //Get the candidate Name whose Finish the Test which is use to send in  Email
+                        string candidateName = _context.TblCandidate.Where(e => e.CandidateId == postTest.CandidateId)
+                                                                    .Select(x=>x.FirstName)
+                                                                    .SingleOrDefault();
+
                         _context.TblTest.Add(postTest);
                         int result = _context.SaveChanges();
                         if (result != 0)
                         {
+                            //For Email when Test Finish the Test
+                            var message = new Message(new string[] { "akashaali2012@gmail.com" }, "Test email", candidateName + " Finish the test");
+                            _emailSender.SendEmail(message);
+
+
                             proceed.Add("Result", true);
                             return proceed;
                         }
@@ -166,6 +179,8 @@ namespace TestManagementCore.SqlRepository
                 }
 
                
+
+
             }
             catch (Exception ex)
             {
@@ -1292,38 +1307,49 @@ namespace TestManagementCore.SqlRepository
         //TestResultMapModel which is map during query 
         public List<TestResultViewModel> helperMethode(List<TestResultMapModel> test)
         {
-            var result = new List<TestResultViewModel>();
-          
-             
-            foreach (var item in test)
+
+            try
             {
-                TestResultViewModel model = new TestResultViewModel();
-                
-                var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.candidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
-                model.candidateName = candidate.FirstName;
-                model.candidateId = candidate.CandidateId;
-
-                string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
-                model.category = categoryName;
-
-                string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
-                model.experienceLevel = experience;
-
-                model.testDate = item.testDate;
-                model.testStatus = item.testStatus;
-                model.totalQuestion = item.totalQuestion;
-                model.attemptedQuestion = item.attemptedQuestion;
-                model.skippedQuestion = item.skippedQuestion;
-                model.wrongQuestion = item.wrongQuestion;
-                model.correctAnswer = item.correctAnswer;
-                model.percentage = item.percentage;
-                model.Duration = item.Duration;
-                
-                result.Add(model);
+                var result = new List<TestResultViewModel>();
 
 
+                foreach (var item in test)
+                {
+                    TestResultViewModel model = new TestResultViewModel();
+
+                    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.candidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
+                    model.candidateName = candidate.FirstName;
+                    model.candidateId = candidate.CandidateId;
+
+                    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
+                    model.category = categoryName;
+
+                    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
+                    model.experienceLevel = experience;
+
+                    model.testDate = item.testDate;
+                    model.testStatus = item.testStatus;
+                    model.totalQuestion = item.totalQuestion;
+                    model.attemptedQuestion = item.attemptedQuestion;
+                    model.skippedQuestion = item.skippedQuestion;
+                    model.wrongQuestion = item.wrongQuestion;
+                    model.correctAnswer = item.correctAnswer;
+                    model.percentage = item.percentage;
+                    model.Duration = item.Duration;
+
+                    result.Add(model);
+
+
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository helperMethode Methode in Sql Repository" + ex);
+                return null;
+            }
+           
 
         }
 

@@ -20,6 +20,7 @@ using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
 using TestManagementApi.Controllers;
+using TestManagementCore.Email_Services;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.SqlRepository;
 
@@ -57,6 +58,7 @@ namespace TestManagementApi
             services.AddScoped<ITestResult, TestResultRepository>();
             services.AddScoped<ICompany, CompanyRepository>();
             services.AddScoped<ITestResultByReviewer, TestResultByReviewerRepository>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
 
 
@@ -131,7 +133,11 @@ namespace TestManagementApi
                 };
             });
 
-
+            //For Email Services
+            var emailConfig = Configuration
+                                .GetSection("EmailConfiguration")
+                                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
 
         }
 
