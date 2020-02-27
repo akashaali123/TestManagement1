@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
 using TestManagementCore.Model;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 
 namespace TestManagementCore.SqlRepository
 {
     public class CompanyRepository: BaseRepository<CompanyRepository>, ICompany
     {
-        public CompanyRepository(TestManagementContext context, ILogger<CompanyRepository> logger, IHttpContextAccessor httpContextAccessor) : base(context, logger, httpContextAccessor)
+        public CompanyRepository(TestManagementContext context, ILogger<CompanyRepository> logger, IHttpContextAccessor httpContextAccessor,TriggerClass trigger) : base(context, logger, httpContextAccessor, trigger)
         {
 
         }

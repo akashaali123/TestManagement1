@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.MyTriggerMethode;
 
 namespace TestManagement1.SqlRepository
 {
     public class CategoryRepository : BaseRepository<CategoryRepository>,ICategory
     {
 
-                                                                                                      //Required For Get Session implementation in baseClass
-        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger, httpContextAccessor)
+       
+
+        // IHttpContextAccessor Required For Get Session implementation in baseClass
+        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger, httpContextAccessor, trigger)
         {
            
         }
@@ -28,13 +31,13 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-
+                
                 TblCategory category = new TblCategory
                 {
                     
                     Name = categoryModel.Name,
                     IsActive = true,
-                    CreatedBy = sessionManager.getSession("userid"),
+                    CreatedBy = GetUserId(),//GetUserId implementation is sql Repository
                     CreatedDate = DateTime.Today
 
             };
@@ -43,6 +46,10 @@ namespace TestManagement1.SqlRepository
 
                 _context.TblCategory.Add(category);
                 _context.SaveChanges();
+               
+                
+                  
+                
                 return category;
 
             }

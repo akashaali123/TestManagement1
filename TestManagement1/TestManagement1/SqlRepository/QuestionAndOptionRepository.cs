@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
 using TestManagementCore.Extension;//For Shuffling
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
 //using TestManagementCore.SessionManager;
@@ -23,7 +24,7 @@ namespace TestManagementCore.SqlRepository
         
 
 
-        public QuestionAndOptionRepository(TestManagementContext context, ILogger<QuestionAndOptionRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context, logger, httpContextAccessor)
+        public QuestionAndOptionRepository(TestManagementContext context, ILogger<QuestionAndOptionRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context, logger, httpContextAccessor, trigger)
         {
 
         }
@@ -32,42 +33,53 @@ namespace TestManagementCore.SqlRepository
 
         public QuestionAndOptionViewModel Add(QuestionAndOptionViewModel model)
         {
-            try
-            {             
-                model.question.CreatedBy = sessionManager.getSession("userid"); //set userid in created by
-                model.question.CreatedDate = DateTime.Today;//set date in created date
-                
-                //get role id of current login user
-                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
-                    .Select(x => x.RoleId)
-                    .SingleOrDefault();
 
-
-                model.question.Roleid = roleId; //set rolr in question RoleId
-
-                _context.TblQuestion.Add(model.question);//add question
-                _context.SaveChanges();
-
-               
-                
-
-                foreach (var item in model.option)
-                {
-                    item.QuestionId = model.question.QuestionId;
-                    _context.TblOption.AddRange(model.option);
-
-                }
-
-                _context.SaveChanges();
-                return model;
-            }
-            catch (Exception ex)
+            //For transaction
+            using (var transaction = _context.Database.BeginTransaction())
             {
+                try
+                {
 
-                _logger.LogError("Error in QuestionAndOptionRepository  Add Methode in Sql Repository" + ex);
+                    model.question.CreatedBy = GetUserId(); //set userid in created by
+                    model.question.CreatedDate = DateTime.Today;//set date in created date
 
-                return null;
+                  
+
+
+                    model.question.Roleid = GetRoleId(); //set role in question RoleId
+
+                    _context.TblQuestion.Add(model.question);//add question
+                    _context.SaveChanges();
+
+                   
+
+
+                    foreach (var item in model.option)
+                    {
+                        item.QuestionId = model.question.QuestionId;
+                        _context.TblOption.AddRange(model.option);
+
+                    }
+
+                  _context.SaveChanges();
+                    
+                    
+
+                    //If all option and question add transaction commit
+                    transaction.Commit();
+                    
+                    return model;
+                }
+                catch (Exception ex)
+                {
+
+                    _logger.LogError("Error in QuestionAndOptionRepository  Add Methode in Sql Repository" + ex);
+                    transaction.Rollback();
+                    return null;
+                }
             }
+
+           
           
            
         }
@@ -78,29 +90,34 @@ namespace TestManagementCore.SqlRepository
         
         public TblQuestion Delete(int id)
         {
-
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                var question = _context.TblQuestion.Find(id);
-                _context.TblQuestion.Remove(question);
+                try
+                {
+                    var question = _context.TblQuestion.Find(id);
+                    _context.TblQuestion.Remove(question);
 
-                // var option = _context.TblLogging.Find(e=>e.);
-                var option = _context.TblOption.Where(e => e.QuestionId == id).ToList();
-                _context.TblOption.RemoveRange(option);
+                    
+                    var option = _context.TblOption.Where(e => e.QuestionId == id).ToList();
+                    _context.TblOption.RemoveRange(option);
 
-                _context.SaveChanges();
+                    _context.SaveChanges();
+                    
+                    transaction.Commit();
 
-                return question;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error in QuestionAndOptionRepository  Delete Methode in Sql Repository" + ex);
+                    return question;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Error in QuestionAndOptionRepository  Delete Methode in Sql Repository" + ex);
+                    
+                    transaction.Rollback();
+                    
+                    return null;
 
-                return null;
-
-            }
+                }
+            }            
            
-
         }
 
         public List<QuestionOptionByIdViewModel> GetAllByRole()
@@ -108,10 +125,6 @@ namespace TestManagementCore.SqlRepository
             try
             {
 
-                //get role id of current user
-                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid")) 
-                    .Select(x => x.RoleId)
-                    .SingleOrDefault();
                 
 
 
@@ -119,7 +132,7 @@ namespace TestManagementCore.SqlRepository
 
                 //get only those question which is created by user 
                 var question = _context.TblQuestion
-                    .Where(e => e.Roleid == roleId && e.CreatedBy == sessionManager.getSession("userid"))
+                    .Where(e => e.Roleid == GetRoleId() && e.CreatedBy == GetUserId())
                     .ToList();
 
 
@@ -219,73 +232,80 @@ namespace TestManagementCore.SqlRepository
         
         public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                //get role id of current user
-                var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
-                    .Select(x => x.RoleId)
-                    .SingleOrDefault();
-
-
-
-
-                var questionChanges = _context.TblQuestion
-                    .Where(e => e.QuestionId == id)
-                    .SingleOrDefault();
-                
-                
-                if (questionChanges != null)
+                try
                 {
-
-                    questionChanges.Description = questionAndOptionViewModel.question.Description;
-                    questionChanges.Type = questionAndOptionViewModel.question.Type;
-                    questionChanges.Time = questionAndOptionViewModel.question.Time;
-                    questionChanges.IsActive = questionAndOptionViewModel.question.IsActive;
-                    questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
-                    questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
-                    
-                    questionChanges.CreatedBy = sessionManager.getSession("userid");
-                    questionChanges.CreatedDate = DateTime.Today;
-                    questionChanges.UpdatedBy = sessionManager.getSession("userid");
-                    questionChanges.UpdatedDate = DateTime.Today;
-                    questionChanges.Roleid = roleId;
+                    ////get role id of current user
+                    //var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
+                    //    .Select(x => x.RoleId)
+                    //    .SingleOrDefault();
 
 
 
-                }
-                var question = _context.TblQuestion.Attach(questionChanges);
-                question.State = EntityState.Modified;
-                _context.SaveChanges();//Question Updated
 
-                int counter = 0; 
+                    var questionChanges = _context.TblQuestion
+                        .Where(e => e.QuestionId == id)
+                        .SingleOrDefault();
 
-                //var optionChanges = _context.TblOption.Where(e => e.QuestionId == id).ToList();
-                foreach (var item in questionAndOptionViewModel.option) //get value from Model 
-                {
-                    //select all the option of the question and save in a list
-                    var optionChanges = _context.TblOption.Where(e => e.QuestionId == id).ToList();
 
-                    for (int i = 0; i < optionChanges.Count - 1;)
+                    if (questionChanges != null)
                     {
-                        //save the entity for CounterIndex option
-                        optionChanges[counter].OptionDescription = item.OptionDescription;
-                        optionChanges[counter].Duration = item.Duration;
-                        optionChanges[counter].IsCorrect = item.IsCorrect;
-                        optionChanges[counter].IsActive = item.IsActive;
-                        break;
+
+                        questionChanges.Description = questionAndOptionViewModel.question.Description;
+                        questionChanges.Type = questionAndOptionViewModel.question.Type;
+                        questionChanges.Time = questionAndOptionViewModel.question.Time;
+                        questionChanges.IsActive = questionAndOptionViewModel.question.IsActive;
+                        questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
+                        questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
+
+                        questionChanges.CreatedBy = GetUserId();
+                        questionChanges.CreatedDate = DateTime.Today;
+                        questionChanges.UpdatedBy = GetUserId();
+                        questionChanges.UpdatedDate = DateTime.Today;
+                        questionChanges.Roleid = GetRoleId();
+
+
+
                     }
-                    counter++; //Increment in counter to get the next element of list
-                    _context.SaveChanges();
+                    var question = _context.TblQuestion.Attach(questionChanges);
+                    question.State = EntityState.Modified;
+                    _context.SaveChanges();//Question Updated
+
+                    int counter = 0;
+
+                    //var optionChanges = _context.TblOption.Where(e => e.QuestionId == id).ToList();
+                    foreach (var item in questionAndOptionViewModel.option) //get value from Model 
+                    {
+                        //select all the option of the question and save in a list
+                        var optionChanges = _context.TblOption.Where(e => e.QuestionId == id).ToList();
+
+                        for (int i = 0; i < optionChanges.Count - 1;)
+                        {
+                            //save the entity for CounterIndex option
+                            optionChanges[counter].OptionDescription = item.OptionDescription;
+                            optionChanges[counter].Duration = item.Duration;
+                            optionChanges[counter].IsCorrect = item.IsCorrect;
+                            optionChanges[counter].IsActive = item.IsActive;
+                            break;
+                        }
+                        counter++; //Increment in counter to get the next element of list
+                        _context.SaveChanges();
+
+                        
+                    }
+                    transaction.Commit();
+                    
+                    return questionAndOptionViewModel;
                 }
-
-                return questionAndOptionViewModel;
+                catch (Exception ex)
+                {
+                    _logger.LogError("Error in QuestionAndOptionRepository update Methode in Sql Repository" + ex);
+                    transaction.Rollback();
+                    return null;
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error in QuestionAndOptionRepository update Methode in Sql Repository" + ex);
-
-                return null;
-            }
+                
           
         }
        
@@ -308,8 +328,16 @@ namespace TestManagementCore.SqlRepository
                     .SingleOrDefault();
 
                
-                var options = _context.TblOption.Where(x => x.QuestionId == id).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();//get option assign to option
+                var options = _context.TblOption.Where(x => x.QuestionId == id)
+                                                .Select(x => new OptionViewModel 
+                                                { 
+                                                    optionId = x.OptionId,
+                                                    option = x.OptionDescription 
+                                                })
+                                                .ToList();//get option assign to option
 
+               
+                
                 QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
                 model.questionId = question.QuestionId;
                 model.question= question.Description;//assign question in vm question 
@@ -353,7 +381,15 @@ namespace TestManagementCore.SqlRepository
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
                     model.questionId = item.QuestionId;
                     model.question = item.Description;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                                                    .Select(x => new OptionViewModel 
+                                                    { 
+                                                        optionId = x.OptionId, 
+                                                        option = x.OptionDescription 
+                                                    })
+                                                    .ToList();
+                   
+                    
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
@@ -391,7 +427,15 @@ namespace TestManagementCore.SqlRepository
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
                     model.questionId = item.QuestionId;
                     model.question = item.Description;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                                                    .Select(x => new OptionViewModel 
+                                                    { 
+                                                        optionId = x.OptionId,
+                                                        option = x.OptionDescription 
+                                                    })
+                                                    .ToList();
+                    
+                    
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
@@ -430,7 +474,15 @@ namespace TestManagementCore.SqlRepository
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
                     model.questionId = item.QuestionId;
                     model.question = item.Description;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel { optionId = x.OptionId, option = x.OptionDescription }).ToList();
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                                                    .Select(x => new OptionViewModel 
+                                                    { 
+                                                        optionId = x.OptionId,
+                                                        option = x.OptionDescription 
+                                                    })
+                                                    .ToList();
+                    
+                    
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }
@@ -468,14 +520,37 @@ namespace TestManagementCore.SqlRepository
                 int? categoryId = candidate.CategoryId;
                 int? experienceLevelId = candidate.ExperienceLevelId;
                 var questionList = new List<QuestionOptionByIdViewModel>();//For returning
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId && e.IsActive == true).Select(x => new { x.QuestionId, x.Description }).Take(number).ToList();
+
+
+                //to get random record
+                
+                //Random rand = new Random();
+                //int toSkip = rand.Next(1, _context.TblQuestion
+                //.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId && e.IsActive == true)
+                //.Count());
+
+
+
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.ExperienceLevelId == experienceLevelId && e.IsActive == true)
+                                                   .Select(x => new { x.QuestionId, x.Description })
+                                                   .OrderBy(r=>Guid.NewGuid())
+                                                   .Take(number)
+                                                   .ToList();
 
                 foreach (var item in question)
                 {
                     QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
                     model.questionId = item.QuestionId;
                     model.question = item.Description;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId).Select(x => new OptionViewModel {optionId =x.OptionId,option=x.OptionDescription}).ToList();
+                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                                                   .Select(x => new OptionViewModel 
+                                                   {
+                                                       optionId =x.OptionId,
+                                                       option=x.OptionDescription
+                                                   })
+                                                   .ToList();
+                    
+                    
                     model.option = option;//set list of option in vm model option list
                     questionList.Add(model);
                 }

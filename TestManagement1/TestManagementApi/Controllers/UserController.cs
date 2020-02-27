@@ -251,10 +251,14 @@ namespace TestManagementApi.Controllers
             return helperMethode(password, "password");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
 
-
         }
         #endregion
 
+       
+        
+        
+        
+        
         [HttpPost]
         [Route("/user/logout")]
         public async Task<IActionResult> LogOut()

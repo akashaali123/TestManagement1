@@ -31,6 +31,12 @@ namespace TestManagement1.Model
         public DateTime? CreatedDate { get; set; }
 
 
+        public string UpdatedBy { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.DateTime)]
+        public DateTime? UpdatedDate { get; set; }
+
 
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
 
@@ -13,7 +14,7 @@ namespace TestManagementCore.SqlRepository
 {
     public class TestResultByReviewerRepository : BaseRepository<TestResultByReviewerRepository>, ITestResultByReviewer
     {
-        public TestResultByReviewerRepository(TestManagementContext context, ILogger<TestResultByReviewerRepository> logger, IHttpContextAccessor httpContextAccessor) : base(context, logger, httpContextAccessor)
+        public TestResultByReviewerRepository(TestManagementContext context, ILogger<TestResultByReviewerRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) : base(context, logger, httpContextAccessor, trigger)
         {
 
         }
@@ -24,7 +25,7 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var categoryId = _context.TblVerifierCategoryAndRole
-                    .Where(e => e.UserId == sessionManager.getSession("userid"))
+                    .Where(e => e.UserId == GetUserId())
                     .Select(x => x.CategoryId)
                     .SingleOrDefault();
 
@@ -72,7 +73,7 @@ namespace TestManagementCore.SqlRepository
             {
                 //get category Id of Test
                 var categoryId = _context.TblVerifierCategoryAndRole
-                    .Where(e => e.UserId == sessionManager.getSession("userid"))
+                    .Where(e => e.UserId == GetUserId())
                     .Select(x => x.CategoryId)
                     .SingleOrDefault();
 
@@ -325,7 +326,7 @@ namespace TestManagementCore.SqlRepository
 
 
                 var categoryId = _context.TblVerifierCategoryAndRole
-                   .Where(e => e.UserId == sessionManager.getSession("userid"))
+                   .Where(e => e.UserId == GetUserId())
                    .Select(x => x.CategoryId)
                    .SingleOrDefault();
 
@@ -368,9 +369,143 @@ namespace TestManagementCore.SqlRepository
         }
 
 
+        public List<TestResultViewModel> DisplayResultbyPercentage()
+        {
+            try
+            {
+
+                var categoryId = _context.TblVerifierCategoryAndRole
+                  .Where(e => e.UserId == GetUserId())
+                  .Select(x => x.CategoryId)
+                  .SingleOrDefault();
 
 
 
+
+                var test = _context.TblTest
+                               .Where(e=>e.CategoryId ==Convert.ToInt32(categoryId))
+                               .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
+                               {
+                                   candidateId = x.CandidateId,
+                                   CategoryId = x.CategoryId,
+                                   ExpLevelId = x.ExpLevelId,
+                                   testDate = x.TestDate,
+                                   testStatus = x.TestStatus,
+                                   totalQuestion = x.TotalQuestion,
+                                   correctAnswer = x.CorrectAnswer,
+                                   wrongQuestion = x.WrongAnswer,
+                                   skippedQuestion = x.QuestionSkipped,
+                                   attemptedQuestion = x.AttemptedQuestion,
+                                   percentage = x.Percentage,
+                                   Duration = x.Duration
+                               })
+                               .OrderByDescending(x => x.percentage).ToList();
+
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultRepository DisplayResultbyPercentage Methode in Sql Repository" + ex);
+                return null;
+            }
+
+
+        }
+
+
+        public List<TestResultViewModel> DisplayResultbyTop10Percentage()
+        {
+
+            try
+            {
+                var categoryId = _context.TblVerifierCategoryAndRole
+                 .Where(e => e.UserId == GetUserId())
+                 .Select(x => x.CategoryId)
+                 .SingleOrDefault();
+
+
+
+                var test = _context.TblTest
+                                   .Where(e => e.CategoryId == Convert.ToInt32(categoryId))
+                                   .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
+                                   {
+                                       candidateId = x.CandidateId,
+                                       CategoryId = x.CategoryId,
+                                       ExpLevelId = x.ExpLevelId,
+                                       testDate = x.TestDate,
+                                       testStatus = x.TestStatus,
+                                       totalQuestion = x.TotalQuestion,
+                                       correctAnswer = x.CorrectAnswer,
+                                       wrongQuestion = x.WrongAnswer,
+                                       skippedQuestion = x.QuestionSkipped,
+                                       attemptedQuestion = x.AttemptedQuestion,
+                                       percentage = x.Percentage,
+                                       Duration = x.Duration
+                                   })
+                                   .OrderByDescending(x => x.percentage)
+                                   .Take(10)
+                                   .ToList();
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10Percentage Methode in Sql Repository" + ex);
+                return null;
+
+            }
+
+
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatus(string status)
+        {
+            try
+            {
+
+                var categoryId = _context.TblVerifierCategoryAndRole
+                .Where(e => e.UserId == GetUserId())
+                .Select(x => x.CategoryId)
+                .SingleOrDefault();
+
+
+                var test = _context.TblTest
+                    .Where(e => e.TestStatus == status && e.CategoryId == Convert.ToInt32(categoryId))
+                    .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
+                    {
+                        candidateId = x.CandidateId,
+                        CategoryId = x.CategoryId,
+                        ExpLevelId = x.ExpLevelId,
+                        testDate = x.TestDate,
+                        testStatus = x.TestStatus,
+                        totalQuestion = x.TotalQuestion,
+                        correctAnswer = x.CorrectAnswer,
+                        wrongQuestion = x.WrongAnswer,
+                        skippedQuestion = x.QuestionSkipped,
+                        attemptedQuestion = x.AttemptedQuestion,
+                        percentage = x.Percentage,
+                        Duration = x.Duration
+                    })
+                    .Take(10)
+                    .ToList();
+
+
+                return helperMethode(test);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatus Methode in Sql Repository" + ex);
+                return null;
+            }
+
+
+
+        }
 
 
 

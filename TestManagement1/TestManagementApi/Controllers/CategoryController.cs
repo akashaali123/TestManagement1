@@ -15,7 +15,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   
+    [Authorize]
    
     public class CategoryController : BaseController<CategoryPresenter>
     {
@@ -66,7 +66,7 @@ namespace TestManagementApi.Controllers
         //POST : api/Category/create
         public IActionResult Add(CategoryViewModel category)
         {
-             
+            //string userid = GetUserId();
 
             var model = cp.Add(category);
             

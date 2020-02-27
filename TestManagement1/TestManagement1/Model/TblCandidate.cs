@@ -50,6 +50,13 @@ namespace TestManagement1.Model
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
+
+        public string UpdatedBy { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.DateTime)]
+        public DateTime? UpdatedDate { get; set; }
+
         public int? ExperienceLevelId { get; set; }
 
         public int? CategoryId { get; set; }

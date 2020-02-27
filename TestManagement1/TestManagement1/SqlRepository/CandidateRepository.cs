@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.MyTriggerMethode;
 
 namespace TestManagement1.SqlRepository
 {
@@ -32,7 +33,7 @@ namespace TestManagement1.SqlRepository
         
         private readonly ApplicationSettings _appSettings;//For Jwt
                                                                                                         //For jwt
-        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IOptions<ApplicationSettings> appSettings, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
+        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IOptions<ApplicationSettings> appSettings, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger,httpContextAccessor, trigger)
         {
             //_logger = logger;
             //_context = context;
@@ -65,7 +66,7 @@ namespace TestManagement1.SqlRepository
                     ExperienceLevelId = candidateModel.ExperienceLevelId,
                     CreatedDate = DateTime.Today,
                     IsActive = true,
-                    CreatedBy = sessionManager.getSession("userid"),
+                    CreatedBy = GetUserId(),
                 };
                 _context.TblCandidate.Add(candidate);
                 _context.SaveChanges();
@@ -159,7 +160,7 @@ namespace TestManagement1.SqlRepository
         {
             TblCandidate candidateChanges = new TblCandidate
             {
-                CandidateId=candidateModel.CandidateId,
+                CandidateId = candidateModel.CandidateId,
                 FirstName = candidateModel.FirstName,
                 LastName = candidateModel.LastName,
                 Email = candidateModel.Email,
@@ -169,7 +170,7 @@ namespace TestManagement1.SqlRepository
                 ExperienceLevelId = candidateModel.ExperienceLevelId,
                 CreatedDate = DateTime.Today,
                 IsActive = true,
-                CreatedBy = sessionManager.getSession("userid")
+                CreatedBy = GetUserId()
 
             };
 

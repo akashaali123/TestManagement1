@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.SessionManager;
 
 namespace TestManagement1.SqlRepository
@@ -15,7 +16,7 @@ namespace TestManagement1.SqlRepository
     {
 
                                                                                                                    //Required For Get Session implementation in baseClass
-        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger, IHttpContextAccessor httpContextAccessor) :base(context,logger,httpContextAccessor)
+        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger,httpContextAccessor, trigger)
         {
             
 

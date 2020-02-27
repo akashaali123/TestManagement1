@@ -27,5 +27,7 @@ namespace TestManagementCore.SessionManager
              return _session.GetString(name);
         }
 
+        
+
     }
 }

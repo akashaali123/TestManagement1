@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class BaseController<T> : ControllerBase where T : class
     {
         protected readonly IWebHostEnvironment _webHostEnvironment;
@@ -83,7 +85,11 @@ namespace TestManagementApi.Controllers
 
 
 
-
+        //public string GetUserId()
+        //{
+        //    string userId = User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
+        //    return userId;
+        //}
 
 
 

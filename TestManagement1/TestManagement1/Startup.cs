@@ -20,6 +20,7 @@ using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
 using TestManagementCore.Email_Services;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.SqlRepository;
 
@@ -64,7 +65,8 @@ namespace TestManagement1
             services.AddScoped<ICompany, CompanyRepository>();
             services.AddScoped<ITestResultByReviewer, TestResultByReviewerRepository>();
             services.AddScoped<IEmailSender,EmailSender>();
-
+            //make for future configuration if we want trigger Like functionality in Future so we use it 
+            services.AddScoped<TriggerClass>();
 
 
 

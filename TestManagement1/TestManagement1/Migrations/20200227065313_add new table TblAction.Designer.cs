@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestManagement1.Model;
 
 namespace TestManagement1.Migrations
 {
     [DbContext(typeof(TestManagementContext))]
-    partial class TestManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200227065313_add new table TblAction")]
+    partial class addnewtableTblAction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,12 +267,6 @@ namespace TestManagement1.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("VacancyId")
                         .HasColumnType("int");
 
@@ -299,12 +295,6 @@ namespace TestManagement1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("CategoryId");
 
@@ -706,21 +696,6 @@ namespace TestManagement1.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("CompanyId");
 

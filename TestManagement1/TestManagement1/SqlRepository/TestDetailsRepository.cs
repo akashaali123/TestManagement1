@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.SqlRepository;
 using TestManagementCore.Extension;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
 
@@ -14,7 +15,7 @@ namespace TestManagementCore.SqlRepository
 {
     public class TestDetailsRepository : BaseRepository<TestDetailsRepository>, ITestDetails
     {
-        public TestDetailsRepository(TestManagementContext context, ILogger<TestDetailsRepository> logger, IHttpContextAccessor httpContextAccessor):base(context, logger, httpContextAccessor)
+        public TestDetailsRepository(TestManagementContext context, ILogger<TestDetailsRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context, logger, httpContextAccessor, trigger)
         {
 
         }
@@ -78,5 +79,13 @@ namespace TestManagementCore.SqlRepository
             
 
         }
+   
+    
+    
+    
+    
+    
+    
+    
     }
 }

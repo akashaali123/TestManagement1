@@ -8,6 +8,7 @@ using TestManagement1.Model;
 using TestManagement1.SqlRepository;
 using TestManagementCore.Email_Services;
 using TestManagementCore.Extension;
+using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.ViewModel;
 
@@ -17,7 +18,7 @@ namespace TestManagementCore.SqlRepository
     {
 
         private readonly IEmailSender _emailSender;
-        public TestResultRepository(TestManagementContext context, ILogger<TestResultRepository> logger, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender) :base(context, logger, httpContextAccessor)
+        public TestResultRepository(TestManagementContext context, ILogger<TestResultRepository> logger, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, TriggerClass trigger) :base(context, logger, httpContextAccessor, trigger)
         {
             _emailSender = emailSender;
         }
@@ -140,16 +141,21 @@ namespace TestManagementCore.SqlRepository
                         }
 
                         //Get the candidate Name whose Finish the Test which is use to send in  Email
-                        string candidateName = _context.TblCandidate.Where(e => e.CandidateId == postTest.CandidateId)
-                                                                    .Select(x=>x.FirstName)
+                        var candidateInfo = _context.TblCandidate.Where(e => e.CandidateId == postTest.CandidateId)
+                                                                    .Select(x=>new { x.FirstName,x.CreatedBy })
                                                                     .SingleOrDefault();
+
+
+                        string sendEmailAdmin = _context.Users.Where(e => e.Id == candidateInfo.CreatedBy)
+                                                              .Select(x => x.Email).SingleOrDefault();
+
 
                         _context.TblTest.Add(postTest);
                         int result = _context.SaveChanges();
                         if (result != 0)
                         {
                             //For Email when Test Finish the Test
-                            var message = new Message(new string[] { "akashaali2012@gmail.com" }, "Test email", candidateName + " Finish the test");
+                            var message = new Message(new string[] { sendEmailAdmin }, "Test Completed", candidateInfo.FirstName + " Finish the test");
                             _emailSender.SendEmail(message);
 
 

@@ -86,5 +86,54 @@ namespace TestManagementCore.Presenter
             }
         }
 
+
+        public List<TestResultViewModel> DisplayResultbyPercentage()
+        {
+            try
+            {
+                return _repository.DisplayResultbyPercentage();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultByReviewer DisplayResultbyPercentage Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+
+            }
+        }
+
+        public List<TestResultViewModel> DisplayResultbyTop10Percentage()
+        {
+            try
+            {
+                return _repository.DisplayResultbyTop10Percentage();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in TestResultByReviewer DisplayResultbyTop10Percentage Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+
+            }
+        }
+
+
+
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatus(string status)
+        {
+            try
+            {
+                return _repository.DisplayResultbyTop10TestStatus(status);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultByReviewer DisplayResultbyTop10TestStatus Methode in TestResultByReviewerPresenter" + ex);
+                return null;
+            }
+        }
+
+
+
+
+
     }
 }
