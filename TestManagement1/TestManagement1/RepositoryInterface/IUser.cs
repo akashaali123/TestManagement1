@@ -35,6 +35,12 @@ namespace TestManagement1.RepositoryInterface
         public  Task<object> ChangePassword(ChangePasswordViewModel model, string id);
         public List<RoleViewModel> ListRole();
 
+        public  Task<object> ForgotPassword(ForgotPasswordViewModel model);
+
+        public  Task<object> ResetPassword(ResestPasswordViewModel model);
+
+        public  Task<object> ConfirmEmail(string email, string token);
+
 
 
 

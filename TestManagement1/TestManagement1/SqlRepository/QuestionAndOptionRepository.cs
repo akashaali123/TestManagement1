@@ -88,7 +88,7 @@ namespace TestManagementCore.SqlRepository
         
         
         
-        public TblQuestion Delete(int id)
+        public bool Delete(int id)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -105,7 +105,7 @@ namespace TestManagementCore.SqlRepository
                     
                     transaction.Commit();
 
-                    return question;
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +113,7 @@ namespace TestManagementCore.SqlRepository
                     
                     transaction.Rollback();
                     
-                    return null;
+                    return false;
 
                 }
             }            
@@ -179,31 +179,37 @@ namespace TestManagementCore.SqlRepository
 
 
 
-        public List<QuestionOptionByIdViewModel> GetAll()
+        public List<AllQuestionViewModel> GetAll()
         {
             try
             {
-                var vmList = new List<QuestionOptionByIdViewModel>();//list object
+                var vmList = new List<AllQuestionViewModel>();//list object
 
                 var question = _context.TblQuestion.ToList();//All Question
                 foreach (var item in question)
                 {
-                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//Object of vm
+                    AllQuestionViewModel model = new AllQuestionViewModel();//Object of vm
                     //all Option regarding their Question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
-                        .Select(x => new OptionViewModel 
-                        { 
-                            optionId = x.OptionId,
-                            option = x.OptionDescription 
-                        })
-                        .ToList();
+                    //var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                    //    .Select(x => new OptionViewModel 
+                    //    { 
+                    //        optionId = x.OptionId,
+                    //        option = x.OptionDescription 
+                    //    })
+                    //    .ToList();
 
-
+                    
+                    //Get Category Of Question
+                    var category = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId)
+                                                        .Select(x => x.Name)
+                                                        .SingleOrDefault();
 
                     model.questionId = item.QuestionId;
                     model.question = item.Description;// Question set to model question item have current iterate question
-
-                    model.option = option;//Option set in model option
+                    model.category = category;
+                   
+                    
+                    //model.option = option;
 
                     vmList.Add(model);//add model in list         
 
@@ -363,34 +369,46 @@ namespace TestManagementCore.SqlRepository
         
         
         
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
+        public List<AllQuestionViewModel> GetQuestionByCategory(int categoryId)
         {
             try
             {
-                var questionList = new List<QuestionOptionByIdViewModel>();//For returning
+                var questionList = new List<AllQuestionViewModel>();//For returning
                 var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId)
                     .Select(x=>new 
                     {
                         x.QuestionId,
-                        x.Description 
+                        x.Description,
+                        x.CategoryId
                     })
                     .ToList();
                 
                 foreach (var item in question)
                 {
-                    QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();
+                    AllQuestionViewModel model = new AllQuestionViewModel();
+
+                    var category = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x=>x.Name).SingleOrDefault();
+
                     model.questionId = item.QuestionId;
                     model.question = item.Description;//item contain the iterated question
-                    var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
-                                                    .Select(x => new OptionViewModel 
-                                                    { 
-                                                        optionId = x.OptionId, 
-                                                        option = x.OptionDescription 
-                                                    })
-                                                    .ToList();
+                    model.category = category;
+                   
+
+
+                    
+                    //var option = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                    //                                .Select(x => new OptionViewModel 
+                    //                                { 
+                    //                                    optionId = x.OptionId, 
+                    //                                    option = x.OptionDescription 
+                    //                                })
+                    //                                .ToList();
                    
                     
-                    model.option = option;//set list of option in vm model option list
+                    //model.option = option;//set list of option in vm model option list
+                    
+                    
+                    
                     questionList.Add(model);
                 }
                 return questionList;

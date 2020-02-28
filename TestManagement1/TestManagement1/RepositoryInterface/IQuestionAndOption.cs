@@ -11,9 +11,9 @@ namespace TestManagementCore.RepositoryInterface
     {
         QuestionAndOptionViewModel Add(QuestionAndOptionViewModel model);
 
-        public List<QuestionOptionByIdViewModel> GetAll();
+        public List<AllQuestionViewModel> GetAll();
 
-        TblQuestion Delete(int id);
+        bool Delete(int id);
 
         QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,int id);
 
@@ -21,7 +21,7 @@ namespace TestManagementCore.RepositoryInterface
 
         public QuestionOptionByIdViewModel GetQuestionById(int id);
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId);
+        public List<AllQuestionViewModel> GetQuestionByCategory(int categoryId);
 
         public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId);
 

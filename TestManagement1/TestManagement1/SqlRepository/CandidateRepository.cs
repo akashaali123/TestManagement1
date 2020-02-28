@@ -85,7 +85,7 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCandidate Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -98,12 +98,12 @@ namespace TestManagement1.SqlRepository
 
                 }
 
-                return candidate;
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error in Candidate Delete Methode in Sql Repository" + ex);
-                return null;
+                return false;
             }
 
 
@@ -156,44 +156,40 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCandidate Update(CandidateViewModel candidateModel)
+        public TblCandidate Update(CandidateViewModel candidateModel,int id)
         {
-            TblCandidate candidateChanges = new TblCandidate
+            try
             {
-                CandidateId = candidateModel.CandidateId,
-                FirstName = candidateModel.FirstName,
-                LastName = candidateModel.LastName,
-                Email = candidateModel.Email,
-                CurrentCompany = candidateModel.CurrentCompany,
-                //TechStack = candidateModel.CurrentCompany,
-                CategoryId = candidateModel.categoryId,
-                ExperienceLevelId = candidateModel.ExperienceLevelId,
-                CreatedDate = DateTime.Today,
-                IsActive = true,
-                CreatedBy = GetUserId()
+                var candidateChanges = _context.TblCandidate.Where(e => e.CandidateId == id).SingleOrDefault();
 
-            };
 
-            var candidate = _context.TblCandidate.Attach(candidateChanges);
-            candidate.State = EntityState.Modified;
-            _context.SaveChanges();
-            return candidateChanges;
+                candidateChanges.FirstName = candidateModel.FirstName;
+                candidateChanges.LastName = candidateModel.LastName;
+                candidateChanges.Email = candidateModel.Email;
+                candidateChanges.CurrentCompany = candidateModel.CurrentCompany;
+                candidateChanges.CategoryId = candidateModel.categoryId;
+                candidateChanges.ExperienceLevelId = candidateModel.ExperienceLevelId;
+                candidateChanges.UpdatedBy = GetUserId();
+                candidateChanges.UpdatedDate = DateTime.Today;
+
+
+                var candidate = _context.TblCandidate.Attach(candidateChanges);
+                candidate.State = EntityState.Modified;
+                _context.SaveChanges();
+                return candidateChanges;
+            }
+            catch (Exception ex)
+            { 
+               _logger.LogError("Error in Candidate Update Methode in Sql Repository" + ex);
+                return null;
+            }
+           
 
         }
 
 
 
-        //public TblCandidate Update(int id, TblCandidate candidate)
-        //{
-
-
-        //    var candidateChanges = _context.TblCandidate.Where(x => x.CandidateId == id).FirstOrDefault();
-        //    candidateChanges.FirstName = candidate.FirstName;
-        //    candidateChanges.LastName = candidate.LastName;
-        //    candidateChanges.Email = candidate.Email;
-
-
-        //}
+        
 
         public  object JwtForCandidate(int candidateId,int numberOfQuestion)
         {

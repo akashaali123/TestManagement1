@@ -34,7 +34,7 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public TblQuestion Delete( int id)
+        public bool Delete( int id)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace TestManagementCore.Presenter
             catch (Exception ex)
             {
                 _logger.LogError("Error in QuestionAndOptionPresenter Delete Methode in QuestionAndOptionPresenter" + ex);
-                return null;
+                return false;
 
             }
 
@@ -80,7 +80,7 @@ namespace TestManagementCore.Presenter
         }
 
 
-        public List<QuestionOptionByIdViewModel> GetAll()
+        public List<AllQuestionViewModel> GetAll()
         {
             try
             {
@@ -94,8 +94,8 @@ namespace TestManagementCore.Presenter
             }
         }
 
-        
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategory(int categoryId)
+
+        public List<AllQuestionViewModel> GetQuestionByCategory(int categoryId)
         {
             try
             {

@@ -14,8 +14,8 @@ namespace TestManagement1.RepositoryInterface
 
         TblExperienceLevel Add(ExperienceLevelViewModel experienceLevel);
 
-        TblExperienceLevel Update(ExperienceLevelViewModel experienceLevel);
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel, int id);
 
-        TblExperienceLevel Delete(int id);
+        bool Delete(int id);
     }
 }

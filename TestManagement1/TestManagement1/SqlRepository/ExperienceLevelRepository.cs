@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblExperienceLevel Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -73,13 +74,13 @@ namespace TestManagement1.SqlRepository
                     _context.TblExperienceLevel.Remove(experience);
                     _context.SaveChanges();
                 }
-                return experience;
+                return true;
             }
             catch (Exception ex)
             {
 
                _logger.LogError("Error in ExperienceLevel Delete Methode in Sql Repository" + ex);
-                return null;
+                return false;
             }
         }
 
@@ -129,9 +130,31 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevel)
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel,int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var experienceLevelChanges = _context.TblExperienceLevel.Where(e => e.Id == id).SingleOrDefault();
+
+                experienceLevelChanges.Name = experienceLevelModel.Name;
+                experienceLevelChanges.MinExp = experienceLevelModel.MinExp;
+                experienceLevelChanges.MaxExp = experienceLevelModel.MaxExp;
+                experienceLevelChanges.UpdatedBy = GetUserId();
+                experienceLevelChanges.UpdatedDate = DateTime.Today;
+
+                var experiencceLevel = _context.TblExperienceLevel.Attach(experienceLevelChanges);
+
+                experiencceLevel.State = EntityState.Modified;
+
+                _context.SaveChanges();
+                return experienceLevelChanges;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error in ExperienceLevel Update Methode in Sql Repository" + ex);
+                return null;
+            }
+            
         }
   
     

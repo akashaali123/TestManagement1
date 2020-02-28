@@ -51,7 +51,7 @@ namespace TestManagement1.Presenter
         }
 
 
-        public TblCategory Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -61,11 +61,23 @@ namespace TestManagement1.Presenter
             {
 
                 _logger.LogError("Error in Category Delete Methode in CategoryPresenter" + ex);
-                return null;
+                return false;
             }
         }
 
+        public TblCategory Update(CategoryViewModel categoryModel, int id)
+        {
+            try
+            {
+                return (_repository.Update(categoryModel,id));
+            }
+            catch (Exception ex)
+            {
 
+                _logger.LogError("Error in Category Update Methode in CategoryPresenter" + ex);
+                return null;
+            }
+        }
 
     }
 }

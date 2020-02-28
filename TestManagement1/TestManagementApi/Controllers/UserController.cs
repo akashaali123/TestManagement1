@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
+using TestManagementCore.Email_Services;
 using TestManagementCore.Presenter;
 using TestManagementCore.SessionManager;
 using TestManagementCore.ViewModel;
@@ -23,13 +24,13 @@ namespace TestManagementApi.Controllers
         // private readonly IUser _userRepository; //User Repository Object
         UserPresenter userPresenter;
 
-       
+        private readonly IEmailSender _emailSender;
 
-        public UserController(IWebHostEnvironment webHostEnvironment,  IUser repository, ILogger<UserPresenter> logger) : base(webHostEnvironment, logger)
+        public UserController(IWebHostEnvironment webHostEnvironment,  IUser repository, ILogger<UserPresenter> logger, IEmailSender emailSender) : base(webHostEnvironment, logger)
         {
             userPresenter = new UserPresenter(webHostEnvironment, repository, logger);
 
-            
+            _emailSender = emailSender;
 
         }
 
@@ -52,10 +53,38 @@ namespace TestManagementApi.Controllers
             
 
             var user = await userPresenter.PostApplicationUser(model);
+
+            //For confirmation Account Via Email
+            if (user != null)
+            {
+               //generate url with token and send to the user
+                var callback = Url.Action("ConfirmEmail", "User", new { email = model.email, token = user }, Request.Scheme);
+
+                var message = new Message(new string[] { model.email }, "Account Confirmation link", "Account Confirmation Link " + callback);
+                _emailSender.SendEmail(message);
+
+            }
+
+
             return helperMethode(user, "user");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
         }
         #endregion
+
+
+        //when user register their account it generate the url for confirm email
+        //whe he hit url this api is call and account is confirm
+        [HttpGet]
+        [Route("/user/confirmemail")]
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        {
+            var confirmEmail = await userPresenter.ConfirmEmail(email, token);
+
+            return helperMethode(confirmEmail, "confirmemail");
+        }
+
+
+
 
 
 
@@ -288,6 +317,43 @@ namespace TestManagementApi.Controllers
         }
 
 
+        [HttpPost]
+        [Route("/user/forgotpassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            var token = await userPresenter.ForgotPassword(model);
+            if (token != null)
+            {
+                 //Generate url with token for reset password send the user email
+                var callback = Url.Action("ResetPassword", "User", new { email = model.Email, token = token }, Request.Scheme);
+
+                var message = new Message(new string[] { model.Email }, "ResetPasswordlink", "Reset password token " + callback);
+                _emailSender.SendEmail(message);
+
+            }
+
+            return helperMethode(token, "token");
+        }
+
+
+
+        //when user click the url form is open having two field password and confirm password
+        //we get password these two fields and token,email get by their url and post the request 
+        
+        [HttpPost]
+        [Route("/user/resetpassword")]
+        public async Task<IActionResult> ResetPassword(string email , string token, PasswordModelBinding modelBinding)
+        {
+          
+            
+            //model.Email = email;
+            //model.Token = token;
+            var model = new ResestPasswordViewModel { Email = email, Token = token,Password = modelBinding.Password,ConfirmPassword=modelBinding.ConfirmPassword };
+
+            var resetPasswordEmail = await userPresenter.ResetPassword(model);
+
+            return helperMethode(resetPasswordEmail, "resetpasswordemail");
+        }
 
 
     }

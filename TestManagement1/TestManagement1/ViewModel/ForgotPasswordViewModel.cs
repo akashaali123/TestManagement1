@@ -4,16 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestManagement1.ViewModel
+namespace TestManagementCore.ViewModel
 {
-    public class CategoryViewModel
+    public class ForgotPasswordViewModel
     {
-     
-
 
         [Required]
-        [StringLength(250)]
-        public string Name { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
     }
 }

@@ -215,10 +215,10 @@ namespace TestManagementApi.Controllers
         [HttpPut]
         [Route("/candidate/update")]
         //PUT:  api/Candidate/update
-        public IActionResult Update(CandidateViewModel candidateChanges)
+        public IActionResult Update(CandidateViewModel candidateChanges,int id)
         {
             
-            var candidate = cp.Update(candidateChanges);
+            var candidate = cp.Update(candidateChanges,id);
             return helperMethode(candidate, "candidate");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
 

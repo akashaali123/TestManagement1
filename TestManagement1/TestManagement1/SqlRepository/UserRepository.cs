@@ -18,6 +18,8 @@ using System.Collections;
 using Microsoft.AspNetCore.Http;
 using TestManagementCore.SessionManager;
 using TestManagementCore.Model;
+using TestManagementCore.Email_Services;
+
 
 namespace TestManagement1.SqlRepository
 {
@@ -34,6 +36,9 @@ namespace TestManagement1.SqlRepository
         SessionManager sessionManager;
 
        private readonly TestManagementContext _context;
+
+
+       
 
         //For Session
         //private readonly IHttpContextAccessor _httpContextAccessor;
@@ -55,6 +60,7 @@ namespace TestManagement1.SqlRepository
           sessionManager =   new SessionManager(httpContextAccessor);
             _context = context;
 
+           
         }
        
        
@@ -210,7 +216,11 @@ namespace TestManagement1.SqlRepository
                
                 if(result.Succeeded)
                 {
+                    //when account create SuccessFully its genarate the token
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(applicationUser);
+
                     
+                    //Find Role
                     var role = await _roleManager.FindByIdAsync(model.roleId);
                     if (role == null)
                     {
@@ -225,8 +235,11 @@ namespace TestManagement1.SqlRepository
                             IdentityResult identityResult = null;
                             
                             identityResult = await _userManager.AddToRoleAsync(applicationUser, role.Name);
-                            if(identityResult.Succeeded)
+
+                            //If role verifier assigned to User
+                            if (identityResult.Succeeded) 
                             {
+                                //We map it TblVerifierCategoryAndRole
                                 TblVerifierCategoryAndRole map = new TblVerifierCategoryAndRole
                                 {
                                     UserId = applicationUser.Id,
@@ -235,7 +248,8 @@ namespace TestManagement1.SqlRepository
                                 };
                                 _context.TblVerifierCategoryAndRole.Add(map);
                                 _context.SaveChanges();
-                                return new { message = "Role verifier is Assigned and user created" };
+                                
+                                return token; //return Token For Email Confirmation
                             }
                             else
                             {
@@ -248,11 +262,12 @@ namespace TestManagement1.SqlRepository
                         }
                         else
                         {
+                           //if role is other than verifier
 
                             IdentityResult identityResult = null;
                             
                             identityResult = await _userManager.AddToRoleAsync(applicationUser, role.Name);
-                            return new { message = "Role is Assigned and user is created" };
+                            return token; //return Token For Email Confirmation
                         }
 
                         
@@ -269,11 +284,48 @@ namespace TestManagement1.SqlRepository
             catch (Exception ex)
             {
 
-                return new { message = "Exception found in User repository PostApplication (Will change it later) : " + ex };
+                return new { message = "Exception found in User repository PostApplication  " + ex };
             }
         }
 
 
+
+
+        //If confirmation Email send to the user and it hit the url so this function is called
+        public async Task<object> ConfirmEmail(string email,string token)
+        {
+            //take email and token from the url which we send to the user
+            try
+            {
+                if (email == null || token == null)
+                {
+                    return new { message = "Invalid Token Or Email" };
+                }
+
+                //Find user by their url mail
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return new { message = "Invalid Email" };
+                }
+
+                //confirm mail 
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (result.Succeeded)
+                {
+                    return new { message = "Email Confirmed Successfully" };
+                }
+
+                return new { message = "Email can not be Confirmed" };
+            }
+            catch (Exception ex)
+            {
+                return new { message = "Exception found in User repository ConfirmEmail  " + ex };
+
+            }
+           
+        }
 
 
 
@@ -540,12 +592,80 @@ namespace TestManagement1.SqlRepository
             catch (Exception)
             {
 
-               
                 return null;
+
             }
           
         }
 
+
+        //when user enter its mail through forget password
+        public async Task<object> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                //find user by their mail
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    //generate token for reset password
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
+
+                    return token;
+
+                }
+                else
+                {
+                    return new {message = "Invalid Email" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository ForgotPassword   " + ex };
+            }
+           
+        }
+
+
+        //If reset password send to the user and it hit the url so this function is called
+        //open new page where two field set password and confirm password
+        public async Task<object> ResetPassword(ResestPasswordViewModel model)
+        {
+            try
+            {
+                //Find user by mail and mail get through the url
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    //set  reset password
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return new { message = "Reset Password Successfully" };
+                    }
+                    else
+                    {
+                        return new { message = "Invalid Token" };
+                    }
+
+
+
+                }
+                else
+                {
+                    return new { message = "Invalid Email" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository ResetPassword   " + ex };
+            }
+           
+        
+        }
 
 
 

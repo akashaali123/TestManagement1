@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCategory Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -77,12 +78,12 @@ namespace TestManagement1.SqlRepository
                     _context.SaveChanges();
                 }
 
-                return category;
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error in Category Delete Methode in Sql Repository" +ex);
-                return null; 
+                return false; 
             }
            
         }
@@ -131,9 +132,28 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCategory Update(CategoryViewModel category)
+        public TblCategory Update(CategoryViewModel categoryModel,int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var categoryChanges = _context.TblCategory.Where(e => e.CategoryId == id).SingleOrDefault();
+
+                categoryChanges.Name = categoryModel.Name;
+                categoryChanges.UpdatedBy = GetUserId();
+                categoryChanges.UpdatedDate = DateTime.Today;
+
+                var category = _context.TblCategory.Attach(categoryChanges);
+                category.State = EntityState.Modified;
+                _context.SaveChanges();
+                return categoryChanges;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Category Update Methde in Sql Repository" + ex);
+                return null;
+            }
+            
         }
     
     

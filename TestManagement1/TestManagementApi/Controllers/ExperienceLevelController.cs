@@ -164,7 +164,17 @@ namespace TestManagementApi.Controllers
         #endregion
 
 
+        [HttpPut]
+        [Route("/experiencelevel/update")]
+        //DELETE : api/ExperienceLevel/Delete
+        public IActionResult Update(ExperienceLevelViewModel experienceLevelModel, int id)
+        {
 
+            var experience = exP.Update(experienceLevelModel,id);
+            return helperMethode(experience, "experience");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
+
+        }
 
 
 

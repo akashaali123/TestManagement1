@@ -189,5 +189,53 @@ namespace TestManagementCore.Presenter
           
         }
 
+        public async Task<object> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                return await _repository.ForgotPassword(model);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ForgotPassword Methode in UserPresenter" + ex);
+                return null;
+            }
+           
+        }
+
+        public async Task<object> ResetPassword(ResestPasswordViewModel model)
+        {
+            try
+            {
+                return await _repository.ResetPassword(model);
+            }
+            catch (Exception ex)
+            {
+
+
+                _logger.LogError("Error in User ResetPassword Methode in UserPresenter" + ex);
+                return null;
+            }
+           
+        }
+
+        public async Task<object> ConfirmEmail(string email, string token)
+        {
+            try
+            {
+                return await _repository.ConfirmEmail(email, token);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ConfirmEmail Methode in UserPresenter" + ex);
+                return null;
+            }
+            
+        }
+
+
+
     }
 }

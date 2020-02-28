@@ -66,11 +66,11 @@ namespace TestManagementApi
 
 
             services.AddIdentity<TblUser, IdentityRole>()
-                  .AddEntityFrameworkStores<TestManagementContext>();
+                  .AddEntityFrameworkStores<TestManagementContext>()
+                  .AddDefaultTokenProviders();
 
-           
-            
-            
+
+
             services.Configure<IdentityOptions>(option =>
             {
                 option.Password.RequireDigit = false;

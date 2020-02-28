@@ -152,6 +152,17 @@ namespace TestManagementApi.Controllers
 
 
 
+        [HttpPut]
+        [Route("/category/update")]
+        public IActionResult Update(CategoryViewModel categoryModel, int id)
+        {
+
+
+            var category = cp.Update(categoryModel, id);
+            return helperMethode(category, "category");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
+
+        }
 
 
 

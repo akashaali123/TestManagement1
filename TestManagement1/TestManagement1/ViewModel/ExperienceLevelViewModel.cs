@@ -8,7 +8,7 @@ namespace TestManagement1.ViewModel
 {
     public class ExperienceLevelViewModel
     {
-        public int Id { get; set; }
+       
 
         [Required]
         [StringLength(250)]

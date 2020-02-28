@@ -51,7 +51,7 @@ namespace TestManagement1.Presenter
             }
         }
 
-        public TblExperienceLevel Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -61,11 +61,24 @@ namespace TestManagement1.Presenter
             {
 
                 _logger.LogError("Error in ExperienceLevel Delete Methode in ExperienceLevelPresenter" + ex);
+                return false;
+            }
+        }
+
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel, int id)
+        {
+            try
+            {
+                return _repository.Update(experienceLevelModel,id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in ExperienceLevel Update Methode in ExperienceLevelPresenter" + ex);
                 return null;
             }
         }
 
-    
-    
+
     }
 }

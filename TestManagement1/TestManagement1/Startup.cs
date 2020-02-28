@@ -73,7 +73,8 @@ namespace TestManagement1
 
             //Use Identity
             services.AddIdentity<TblUser, IdentityRole>()
-                    .AddEntityFrameworkStores<TestManagementContext>();
+                    .AddEntityFrameworkStores<TestManagementContext>()
+                    .AddDefaultTokenProviders();
 
             //For Session Create of User id
 

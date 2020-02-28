@@ -12,9 +12,9 @@ namespace TestManagement1.RepositoryInterface
         TblCandidate GetCandidate(int id);
         IEnumerable<TblCandidate> GetAllCandidate();
 
-       TblCandidate Update(CandidateViewModel candidateChanges);
+        public TblCandidate Update(CandidateViewModel candidateModel, int id);
 
-        TblCandidate Delete(int id);
+        public bool Delete(int id);
 
         TblCandidate Add(CandidateViewModel candidateModel);
 

@@ -66,10 +66,10 @@ namespace TestManagement1.Presenter
             }            
         }
 
-       
-        
-        
-        public TblCandidate Delete(int id)
+
+
+
+        public bool Delete(int id)
         {
             try
             {
@@ -78,16 +78,16 @@ namespace TestManagement1.Presenter
             catch (Exception ex)
             {
                 _logger.LogError("Error in Candidate Delete Methode in CandidatePresenter" + ex);
-                return null;
+                return false;
             }            
         }
 
 
-        public TblCandidate Update(CandidateViewModel candidateChanges)
+        public TblCandidate Update(CandidateViewModel candidateModel, int id)
         {
             try
             {
-                return _repository.Update(candidateChanges);
+                return _repository.Update(candidateModel,id);
             }
             catch (Exception ex)
             {
