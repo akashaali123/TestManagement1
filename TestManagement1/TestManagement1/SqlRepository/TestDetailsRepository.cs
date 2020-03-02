@@ -15,7 +15,13 @@ namespace TestManagementCore.SqlRepository
 {
     public class TestDetailsRepository : BaseRepository<TestDetailsRepository>, ITestDetails
     {
-        public TestDetailsRepository(TestManagementContext context, ILogger<TestDetailsRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context, logger, httpContextAccessor, trigger)
+        public TestDetailsRepository(TestManagementContext context,
+                                     ILogger<TestDetailsRepository> logger,
+                                     IHttpContextAccessor httpContextAccessor,
+                                     TriggerClass trigger) :base(context,
+                                                                 logger,
+                                                                 httpContextAccessor,
+                                                                 trigger)
         {
 
         }
@@ -24,9 +30,10 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 //get correct option Id of attempted question and save in array
-                var correctoption = _context.TblOption.Where(e => e.QuestionId == model.QuestionId && e.IsCorrect == true)
-                    .Select(x => x.OptionId)
-                    .ToArray();
+                var correctoption = _context.TblOption.Where(e => e.QuestionId == model.QuestionId &&
+                                                                  e.IsCorrect == true)
+                                                      .Select(x => x.OptionId)
+                                                      .ToArray();
 
 
                 //Convert correctOption Array into , separated string

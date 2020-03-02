@@ -15,7 +15,9 @@ namespace TestManagement1.Presenter
      
         private readonly ICategory _repository;
        
-        public CategoryPresenter(IWebHostEnvironment env, ICategory repository, ILogger<CategoryPresenter> logger):base(env,logger)
+        public CategoryPresenter(IWebHostEnvironment env,
+                                 ICategory repository,
+                                 ILogger<CategoryPresenter> logger):base(env,logger)
         {
             
             _repository = repository;
@@ -65,16 +67,33 @@ namespace TestManagement1.Presenter
             }
         }
 
-        public TblCategory Update(CategoryViewModel categoryModel, int id)
+        public TblCategory Update(CategoryViewModel categoryModel,
+                                  int id)
         {
             try
             {
-                return (_repository.Update(categoryModel,id));
+                return (_repository.Update(categoryModel,
+                                           id));
             }
             catch (Exception ex)
             {
 
                 _logger.LogError("Error in Category Update Methode in CategoryPresenter" + ex);
+                return null;
+            }
+        }
+
+
+        public TblCategory GetById(int id)
+        {
+            try
+            {
+                return (_repository.GetCategory(id));
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Category GetById Methode in CategoryPresenter" + ex);
                 return null;
             }
         }

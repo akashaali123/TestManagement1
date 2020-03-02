@@ -21,12 +21,14 @@ namespace TestManagementApi.Controllers
     [Authorize]
     public class QuestionAndOptionController : BaseController<QuestionAndOptionPresenter>
     {
-        TestManagementContext _context;
+        
         QuestionAndOptionPresenter questionAndOptionPresenter;
-        public QuestionAndOptionController(IWebHostEnvironment webHostEnvironment, IQuestionAndOption repository, ILogger<QuestionAndOptionPresenter> logger, TestManagementContext context) : base(webHostEnvironment, logger)
+        public QuestionAndOptionController(IWebHostEnvironment webHostEnvironment,
+                                           IQuestionAndOption repository, 
+                                           ILogger<QuestionAndOptionPresenter> logger) : base(webHostEnvironment, logger)
         {
-            questionAndOptionPresenter = new QuestionAndOptionPresenter(webHostEnvironment, repository, logger);
-            _context = context;
+           questionAndOptionPresenter = new QuestionAndOptionPresenter(webHostEnvironment, repository, logger);
+            
         }
 
 
@@ -380,9 +382,11 @@ namespace TestManagementApi.Controllers
         
         [HttpGet]
         [Route("/question/getbycatandexp")]
-        public IActionResult GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
+        public IActionResult GetQuestionByCategoryAndExperience(int categoryId,
+                                                                int experienceLevelId)
         {
-            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperience(categoryId, experienceLevelId);
+            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperience(categoryId,
+                                                                                         experienceLevelId);
             return helperMethode(question, "questions");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
         }
@@ -404,9 +408,13 @@ namespace TestManagementApi.Controllers
         
         [HttpGet]
         [Route("/question/getbycatandexpandnum")]
-        public IActionResult GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
+        public IActionResult GetQuestionByCategoryAndExperienceAndNo(int categoryId, 
+                                                                     int experienceLevelId, 
+                                                                     int number)
         {
-            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperienceAndNo(categoryId, experienceLevelId, number);
+            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperienceAndNo(categoryId,
+                                                                                              experienceLevelId,
+                                                                                              number);
             return helperMethode(question, "questions");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
         }
@@ -431,9 +439,11 @@ namespace TestManagementApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("/question/getbyshuffle")]
-        public IActionResult GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number)
+        public IActionResult GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+                                                                                     int number)
         {
-            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperienceAndNumberAndShuffling(candidateId, number);
+            var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperienceAndNumberAndShuffling(candidateId,
+                                                                                                              number);
             return helperMethode(question, "questions");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
         }
@@ -490,6 +500,20 @@ namespace TestManagementApi.Controllers
             //its implementation in base controller
         }
         #endregion
+
+
+
+        [HttpGet]
+        [Route("/question/getquestbyroleandid")]
+        public IActionResult GetQuesByRoleAndId(int id)
+        {
+            var question = questionAndOptionPresenter.GetQuestionByRoleAndId(id);
+            return helperMethode(question, "question");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
+        }
+
+
+
 
 
 

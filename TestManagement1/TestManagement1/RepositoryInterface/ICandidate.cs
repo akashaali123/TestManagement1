@@ -12,13 +12,15 @@ namespace TestManagement1.RepositoryInterface
         TblCandidate GetCandidate(int id);
         IEnumerable<TblCandidate> GetAllCandidate();
 
-        public TblCandidate Update(CandidateViewModel candidateModel, int id);
+        public TblCandidate Update(CandidateViewModel candidateModel,
+                                   int id);
 
         public bool Delete(int id);
 
         TblCandidate Add(CandidateViewModel candidateModel);
 
-        public object JwtForCandidate(int candidateId, int numberOfQuestion);
+        public object JwtForCandidate(int candidateId, 
+                                      int numberOfQuestion);
 
 
 

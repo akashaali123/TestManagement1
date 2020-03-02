@@ -20,7 +20,7 @@ namespace TestManagementCore.ViewModel
         public int questionId { get; set; }
         public string question { get; set; }
 
-        public string category { get; set; }
+        
         //public int optionId { get; set; }
         // public List<string> option { get; set; }
 

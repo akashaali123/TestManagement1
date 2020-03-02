@@ -22,7 +22,9 @@ namespace TestManagementApi.Controllers
 
         TestResultByReviewerPresenter testResultByReviewerPresenter;
 
-        public TestResultByReviewerController(IWebHostEnvironment webHostEnvironment, ITestResultByReviewer repository, ILogger<TestResultByReviewerPresenter> logger) : base(webHostEnvironment, logger)
+        public TestResultByReviewerController(IWebHostEnvironment webHostEnvironment,
+                                              ITestResultByReviewer repository,
+                                              ILogger<TestResultByReviewerPresenter> logger) : base(webHostEnvironment, logger)
         {
             testResultByReviewerPresenter = new TestResultByReviewerPresenter(webHostEnvironment, repository, logger);
         }
@@ -71,7 +73,8 @@ namespace TestManagementApi.Controllers
         
         [HttpGet]
         [Route("/testresult/gettestbydate")]
-        public IActionResult DisplayResultbyDate(DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyDate(DateTime fromDate, 
+                                                 DateTime toDate)
         {
             var result = testResultByReviewerPresenter.DisplayResultbyDate(fromDate, toDate);
             return helperMethode(result, "result");//My helper methode just for standard api response just like status code etc

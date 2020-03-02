@@ -15,7 +15,8 @@ namespace TestManagement1.RepositoryInterface
 
         TblCategory Add(CategoryViewModel category);
 
-        public TblCategory Update(CategoryViewModel categoryModel, int id);
+        public TblCategory Update(CategoryViewModel categoryModel,
+                                  int id);
 
         public bool Delete(int id);
     }

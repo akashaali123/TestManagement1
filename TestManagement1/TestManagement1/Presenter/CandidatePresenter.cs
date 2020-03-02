@@ -24,7 +24,9 @@ namespace TestManagement1.Presenter
 
         private readonly ICandidate _repository;
         
-        public CandidatePresenter(IWebHostEnvironment env, ICandidate repository, ILogger<CandidatePresenter> logger):base(env,logger)
+        public CandidatePresenter(IWebHostEnvironment env,
+                                  ICandidate repository,
+                                  ILogger<CandidatePresenter> logger):base(env,logger)
         {
             //_env = env
             //_logger = logger
@@ -83,11 +85,13 @@ namespace TestManagement1.Presenter
         }
 
 
-        public TblCandidate Update(CandidateViewModel candidateModel, int id)
+        public TblCandidate Update(CandidateViewModel candidateModel,
+                                   int id)
         {
             try
             {
-                return _repository.Update(candidateModel,id);
+                return _repository.Update(candidateModel,
+                                          id);
             }
             catch (Exception ex)
             {
@@ -98,11 +102,30 @@ namespace TestManagement1.Presenter
         }
 
 
-        public object JwtForCandidate(int candidateId, int numberOfQuestion)
+
+        public TblCandidate GetById(int id)
         {
             try
             {
-                return _repository.JwtForCandidate(candidateId,numberOfQuestion);
+                return _repository.GetCandidate(id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate GetById Methode in CandidatePresenter" + ex);
+                return null;
+            }
+        }
+
+
+
+        public object JwtForCandidate(int candidateId,
+                                      int numberOfQuestion)
+        {
+            try
+            {
+                return _repository.JwtForCandidate(candidateId,
+                                                   numberOfQuestion);
             }
             catch (Exception ex)
             {

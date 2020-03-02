@@ -14,7 +14,9 @@ namespace TestManagementCore.Presenter
     {
 
         private readonly ICompany _repository;
-        public CompanyPresenter(IWebHostEnvironment env, ICompany repository, ILogger<CompanyPresenter> logger) : base(env, logger)
+        public CompanyPresenter(IWebHostEnvironment env,
+                                ICompany repository,
+                                ILogger<CompanyPresenter> logger) : base(env, logger)
         {
             _repository = repository;
 

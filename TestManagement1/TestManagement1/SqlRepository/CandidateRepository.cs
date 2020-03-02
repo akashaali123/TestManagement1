@@ -33,7 +33,14 @@ namespace TestManagement1.SqlRepository
         
         private readonly ApplicationSettings _appSettings;//For Jwt
                                                                                                         //For jwt
-        public CandidateRepository(TestManagementContext context, ILogger<CandidateRepository> logger, IOptions<ApplicationSettings> appSettings, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger,httpContextAccessor, trigger)
+        public CandidateRepository(TestManagementContext context,
+                                   ILogger<CandidateRepository> logger,
+                                   IOptions<ApplicationSettings> appSettings,
+                                   IHttpContextAccessor httpContextAccessor,
+                                   TriggerClass trigger) : base(context,
+                                                                logger,
+                                                                httpContextAccessor,
+                                                                trigger)
         {
             //_logger = logger;
             //_context = context;
@@ -156,11 +163,13 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCandidate Update(CandidateViewModel candidateModel,int id)
+        public TblCandidate Update(CandidateViewModel candidateModel,
+                                   int id)
         {
             try
             {
-                var candidateChanges = _context.TblCandidate.Where(e => e.CandidateId == id).SingleOrDefault();
+                var candidateChanges = _context.TblCandidate.Where(e => e.CandidateId == id)
+                                                            .SingleOrDefault();
 
 
                 candidateChanges.FirstName = candidateModel.FirstName;
@@ -191,7 +200,8 @@ namespace TestManagement1.SqlRepository
 
         
 
-        public  object JwtForCandidate(int candidateId,int numberOfQuestion)
+        public  object JwtForCandidate(int candidateId,
+                                       int numberOfQuestion)
         {
             try
             {

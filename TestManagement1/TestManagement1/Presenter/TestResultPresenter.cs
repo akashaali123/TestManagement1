@@ -15,7 +15,9 @@ namespace TestManagementCore.Presenter
 
         private readonly ITestResult _repository;
 
-        public TestResultPresenter(IWebHostEnvironment env, ITestResult repository, ILogger<TestResultPresenter> logger) : base(env, logger)
+        public TestResultPresenter(IWebHostEnvironment env,
+                                   ITestResult repository,
+                                   ILogger<TestResultPresenter> logger) : base(env, logger)
         {
             _repository = repository;
         }
@@ -64,11 +66,13 @@ namespace TestManagementCore.Presenter
             }
             
         }
-        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,
+                                                             DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyDate(fromDate, toDate);
+                return _repository.DisplayResultbyDate(fromDate,
+                                                       toDate);
             }
             catch (Exception ex)
             {
@@ -109,11 +113,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId,
+                                                                                           int experienceLevelId)
         {
             try
             {
-                return _repository.DisplayResultbyPercentageAndCategoryAndExperience(categoryId, experienceLevelId);
+                return _repository.DisplayResultbyPercentageAndCategoryAndExperience(categoryId,
+                                                                                     experienceLevelId);
             }
             catch (Exception ex)
             {
@@ -167,11 +173,13 @@ namespace TestManagementCore.Presenter
             }
            
         }
-        public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId, int experienceId)
+        public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId,
+                                                                              int experienceId)
         {
             try
             {
-                return _repository.DisplayResultbyCategoryAndExperience(categoryId, experienceId);
+                return _repository.DisplayResultbyCategoryAndExperience(categoryId,
+                                                                        experienceId);
             }
             catch (Exception ex)
             {
@@ -181,11 +189,15 @@ namespace TestManagementCore.Presenter
             }
             
         }
-        public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId,
+                                                                         DateTime fromDate,
+                                                                         DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyCategoryFromDate(categoryId, fromDate, toDate);
+                return _repository.DisplayResultbyCategoryFromDate(categoryId,
+                                                                   fromDate,
+                                                                   toDate);
             }
             catch (Exception ex)
             {
@@ -195,11 +207,15 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId,
+                                                                    DateTime fromDate,
+                                                                    DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyExpFromDate(experienceId, fromDate, toDate);
+                return _repository.DisplayResultbyExpFromDate(experienceId,
+                                                              fromDate,
+                                                              toDate);
             }
             catch (Exception ex)
             {
@@ -209,11 +225,17 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId,
+                                                                          int experienceId,
+                                                                          DateTime fromDate,
+                                                                          DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyCatAndExpFromDate(categoryId, experienceId, fromDate, toDate);
+                return _repository.DisplayResultbyCatAndExpFromDate(categoryId,
+                                                                    experienceId,
+                                                                    fromDate,
+                                                                    toDate);
             }
             catch (Exception ex)
             {
@@ -238,11 +260,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status,
+                                                                         int categoryId)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusAndCat(status, categoryId);
+                return _repository.DisplayResultbyTestStatusAndCat(status,
+                                                                   categoryId);
             }
             catch (Exception ex)
             {
@@ -253,11 +277,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status, int experienceId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status,
+                                                                         int experienceId)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusAndExp(status, experienceId);
+                return _repository.DisplayResultbyTestStatusAndExp(status, 
+                                                                   experienceId);
             }
             catch (Exception ex)
             {
@@ -267,11 +293,15 @@ namespace TestManagementCore.Presenter
             }
            
         }
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status,
+                                                                               int experienceId,
+                                                                               int categoryId)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusAndExpAndCat(status, experienceId, categoryId);
+                return _repository.DisplayResultbyTestStatusAndExpAndCat(status,
+                                                                         experienceId,
+                                                                         categoryId);
             }
             catch (Exception ex)
             {
@@ -282,11 +312,15 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status,
+                                                                           DateTime fromDate,
+                                                                           DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusFromDate(status, fromDate, toDate);
+                return _repository.DisplayResultbyTestStatusFromDate(status,
+                                                                     fromDate,
+                                                                     toDate);
             }
             catch (Exception ex)
             {
@@ -297,11 +331,17 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status, int categoryId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status,
+                                                                                 int categoryId,
+                                                                                 DateTime fromDate,
+                                                                                 DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusandCatFromDate(status, categoryId, fromDate, toDate);
+                return _repository.DisplayResultbyTestStatusandCatFromDate(status,
+                                                                           categoryId,
+                                                                           fromDate,
+                                                                           toDate);
             }
             catch (Exception ex)
             {
@@ -312,11 +352,19 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status, int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status,
+                                                                                       int categoryId,
+                                                                                       int experienceId,
+                                                                                       DateTime fromDate,
+                                                                                       DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyTestStatusandCatAndExpFromDate(status, categoryId, experienceId, fromDate, toDate);
+                return _repository.DisplayResultbyTestStatusandCatAndExpFromDate(status,
+                                                                                 categoryId,
+                                                                                 experienceId,
+                                                                                 fromDate,
+                                                                                 toDate);
             }
             catch (Exception ex)
             {
@@ -355,11 +403,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId,
+                                                                                                int experienceLevelId)
         {
             try
             {
-                return _repository.DisplayResultbyTop10PercentageAndCategoryAndExperience(categoryId, experienceLevelId);
+                return _repository.DisplayResultbyTop10PercentageAndCategoryAndExperience(categoryId,
+                                                                                          experienceLevelId);
             }
             catch (Exception ex)
             {
@@ -399,11 +449,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status,
+                                                                              int categoryId)
         {
             try
             {
-                return _repository.DisplayResultbyTop10TestStatusAndCat(status, categoryId);
+                return _repository.DisplayResultbyTop10TestStatusAndCat(status, 
+                                                                        categoryId);
             }
             catch (Exception ex)
             {
@@ -414,11 +466,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status, int experienceId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status,
+                                                                              int experienceId)
         {
             try
             {
-                return _repository.DisplayResultbyTop10TestStatusAndExp(status, experienceId);
+                return _repository.DisplayResultbyTop10TestStatusAndExp(status, 
+                                                                        experienceId);
             }
             catch (Exception ex)
             {
@@ -427,11 +481,15 @@ namespace TestManagementCore.Presenter
             }
             
         }
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status,
+                                                                                    int experienceId,
+                                                                                    int categoryId)
         {
             try
             {
-                return _repository.DisplayResultbyTop10TestStatusAndExpAndCat(status, experienceId, categoryId);
+                return _repository.DisplayResultbyTop10TestStatusAndExpAndCat(status,
+                                                                              experienceId,
+                                                                              categoryId);
             }
             catch (Exception ex)
             {

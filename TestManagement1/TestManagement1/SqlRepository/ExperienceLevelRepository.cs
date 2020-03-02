@@ -17,7 +17,13 @@ namespace TestManagement1.SqlRepository
     {
 
                                                                                                                    //Required For Get Session implementation in baseClass
-        public ExperienceLevelRepository(TestManagementContext context, ILogger<ExperienceLevelRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger,httpContextAccessor, trigger)
+        public ExperienceLevelRepository(TestManagementContext context,
+                                         ILogger<ExperienceLevelRepository> logger,
+                                         IHttpContextAccessor httpContextAccessor,
+                                         TriggerClass trigger) : base(context,
+                                                                       logger,
+                                                                       httpContextAccessor,
+                                                                       trigger)
         {
             
 
@@ -130,11 +136,13 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel,int id)
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel,
+                                         int id)
         {
             try
             {
-                var experienceLevelChanges = _context.TblExperienceLevel.Where(e => e.Id == id).SingleOrDefault();
+                var experienceLevelChanges = _context.TblExperienceLevel.Where(e => e.Id == id)
+                                                                        .SingleOrDefault();
 
                 experienceLevelChanges.Name = experienceLevelModel.Name;
                 experienceLevelChanges.MinExp = experienceLevelModel.MinExp;

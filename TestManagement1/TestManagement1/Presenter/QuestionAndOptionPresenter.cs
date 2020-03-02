@@ -14,7 +14,9 @@ namespace TestManagementCore.Presenter
     public class QuestionAndOptionPresenter: BasePresenter<QuestionAndOptionPresenter>
     {
         private readonly IQuestionAndOption _repository;
-        public QuestionAndOptionPresenter(IWebHostEnvironment env, IQuestionAndOption repository, ILogger<QuestionAndOptionPresenter> logger) : base(env, logger)
+        public QuestionAndOptionPresenter(IWebHostEnvironment env,
+                                          IQuestionAndOption repository,
+                                          ILogger<QuestionAndOptionPresenter> logger) : base(env, logger)
         {
             _repository = repository;
         }
@@ -49,11 +51,13 @@ namespace TestManagementCore.Presenter
 
         }
 
-        public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel, int id)
+        public QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,
+                                                 int id)
         {
             try
             {
-                return _repository.Update(questionAndOptionViewModel, id);
+                return _repository.Update(questionAndOptionViewModel, 
+                                          id);
             }
             catch (Exception ex)
             {
@@ -110,11 +114,13 @@ namespace TestManagementCore.Presenter
 
         }
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId)
+        public List<AllQuestionViewModel> GetQuestionByCategoryAndExperience(int categoryId,
+                                                                             int experienceLevelId)
         {
             try
             {
-                return _repository.GetQuestionByCategoryAndExperience(categoryId, experienceLevelId);
+                return _repository.GetQuestionByCategoryAndExperience(categoryId,
+                                                                      experienceLevelId);
             }
             catch (Exception ex)
             {
@@ -125,11 +131,15 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number)
+        public List<AllQuestionViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId,
+                                                                                  int experienceLevelId,
+                                                                                  int number)
         {
             try
             {
-                return _repository.GetQuestionByCategoryAndExperienceAndNo(categoryId, experienceLevelId, number);
+                return _repository.GetQuestionByCategoryAndExperienceAndNo(categoryId,
+                                                                           experienceLevelId,
+                                                                           number);
             }
             catch (Exception ex)
             {
@@ -141,11 +151,13 @@ namespace TestManagementCore.Presenter
         }
 
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number)
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+                                                                                                         int number)
         {
             try
             {
-                return _repository.GetQuestionByCategoryAndExperienceAndNumberAndShuffling(candidateId, number);
+                return _repository.GetQuestionByCategoryAndExperienceAndNumberAndShuffling(candidateId,
+                                                                                           number);
             }
             catch (Exception ex)
             {
@@ -156,7 +168,7 @@ namespace TestManagementCore.Presenter
 
         }
 
-        public List<QuestionOptionByIdViewModel> GetAllByRole()
+        public List<AllQuestionViewModel> GetAllByRole()
         {
             try
             {
@@ -169,6 +181,25 @@ namespace TestManagementCore.Presenter
                 return null;
             }
         }
+
+
+        public QuestionOptionByIdViewModel GetQuestionByRoleAndId(int id)
+        {
+            try
+            {
+                return _repository.GetQuestionByRoleAndId(id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionPresenter GetQuestionById Methode in QuestionAndOptionPresenter" + ex);
+                return null;
+            }
+
+        }
+
+
+
 
     }
 }

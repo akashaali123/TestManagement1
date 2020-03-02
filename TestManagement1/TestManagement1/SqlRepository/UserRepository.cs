@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Http;
 using TestManagementCore.SessionManager;
 using TestManagementCore.Model;
 using TestManagementCore.Email_Services;
-
+using System.Web;
 
 namespace TestManagement1.SqlRepository
 {
@@ -45,7 +45,12 @@ namespace TestManagement1.SqlRepository
         //private ISession _session => _httpContextAccessor.HttpContext.Session;
 
 
-        public UserRepository(UserManager<TblUser> userManager, SignInManager<TblUser> signInManager, IOptions<ApplicationSettings> appSettings, RoleManager<IdentityRole> roleManager ,IHttpContextAccessor httpContextAccessor, TestManagementContext context)
+        public UserRepository(UserManager<TblUser> userManager,
+                              SignInManager<TblUser> signInManager,
+                              IOptions<ApplicationSettings> appSettings,
+                              RoleManager<IdentityRole> roleManager,
+                              IHttpContextAccessor httpContextAccessor,
+                              TestManagementContext context)
         {
             _userManager = userManager;
 
@@ -57,7 +62,7 @@ namespace TestManagement1.SqlRepository
 
             //For session
             //_httpContextAccessor = httpContextAccessor;
-          sessionManager =   new SessionManager(httpContextAccessor);
+             sessionManager =   new SessionManager(httpContextAccessor);
             _context = context;
 
            
@@ -292,7 +297,8 @@ namespace TestManagement1.SqlRepository
 
 
         //If confirmation Email send to the user and it hit the url so this function is called
-        public async Task<object> ConfirmEmail(string email,string token)
+        public async Task<object> ConfirmEmail(string email,
+                                               string token)
         {
             //take email and token from the url which we send to the user
             try
@@ -358,7 +364,8 @@ namespace TestManagement1.SqlRepository
       
         
         
-        public async Task<object> EditUserInRole(UserRoleViewModel model, string roleId)
+        public async Task<object> EditUserInRole(UserRoleViewModel model, 
+                                                 string roleId)
         {
             try
             {
@@ -505,7 +512,8 @@ namespace TestManagement1.SqlRepository
             
         }
 
-        public async Task<object> UpdateUser(UserViewModelById model,string id)
+        public async Task<object> UpdateUser(UserViewModelById model,
+                                             string id)
         {
             try
             {
@@ -541,7 +549,8 @@ namespace TestManagement1.SqlRepository
         }
 
 
-        public async Task<object> ChangePassword(ChangePasswordViewModel model,string id)
+        public async Task<object> ChangePassword(ChangePasswordViewModel model,
+                                                 string id)
         {
             try
             {
@@ -611,6 +620,8 @@ namespace TestManagement1.SqlRepository
                 {
                     //generate token for reset password
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
+
+                   
 
                     return token;
 

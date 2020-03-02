@@ -15,7 +15,8 @@ namespace TestManagementCore.RepositoryInterface
 
         bool Delete(int id);
 
-        QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,int id);
+        QuestionAndOptionViewModel Update(QuestionAndOptionViewModel questionAndOptionViewModel,
+                                          int id);
 
         
 
@@ -23,14 +24,20 @@ namespace TestManagementCore.RepositoryInterface
 
         public List<AllQuestionViewModel> GetQuestionByCategory(int categoryId);
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperience(int categoryId, int experienceLevelId);
+        public List<AllQuestionViewModel> GetQuestionByCategoryAndExperience(int categoryId,
+                                                                             int experienceLevelId);
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId, int experienceLevelId, int number);
+        public List<AllQuestionViewModel> GetQuestionByCategoryAndExperienceAndNo(int categoryId,
+                                                                                  int experienceLevelId,
+                                                                                  int number);
 
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId, int number);
+        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+                                                                                                         int number);
 
-        public List<QuestionOptionByIdViewModel> GetAllByRole();
+        public List<AllQuestionViewModel> GetAllByRole();
+
+        public QuestionOptionByIdViewModel GetQuestionByRoleAndId(int id);
 
     }
 }

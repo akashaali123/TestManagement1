@@ -17,7 +17,9 @@ namespace TestManagementApi.Controllers
     {
         TestResultPresenter testResultPresenter;
 
-        public TestResultController(IWebHostEnvironment webHostEnvironment, ITestResult repository, ILogger<TestResultPresenter> logger) : base(webHostEnvironment, logger)
+        public TestResultController(IWebHostEnvironment webHostEnvironment,
+                                    ITestResult repository,
+                                    ILogger<TestResultPresenter> logger) : base(webHostEnvironment, logger)
         {
             testResultPresenter = new TestResultPresenter(webHostEnvironment, repository, logger); ;
         }
@@ -118,7 +120,8 @@ namespace TestManagementApi.Controllers
 
         [HttpGet]
         [Route("/test/getbydate")]
-        public IActionResult DisplayResultbyDate(DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyDate(DateTime fromDate,
+                                                 DateTime toDate)
         {
             var result = testResultPresenter.DisplayResultbyDate(fromDate, toDate);
             return helperMethode(result, "result");
@@ -192,9 +195,11 @@ namespace TestManagementApi.Controllers
         #region Get By Percentage Category and Experience
         [HttpGet]
         [Route("/test/getbypercatandexp")]
-        public IActionResult DisplayResultbyPercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        public IActionResult DisplayResultbyPercentageAndCategoryAndExperience(int categoryId, 
+                                                                               int experienceLevelId)
         {
-            var result = testResultPresenter.DisplayResultbyPercentageAndCategoryAndExperience(categoryId, experienceLevelId);
+            var result = testResultPresenter.DisplayResultbyPercentageAndCategoryAndExperience(categoryId, 
+                                                                                               experienceLevelId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -269,9 +274,11 @@ namespace TestManagementApi.Controllers
         #region Get By Cat and Exp
         [HttpGet]
         [Route("/test/getbycatandexp")]
-        public IActionResult DisplayResultbyCategoryAndExperience(int categoryId, int experienceId)
+        public IActionResult DisplayResultbyCategoryAndExperience(int categoryId,
+                                                                  int experienceId)
         {
-            var result = testResultPresenter.DisplayResultbyCategoryAndExperience(categoryId, experienceId);
+            var result = testResultPresenter.DisplayResultbyCategoryAndExperience(categoryId,
+                                                                                  experienceId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -296,9 +303,13 @@ namespace TestManagementApi.Controllers
         /// </returns>
         [HttpGet]
         [Route("/test/getbycatanddate")]
-        public IActionResult DisplayResultbyCategoryFromDate(int categoryId, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyCategoryFromDate(int categoryId,
+                                                             DateTime fromDate,
+                                                             DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyCategoryFromDate(categoryId, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyCategoryFromDate(categoryId,
+                                                                             fromDate,
+                                                                             toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -313,9 +324,13 @@ namespace TestManagementApi.Controllers
         #region Get By Experience And Date
         [HttpGet]
         [Route("/test/getbyexpanddate")]
-        public IActionResult DisplayResultbyExpFromDate(int experienceId, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyExpFromDate(int experienceId,
+                                                        DateTime fromDate, 
+                                                        DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyExpFromDate(experienceId, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyExpFromDate(experienceId,
+                                                                        fromDate,
+                                                                        toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -328,9 +343,15 @@ namespace TestManagementApi.Controllers
         #region Get by Category Experience And Date
         [HttpGet]
         [Route("/test/getbycatexpanddate")]
-        public IActionResult DisplayResultbyCatAndExpFromDate(int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyCatAndExpFromDate(int categoryId,
+                                                              int experienceId, 
+                                                              DateTime fromDate, 
+                                                              DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyCatAndExpFromDate(categoryId, experienceId, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyCatAndExpFromDate(categoryId,
+                                                                              experienceId,
+                                                                              fromDate,
+                                                                              toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -373,9 +394,11 @@ namespace TestManagementApi.Controllers
         /// </returns>
         [HttpGet]
         [Route("/test/getbystaandcat")]
-        public IActionResult DisplayResultbyTestStatusAndCat(string status, int categoryId)
+        public IActionResult DisplayResultbyTestStatusAndCat(string status,
+                                                             int categoryId)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusAndCat(status, categoryId);
+            var result = testResultPresenter.DisplayResultbyTestStatusAndCat(status,
+                                                                             categoryId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -389,9 +412,11 @@ namespace TestManagementApi.Controllers
         #region Get by Status and Experince
         [HttpGet]
         [Route("/test/getbystaandexp")]
-        public IActionResult DisplayResultbyTestStatusAndExp(string status, int experienceId)
+        public IActionResult DisplayResultbyTestStatusAndExp(string status,
+                                                             int experienceId)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusAndExp(status, experienceId);
+            var result = testResultPresenter.DisplayResultbyTestStatusAndExp(status,
+                                                                             experienceId);
             return helperMethode(result, "result");
 
         }
@@ -406,9 +431,13 @@ namespace TestManagementApi.Controllers
         #region Get by Status Experience And Category
         [HttpGet]
         [Route("/test/getbystaandexpandcat")]
-        public IActionResult DisplayResultbyTestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        public IActionResult DisplayResultbyTestStatusAndExpAndCat(string status,
+                                                                   int experienceId,
+                                                                   int categoryId)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusAndExpAndCat(status, experienceId, categoryId);
+            var result = testResultPresenter.DisplayResultbyTestStatusAndExpAndCat(status,
+                                                                                   experienceId,
+                                                                                   categoryId);
             return helperMethode(result, "result");
         }
 
@@ -432,9 +461,13 @@ namespace TestManagementApi.Controllers
         /// </returns>
         [HttpGet]
         [Route("/test/getbystaanddate")]
-        public IActionResult DisplayResultbyTestStatusFromDate(string status, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyTestStatusFromDate(string status,
+                                                               DateTime fromDate,
+                                                               DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusFromDate(status, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyTestStatusFromDate(status,
+                                                                               fromDate,
+                                                                               toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -457,9 +490,15 @@ namespace TestManagementApi.Controllers
         /// </returns>
         [HttpGet]
         [Route("/test/getbystacatanddate")]
-        public IActionResult DisplayResultbyTestStatusandCatFromDate(string status, int categoryId, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyTestStatusandCatFromDate(string status,
+                                                                     int categoryId,
+                                                                     DateTime fromDate,
+                                                                     DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusandCatFromDate(status, categoryId, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyTestStatusandCatFromDate(status,
+                                                                                     categoryId,
+                                                                                     fromDate, 
+                                                                                     toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -472,9 +511,17 @@ namespace TestManagementApi.Controllers
         #region Get byb status Category Experience and date
         [HttpGet]
         [Route("/test/getbystaexpcatanddate")]
-        public IActionResult DisplayResultbyTestStatusandCatAndExpFromDate(string status, int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        public IActionResult DisplayResultbyTestStatusandCatAndExpFromDate(string status,
+                                                                           int categoryId,
+                                                                           int experienceId,
+                                                                           DateTime fromDate,
+                                                                           DateTime toDate)
         {
-            var result = testResultPresenter.DisplayResultbyTestStatusandCatAndExpFromDate(status, categoryId, experienceId, fromDate, toDate);
+            var result = testResultPresenter.DisplayResultbyTestStatusandCatAndExpFromDate(status,
+                                                                                           categoryId,
+                                                                                           experienceId,
+                                                                                           fromDate,
+                                                                                           toDate);
             return helperMethode(result, "result");
         }
         #endregion
@@ -537,9 +584,11 @@ namespace TestManagementApi.Controllers
         #region Get Top10 Percentage Category And Experience
         [HttpGet]
         [Route("/test/top10perandcatexp")]
-        public IActionResult DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        public IActionResult DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId,
+                                                                                    int experienceLevelId)
         {
-            var result = testResultPresenter.DisplayResultbyTop10PercentageAndCategoryAndExperience(categoryId, experienceLevelId);
+            var result = testResultPresenter.DisplayResultbyTop10PercentageAndCategoryAndExperience(categoryId,
+                                                                                                    experienceLevelId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -603,9 +652,11 @@ namespace TestManagementApi.Controllers
 
         [HttpGet]
         [Route("/test/top10statusandcat")]
-        public IActionResult DisplayResultbyTop10TestStatusAndCat(string status, int categoryId)
+        public IActionResult DisplayResultbyTop10TestStatusAndCat(string status,
+                                                                  int categoryId)
         {
-            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndCat(status, categoryId);
+            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndCat(status,
+                                                                                  categoryId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -619,9 +670,11 @@ namespace TestManagementApi.Controllers
         #region Get Top10 Status and Experience
         [HttpGet]
         [Route("/test/top10statusandexp")]
-        public IActionResult DisplayResultbyTop10TestStatusAndExp(string status, int experienceId)
+        public IActionResult DisplayResultbyTop10TestStatusAndExp(string status,
+                                                                  int experienceId)
         {
-            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndExp(status, experienceId);
+            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndExp(status,
+                                                                                  experienceId);
             return helperMethode(result, "result");
         }
         #endregion
@@ -636,9 +689,13 @@ namespace TestManagementApi.Controllers
         #region Get Top10 Status Category And Experience
         [HttpGet]
         [Route("/test/top10statuscatexp")]
-        public IActionResult DisplayResultbyTop10TestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        public IActionResult DisplayResultbyTop10TestStatusAndExpAndCat(string status,
+                                                                        int experienceId,
+                                                                        int categoryId)
         {
-            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndExpAndCat(status, experienceId, categoryId);
+            var result = testResultPresenter.DisplayResultbyTop10TestStatusAndExpAndCat(status,
+                                                                                        experienceId,
+                                                                                        categoryId);
             return helperMethode(result, "result");
         }
         #endregion

@@ -16,7 +16,8 @@ namespace TestManagementCore.RepositoryInterface
 
         public List<TestQuestionOptionViewModel> DisplayCandidateQuestion(int candidateId);
 
-        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate, DateTime toDate);
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,
+                                                             DateTime toDate);
 
         public List<TestResultViewModel> DisplayResultbyPercentage();
 

@@ -27,7 +27,9 @@ namespace TestManagementApi.Controllers
         CategoryPresenter cp;
         
 
-        public CategoryController(IWebHostEnvironment webHostEnvironment, ICategory repository, ILogger<CategoryPresenter> logger) : base(webHostEnvironment, logger)
+        public CategoryController(IWebHostEnvironment webHostEnvironment,
+                                  ICategory repository, 
+                                  ILogger<CategoryPresenter> logger) : base(webHostEnvironment, logger)
         {
             
             cp = new CategoryPresenter(webHostEnvironment, repository, logger);
@@ -164,6 +166,19 @@ namespace TestManagementApi.Controllers
 
         }
 
+
+
+        [HttpPut]
+        [Route("/category/getbyid")]
+        public IActionResult GetById(int id)
+        {
+
+
+            var category = cp.GetById(id);
+            return helperMethode(category, "category");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
+
+        }
 
 
 

@@ -14,7 +14,9 @@ namespace TestManagementCore.Presenter
     {
 
         ITestResultByReviewer _repository;
-        public TestResultByReviewerPresenter(IWebHostEnvironment env, ITestResultByReviewer repository, ILogger<TestResultByReviewerPresenter> logger) : base(env, logger)
+        public TestResultByReviewerPresenter(IWebHostEnvironment env,
+                                             ITestResultByReviewer repository,
+                                             ILogger<TestResultByReviewerPresenter> logger) : base(env, logger)
         {
             _repository = repository;
         }
@@ -72,11 +74,13 @@ namespace TestManagementCore.Presenter
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,
+                                                             DateTime toDate)
         {
             try
             {
-                return _repository.DisplayResultbyDate(fromDate, toDate);
+                return _repository.DisplayResultbyDate(fromDate,
+                                                       toDate);
             }
             catch (Exception ex)
             {

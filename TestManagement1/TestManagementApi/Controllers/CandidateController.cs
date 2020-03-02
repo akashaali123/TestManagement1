@@ -28,7 +28,9 @@ namespace TestManagementApi.Controllers
         CandidatePresenter cp;
         
 
-        public CandidateController(IWebHostEnvironment webHostEnvironment, ICandidate repository, ILogger<CandidatePresenter> logger) : base(webHostEnvironment, logger)
+        public CandidateController(IWebHostEnvironment webHostEnvironment,
+                                   ICandidate repository,
+                                   ILogger<CandidatePresenter> logger) : base(webHostEnvironment, logger)
         {
             //_webHostEnvironment = webHostEnviroment;
             //_Logger = Logger;
@@ -251,6 +253,15 @@ namespace TestManagementApi.Controllers
             return helperMethode(jwt,"jwttoken");
         }
 
+
+
+        [HttpGet]
+        [Route("/candidate/getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var candidate = cp.GetById(id);
+            return helperMethode(candidate, "candidate");
+        }
 
 
     }

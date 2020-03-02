@@ -26,7 +26,10 @@ namespace TestManagement1.SqlRepository
         protected readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public BaseRepository(TestManagementContext context, ILogger<T> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger)
+        public BaseRepository(TestManagementContext context, 
+                              ILogger<T> logger,
+                              IHttpContextAccessor httpContextAccessor,
+                              TriggerClass trigger)
         {
             _context = context;
             _logger = logger;
@@ -40,14 +43,22 @@ namespace TestManagement1.SqlRepository
 
         public string GetUserId()
         {
-            string userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userid").Value;
+            string userId = _httpContextAccessor.HttpContext
+                                                .User
+                                                .Claims.
+                                                FirstOrDefault(c => c.Type == "userid")
+                                                .Value;
             return userId;
         }
 
 
         public string GetRoleId()
         {
-            string userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "roleid").Value;
+            string userId = _httpContextAccessor.HttpContext
+                                                .User
+                                                .Claims
+                                                .FirstOrDefault(c => c.Type == "roleid")
+                                                .Value;
             return userId;
         }
 

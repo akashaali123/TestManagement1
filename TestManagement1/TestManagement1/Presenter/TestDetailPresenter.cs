@@ -15,7 +15,9 @@ namespace TestManagementCore.Presenter
     {
 
         private readonly ITestDetails _repository;
-        public TestDetailPresenter(IWebHostEnvironment env, ITestDetails repository, ILogger<TestDetailPresenter> logger) : base(env, logger)
+        public TestDetailPresenter(IWebHostEnvironment env,
+                                   ITestDetails repository,
+                                   ILogger<TestDetailPresenter> logger) : base(env, logger)
         {
             _repository = repository;
         }

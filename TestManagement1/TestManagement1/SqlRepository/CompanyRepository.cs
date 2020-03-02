@@ -14,7 +14,13 @@ namespace TestManagementCore.SqlRepository
 {
     public class CompanyRepository: BaseRepository<CompanyRepository>, ICompany
     {
-        public CompanyRepository(TestManagementContext context, ILogger<CompanyRepository> logger, IHttpContextAccessor httpContextAccessor,TriggerClass trigger) : base(context, logger, httpContextAccessor, trigger)
+        public CompanyRepository(TestManagementContext context,
+                                 ILogger<CompanyRepository> logger,
+                                 IHttpContextAccessor httpContextAccessor,
+                                 TriggerClass trigger) :base(context,
+                                                             logger,
+                                                             httpContextAccessor,
+                                                             trigger)
         {
 
         }

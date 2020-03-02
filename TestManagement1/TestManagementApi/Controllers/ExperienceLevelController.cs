@@ -27,7 +27,9 @@ namespace TestManagementApi.Controllers
 
         
 
-        public ExperienceLevelController(IWebHostEnvironment webHostEnvironment, IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger) : base(webHostEnvironment, logger)
+        public ExperienceLevelController(IWebHostEnvironment webHostEnvironment,
+                                         IExperienceLevel repository, 
+                                         ILogger<ExperienceLevelPresenter> logger) : base(webHostEnvironment, logger)
         {
             
             exP = new ExperienceLevelPresenter(webHostEnvironment, repository, logger);
@@ -178,7 +180,17 @@ namespace TestManagementApi.Controllers
 
 
 
+        [HttpDelete]
+        [Route("/experiencelevel/getbyid")]
+        //DELETE : api/ExperienceLevel/Delete
+        public IActionResult GetById(int id)
+        {
 
+            var experience = exP.GetById(id);
+            return helperMethode(experience, "experience");//My helper methode just for standard api response just like status code etc
+            //its implementation in base controller
+
+        }
 
 
 

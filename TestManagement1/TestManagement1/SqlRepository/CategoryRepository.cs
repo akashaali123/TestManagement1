@@ -18,7 +18,13 @@ namespace TestManagement1.SqlRepository
        
 
         // IHttpContextAccessor Required For Get Session implementation in baseClass
-        public CategoryRepository(TestManagementContext context, ILogger<CategoryRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) :base(context,logger, httpContextAccessor, trigger)
+        public CategoryRepository(TestManagementContext context,
+                                  ILogger<CategoryRepository> logger,
+                                  IHttpContextAccessor httpContextAccessor,
+                                  TriggerClass trigger) :base(context,
+                                                              logger,
+                                                              httpContextAccessor,
+                                                              trigger)
         {
            
         }
@@ -132,11 +138,13 @@ namespace TestManagement1.SqlRepository
         
         
         
-        public TblCategory Update(CategoryViewModel categoryModel,int id)
+        public TblCategory Update(CategoryViewModel categoryModel,
+                                  int id)
         {
             try
             {
-                var categoryChanges = _context.TblCategory.Where(e => e.CategoryId == id).SingleOrDefault();
+                var categoryChanges = _context.TblCategory.Where(e => e.CategoryId == id)
+                                                          .SingleOrDefault();
 
                 categoryChanges.Name = categoryModel.Name;
                 categoryChanges.UpdatedBy = GetUserId();

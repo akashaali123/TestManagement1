@@ -18,7 +18,14 @@ namespace TestManagementCore.SqlRepository
     {
 
         private readonly IEmailSender _emailSender;
-        public TestResultRepository(TestManagementContext context, ILogger<TestResultRepository> logger, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, TriggerClass trigger) :base(context, logger, httpContextAccessor, trigger)
+        public TestResultRepository(TestManagementContext context,
+                                    ILogger<TestResultRepository> logger,
+                                    IHttpContextAccessor httpContextAccessor,
+                                    IEmailSender emailSender,
+                                    TriggerClass trigger) :base(context,
+                                                                logger,
+                                                                httpContextAccessor,
+                                                                trigger)
         {
             _emailSender = emailSender;
         }
@@ -141,13 +148,19 @@ namespace TestManagementCore.SqlRepository
                         }
 
                         //Get the candidate Name whose Finish the Test which is use to send in  Email
-                        var candidateInfo = _context.TblCandidate.Where(e => e.CandidateId == postTest.CandidateId)
-                                                                    .Select(x=>new { x.FirstName,x.CreatedBy })
-                                                                    .SingleOrDefault();
+                        var candidateInfo = _context.TblCandidate
+                            .Where(e => e.CandidateId == postTest.CandidateId)
+                            .Select(x => new
+                            {
+                                x.FirstName,
+                                x.CreatedBy
+                            })
+                            .SingleOrDefault();
 
 
                         string sendEmailAdmin = _context.Users.Where(e => e.Id == candidateInfo.CreatedBy)
-                                                              .Select(x => x.Email).SingleOrDefault();
+                                                              .Select(x => x.Email)
+                                                              .SingleOrDefault();
 
 
                         _context.TblTest.Add(postTest);
@@ -332,7 +345,8 @@ namespace TestManagementCore.SqlRepository
 
 
 
-        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,
+                                                             DateTime toDate)
         {
             try
             {
@@ -448,11 +462,13 @@ namespace TestManagementCore.SqlRepository
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId,int experienceLevelId)
+        public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId,
+                                                                                           int experienceLevelId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceLevelId)
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId &&
+                                                       e.ExpLevelId == experienceLevelId)
                .Select(x => new TestResultMapModel//select statement give anonyms type so we map it in TestResultMapModel
                {
                    candidateId = x.CandidateId,
@@ -600,11 +616,13 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId,int experienceId)
+        public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId,
+                                                                              int experienceId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceId)
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && 
+                                                  e.ExpLevelId == experienceId)
                                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                                {
                                    candidateId = x.CandidateId,
@@ -640,12 +658,15 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId,
+                                                                         DateTime fromDate,
+                                                                         DateTime toDate)
         {
             try
             {
                 var test = _context.TblTest
-                     .Where(e => e.CategoryId == categoryId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                     .Where(e => e.CategoryId == categoryId &&
+                                (e.TestDate >= fromDate && e.TestDate <= toDate))
                      .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                      {
                                candidateId = x.CandidateId,
@@ -678,12 +699,15 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId,
+                                                                    DateTime fromDate,
+                                                                    DateTime toDate)
         {
             try
             {
                 var test = _context.TblTest
-               .Where(e => e.ExpLevelId == experienceId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+               .Where(e => e.ExpLevelId == experienceId &&
+                          (e.TestDate >= fromDate && e.TestDate <= toDate))
                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                    candidateId = x.CandidateId,
@@ -718,12 +742,17 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId, int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId,
+                                                                          int experienceId,
+                                                                          DateTime fromDate,
+                                                                          DateTime toDate)
         {
             try
             {
                 var test = _context.TblTest
-                     .Where(e => e.ExpLevelId == experienceId && e.CategoryId == categoryId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                     .Where(e => e.ExpLevelId == experienceId &&
+                                 e.CategoryId == categoryId && 
+                                (e.TestDate >= fromDate && e.TestDate <= toDate))
                      .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                      {
                                candidateId = x.CandidateId,
@@ -792,11 +821,13 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status,int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status,
+                                                                         int categoryId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.CategoryId == categoryId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.CategoryId == categoryId)
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                     candidateId = x.CandidateId,
@@ -828,11 +859,13 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status, int experienceId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status,
+                                                                         int experienceId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.ExpLevelId == experienceId)
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                     candidateId = x.CandidateId,
@@ -864,11 +897,15 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status, int experienceId,int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status,
+                                                                               int experienceId,
+                                                                               int categoryId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId && e.CategoryId == categoryId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.ExpLevelId == experienceId &&
+                                                       e.CategoryId == categoryId)
                  .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                  {
                      candidateId = x.CandidateId,
@@ -901,11 +938,14 @@ namespace TestManagementCore.SqlRepository
 
 
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status,
+                                                                           DateTime fromDate,
+                                                                           DateTime toDate)
         {
             try
             {
-              var test = _context.TblTest.Where(e => e.TestStatus == status && (e.TestDate >= fromDate && e.TestDate <= toDate))
+              var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                    (e.TestDate >= fromDate && e.TestDate <= toDate))
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 { 
                     candidateId = x.CandidateId,
@@ -939,11 +979,16 @@ namespace TestManagementCore.SqlRepository
 
 
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status,int categoryId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status,
+                                                                                 int categoryId,
+                                                                                 DateTime fromDate,
+                                                                                 DateTime toDate)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.TestStatus == status && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId &&
+                                                       e.TestStatus == status &&
+                                                      (e.TestDate >= fromDate && e.TestDate <= toDate))
                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                    candidateId = x.CandidateId,
@@ -976,11 +1021,18 @@ namespace TestManagementCore.SqlRepository
         }
 
 
-        public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status, int categoryId,int experienceId, DateTime fromDate, DateTime toDate)
+        public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status,
+                                                                                       int categoryId,
+                                                                                       int experienceId,
+                                                                                       DateTime fromDate,
+                                                                                       DateTime toDate)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.TestStatus == status && e.ExpLevelId == experienceId && (e.TestDate >= fromDate && e.TestDate <= toDate))
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId &&
+                                                       e.TestStatus == status && 
+                                                       e.ExpLevelId == experienceId &&
+                                                       (e.TestDate >= fromDate && e.TestDate <= toDate))
                .Select(x => new TestResultMapModel  //select statement give anonyms type so we map it in TestResultMapModel
                 {
                    candidateId = x.CandidateId,
@@ -1084,11 +1136,13 @@ namespace TestManagementCore.SqlRepository
            
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId, int experienceLevelId)
+        public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId,
+                                                                                                int experienceLevelId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.CategoryId == categoryId && e.ExpLevelId == experienceLevelId)
+                var test = _context.TblTest.Where(e => e.CategoryId == categoryId &&
+                                                       e.ExpLevelId == experienceLevelId)
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                     candidateId = x.CandidateId,
@@ -1199,11 +1253,13 @@ namespace TestManagementCore.SqlRepository
 
 
 
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status,
+                                                                              int categoryId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.CategoryId == categoryId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.CategoryId == categoryId)
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                     candidateId = x.CandidateId,
@@ -1235,11 +1291,13 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status, int experienceId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status,
+                                                                              int experienceId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.ExpLevelId == experienceId)
                .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                    candidateId = x.CandidateId,
@@ -1272,11 +1330,15 @@ namespace TestManagementCore.SqlRepository
 
         }
 
-        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status, int experienceId, int categoryId)
+        public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status,
+                                                                                    int experienceId,
+                                                                                    int categoryId)
         {
             try
             {
-                var test = _context.TblTest.Where(e => e.TestStatus == status && e.ExpLevelId == experienceId && e.CategoryId == categoryId)
+                var test = _context.TblTest.Where(e => e.TestStatus == status &&
+                                                       e.ExpLevelId == experienceId &&
+                                                       e.CategoryId == categoryId)
                 .Select(x => new TestResultMapModel //select statement give anonyms type so we map it in TestResultMapModel
                 {
                     candidateId = x.CandidateId,
@@ -1323,14 +1385,25 @@ namespace TestManagementCore.SqlRepository
                 {
                     TestResultViewModel model = new TestResultViewModel();
 
-                    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.candidateId).Select(x => new { x.FirstName, x.CandidateId }).SingleOrDefault();
+                    var candidate = _context.TblCandidate.Where(e => e.CandidateId == item.candidateId)
+                                                         .Select(x => new
+                                                         { 
+                                                             x.FirstName,
+                                                             x.CandidateId
+                                                         })
+                                                         .SingleOrDefault();
+                    
                     model.candidateName = candidate.FirstName;
                     model.candidateId = candidate.CandidateId;
 
-                    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId).Select(x => x.Name).SingleOrDefault();
+                    string categoryName = _context.TblCategory.Where(e => e.CategoryId == item.CategoryId)
+                                                              .Select(x => x.Name)
+                                                              .SingleOrDefault();
                     model.category = categoryName;
 
-                    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId).Select(x => x.Name).SingleOrDefault();
+                    string experience = _context.TblExperienceLevel.Where(e => e.Id == item.ExpLevelId)
+                                                                   .Select(x => x.Name)
+                                                                   .SingleOrDefault();
                     model.experienceLevel = experience;
 
                     model.testDate = item.testDate;

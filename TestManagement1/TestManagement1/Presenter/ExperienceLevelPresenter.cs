@@ -17,7 +17,9 @@ namespace TestManagement1.Presenter
         private readonly IExperienceLevel _repository;
 
        
-        public ExperienceLevelPresenter(IWebHostEnvironment env, IExperienceLevel repository, ILogger<ExperienceLevelPresenter> logger):base(env,logger)
+        public ExperienceLevelPresenter(IWebHostEnvironment env,
+                                        IExperienceLevel repository,
+                                        ILogger<ExperienceLevelPresenter> logger):base(env,logger)
         {
            
             _repository = repository;
@@ -65,16 +67,32 @@ namespace TestManagement1.Presenter
             }
         }
 
-        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel, int id)
+        public TblExperienceLevel Update(ExperienceLevelViewModel experienceLevelModel,
+                                         int id)
         {
             try
             {
-                return _repository.Update(experienceLevelModel,id);
+                return _repository.Update(experienceLevelModel,
+                                          id);
             }
             catch (Exception ex)
             {
 
                 _logger.LogError("Error in ExperienceLevel Update Methode in ExperienceLevelPresenter" + ex);
+                return null;
+            }
+        }
+
+        public TblExperienceLevel GetById(int id)                                         
+        {
+            try
+            {
+                return _repository.GetExperience(id);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in ExperienceLevel GetById Methode in ExperienceLevelPresenter" + ex);
                 return null;
             }
         }

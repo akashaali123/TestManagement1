@@ -22,7 +22,8 @@ namespace TestManagement1.RepositoryInterface
 
         public Task<object> CreateRole(RoleModel model);
 
-        public Task<object> EditUserInRole(UserRoleViewModel model, string roleId);
+        public Task<object> EditUserInRole(UserRoleViewModel model,
+                                           string roleId);
 
         public List<UserListViewModel> UserList();
 
@@ -30,16 +31,19 @@ namespace TestManagement1.RepositoryInterface
 
         public  Task<object> GetUserById(string id);
 
-        public  Task<object> UpdateUser(UserViewModelById model, string id);
+        public  Task<object> UpdateUser(UserViewModelById model,
+                                        string id);
 
-        public  Task<object> ChangePassword(ChangePasswordViewModel model, string id);
+        public  Task<object> ChangePassword(ChangePasswordViewModel model,
+                                            string id);
         public List<RoleViewModel> ListRole();
 
         public  Task<object> ForgotPassword(ForgotPasswordViewModel model);
 
         public  Task<object> ResetPassword(ResestPasswordViewModel model);
 
-        public  Task<object> ConfirmEmail(string email, string token);
+        public  Task<object> ConfirmEmail(string email,
+                                          string token);
 
 
 

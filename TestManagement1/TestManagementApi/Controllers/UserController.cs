@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
 using TestManagementCore.Email_Services;
@@ -26,11 +30,20 @@ namespace TestManagementApi.Controllers
 
         private readonly IEmailSender _emailSender;
 
-        public UserController(IWebHostEnvironment webHostEnvironment,  IUser repository, ILogger<UserPresenter> logger, IEmailSender emailSender) : base(webHostEnvironment, logger)
+        private readonly ApplicationSettings _appSettings;//For Jwt
+
+
+        public UserController(IWebHostEnvironment webHostEnvironment,
+                              IUser repository,
+                              ILogger<UserPresenter> logger,
+                              IEmailSender emailSender,
+                               IOptions<ApplicationSettings> appSettings) : base(webHostEnvironment, logger)
         {
             userPresenter = new UserPresenter(webHostEnvironment, repository, logger);
 
             _emailSender = emailSender;
+
+            _appSettings = appSettings.Value;//For jwt
 
         }
 
@@ -76,9 +89,11 @@ namespace TestManagementApi.Controllers
         //whe he hit url this api is call and account is confirm
         [HttpGet]
         [Route("/user/confirmemail")]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        public async Task<IActionResult> ConfirmEmail(string email,
+                                                      string token)
         {
-            var confirmEmail = await userPresenter.ConfirmEmail(email, token);
+            var confirmEmail = await userPresenter.ConfirmEmail(email,
+                                                                token);
 
             return helperMethode(confirmEmail, "confirmemail");
         }
@@ -153,11 +168,13 @@ namespace TestManagementApi.Controllers
         #region Edit role in User
         [HttpPost]
         [Route("/user/edituserinrole")]
-        public async Task<IActionResult> EditUserInRole(UserRoleViewModel model, string roleId)
+        public async Task<IActionResult> EditUserInRole(UserRoleViewModel model,
+                                                        string roleId)
         {
            
 
-            var editUserInRole = await userPresenter.EditUserInRole(model, roleId);
+            var editUserInRole = await userPresenter.EditUserInRole(model,
+                                                                    roleId);
             return helperMethode(editUserInRole, "editUserInRole");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
         }
@@ -249,10 +266,12 @@ namespace TestManagementApi.Controllers
         #region Update
         [HttpPut]
         [Route("/user/update")]
-        public async Task<IActionResult> Update(UserViewModelById model, string id)
+        public async Task<IActionResult> Update(UserViewModelById model,
+                                                string id)
         {
             
-            var updateUser = await userPresenter.UpdateUser(model, id);
+            var updateUser = await userPresenter.UpdateUser(model,
+                                                            id);
             return helperMethode(updateUser, "user");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
 
@@ -273,10 +292,12 @@ namespace TestManagementApi.Controllers
         #region ChangePassword
         [HttpPost]
         [Route("/user/changepassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model, string id)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model,
+                                                        string id)
         {
            
-            var password = await userPresenter.ChangePassword(model, id);
+            var password = await userPresenter.ChangePassword(model,
+                                                              id);
             return helperMethode(password, "password");//My helper methode just for standard api response just like status code etc
             //its implementation in base controller
 
@@ -324,10 +345,25 @@ namespace TestManagementApi.Controllers
             var token = await userPresenter.ForgotPassword(model);
             if (token != null)
             {
-                 //Generate url with token for reset password send the user email
-                var callback = Url.Action("ResetPassword", "User", new { email = model.Email, token = token }, Request.Scheme);
+                //Generate url with token for reset password send the user email
+                var callback = Url.Action("ResetPassword","User", new { email = model.Email, token = token }, Request.Scheme);
 
-                var message = new Message(new string[] { model.Email }, "ResetPasswordlink", "Reset password token " + callback);
+               // var callback = new Uri(string.Format("{0}{1}/resetpassword?email={2}&token={3}",Request.Scheme, _appSettings.ResetPassword_URL, model.Email, WebUtility.UrlEncode(token.ToString())));
+
+                // string url = string.Format("yoursite/controller/action?userId={0}&code={1}",
+                //HttpUtility.UrlEncode(userId),
+                //HttpUtility.UrlEncode(code));
+                //For http and https both   //has 4200 port Url    //params type email             //params type password    
+
+
+                // var url = Request.Scheme + _appSettings.ResetPassword_URL + "?email=" +HttpUtility.UrlEncode(model.Email) + "&token=" + HttpUtility.UrlEncode(token.ToString());
+
+                //var url = "http://localhost:55377/resetpassword?email=" + model.Email + "&token=" + token;
+
+                //var url = string.Format("{0}{1}?email={2}&token={3}",Request.Scheme,_appSettings.ResetPassword_URL, model.Email,token);
+
+
+                var message = new Message(new string[] {"akashaali2012@gmail.com" }, "ResetPasswordlink", "Reset password token " + callback);
                 _emailSender.SendEmail(message);
 
             }
@@ -341,14 +377,21 @@ namespace TestManagementApi.Controllers
         //we get password these two fields and token,email get by their url and post the request 
         
         [HttpPost]
-        [Route("/user/resetpassword")]
-        public async Task<IActionResult> ResetPassword(string email , string token, PasswordModelBinding modelBinding)
+        [Route("/resetpassword")]
+        public async Task<IActionResult> ResetPassword(string email , 
+                                                        string token,
+                                                        PasswordModelBinding modelBinding)
         {
-          
+
             
-            //model.Email = email;
-            //model.Token = token;
-            var model = new ResestPasswordViewModel { Email = email, Token = token,Password = modelBinding.Password,ConfirmPassword=modelBinding.ConfirmPassword };
+
+            var model = new ResestPasswordViewModel 
+                                { 
+                                    Email = email,
+                                    Token = token,
+                                    Password = modelBinding.Password,
+                                    ConfirmPassword = modelBinding.ConfirmPassword 
+                                };
 
             var resetPasswordEmail = await userPresenter.ResetPassword(model);
 

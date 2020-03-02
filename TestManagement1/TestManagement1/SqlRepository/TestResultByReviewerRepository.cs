@@ -14,7 +14,13 @@ namespace TestManagementCore.SqlRepository
 {
     public class TestResultByReviewerRepository : BaseRepository<TestResultByReviewerRepository>, ITestResultByReviewer
     {
-        public TestResultByReviewerRepository(TestManagementContext context, ILogger<TestResultByReviewerRepository> logger, IHttpContextAccessor httpContextAccessor, TriggerClass trigger) : base(context, logger, httpContextAccessor, trigger)
+        public TestResultByReviewerRepository(TestManagementContext context,
+                                              ILogger<TestResultByReviewerRepository> logger,
+                                              IHttpContextAccessor httpContextAccessor,
+                                              TriggerClass trigger) : base(context,
+                                                                           logger,
+                                                                           httpContextAccessor,
+                                                                           trigger)
         {
 
         }
@@ -82,7 +88,8 @@ namespace TestManagementCore.SqlRepository
 
 
                 var test = _context.TblTest
-                    .Where(e => e.CandidateId == candidateId && e.CategoryId ==Convert.ToInt32(categoryId))
+                    .Where(e => e.CandidateId == candidateId &&
+                                e.CategoryId ==Convert.ToInt32(categoryId))
                     .Select(x => new
                     {
                         x.CandidateId,
@@ -165,9 +172,15 @@ namespace TestManagementCore.SqlRepository
                 var vmList = new List<TestQuestionOptionViewModel>();//Initialize the List of ViewModel Which Return
 
                 //Find Record of Candidate and select its question Id , correct option id and question Id
-                var test = _context.TblTestDetails.Where(e => e.CandidateId == candidateId)
-                    .Select(x => new { x.QuestionId, x.SelectedOptionId, x.CorrectOptionId })
-                    .ToList();
+                var test = _context.TblTestDetails
+                                                .Where(e => e.CandidateId == candidateId)
+                                                .Select(x => new 
+                                                { 
+                                                    x.QuestionId,
+                                                    x.SelectedOptionId,
+                                                    x.CorrectOptionId
+                                                })
+                                                .ToList();
 
 
                 foreach (var item in test)
@@ -183,7 +196,8 @@ namespace TestManagementCore.SqlRepository
 
                     //Find Question Which is attempted by Candidate
                     model.Description = _context.TblQuestion.Where(e => e.QuestionId == item.QuestionId)
-                                                             .Select(x => x.Description).SingleOrDefault();
+                                                             .Select(x => x.Description)
+                                                             .SingleOrDefault();
 
 
 
@@ -195,7 +209,8 @@ namespace TestManagementCore.SqlRepository
 
                     //Find Option Of Candidate Attempted Question
                     var options = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
-                                                    .Select(x => x.OptionDescription).ToList();
+                                                    .Select(x => x.OptionDescription)
+                                                    .ToList();
 
 
 
@@ -232,7 +247,8 @@ namespace TestManagementCore.SqlRepository
 
                         //Find the option which is select by candidate One by one
                         var option = _context.TblOption.Where(e => e.OptionId == selectoption)
-                                                       .Select(x => x.OptionDescription).SingleOrDefault();
+                                                       .Select(x => x.OptionDescription)
+                                                       .SingleOrDefault();
 
 
                         //And add them in  select option List
@@ -274,7 +290,8 @@ namespace TestManagementCore.SqlRepository
 
                         //Find the option which is correct One by One
                         var option = _context.TblOption.Where(e => e.OptionId == correctoption)
-                                                       .Select(x => x.OptionDescription).SingleOrDefault();
+                                                       .Select(x => x.OptionDescription)
+                                                       .SingleOrDefault();
 
 
                         //And add them in  correct Option List
@@ -399,7 +416,8 @@ namespace TestManagementCore.SqlRepository
                                    percentage = x.Percentage,
                                    Duration = x.Duration
                                })
-                               .OrderByDescending(x => x.percentage).ToList();
+                               .OrderByDescending(x => x.percentage)
+                               .ToList();
 
 
 

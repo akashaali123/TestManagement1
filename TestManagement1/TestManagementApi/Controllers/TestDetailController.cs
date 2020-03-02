@@ -18,7 +18,9 @@ namespace TestManagementApi.Controllers
     {
 
         TestDetailPresenter detailPresenter;
-        public TestDetailController(IWebHostEnvironment webHostEnvironment, ITestDetails repository, ILogger<TestDetailPresenter> logger) : base(webHostEnvironment, logger)
+        public TestDetailController(IWebHostEnvironment webHostEnvironment,
+                                    ITestDetails repository,
+                                    ILogger<TestDetailPresenter> logger) : base(webHostEnvironment, logger)
         {
             detailPresenter = new TestDetailPresenter(webHostEnvironment, repository, logger);
         }

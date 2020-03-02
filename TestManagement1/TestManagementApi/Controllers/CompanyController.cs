@@ -17,7 +17,9 @@ namespace TestManagementApi.Controllers
     {
 
         CompanyPresenter companyPresenter;
-        public CompanyController(IWebHostEnvironment webHostEnvironment, ICompany repository, ILogger<CompanyPresenter> logger) : base(webHostEnvironment, logger)
+        public CompanyController(IWebHostEnvironment webHostEnvironment,
+                                 ICompany repository,
+                                 ILogger<CompanyPresenter> logger) : base(webHostEnvironment, logger)
         {
             companyPresenter = new CompanyPresenter(webHostEnvironment, repository, logger);
         }

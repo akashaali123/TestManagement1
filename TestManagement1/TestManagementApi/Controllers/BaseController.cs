@@ -18,13 +18,17 @@ namespace TestManagementApi.Controllers
         protected readonly IWebHostEnvironment _webHostEnvironment;
         protected readonly ILogger<T> _logger;
 
-        public BaseController(IWebHostEnvironment webHostEnvironment, ILogger<T> logger)
+        public BaseController(IWebHostEnvironment webHostEnvironment,
+                              ILogger<T> logger)
         {
             _logger = logger;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public OkObjectResult MyReturnMethode(bool success, int status, string message, Dictionary<string, object> data)
+        public OkObjectResult MyReturnMethode(bool success,
+                                              int status,
+                                              string message,
+                                              Dictionary<string, object> data)
         {
             return Ok(new
             {
@@ -37,7 +41,8 @@ namespace TestManagementApi.Controllers
 
         
         
-        public OkObjectResult helperMethode(object variable, string dicName)
+        public OkObjectResult helperMethode(object variable,
+                                            string dicName)
 
         {
             try

@@ -17,7 +17,9 @@ namespace TestManagementCore.Presenter
     {
 
         private readonly IUser _repository;
-        public UserPresenter(IWebHostEnvironment env, IUser repository, ILogger<UserPresenter> logger):base(env,logger)
+        public UserPresenter(IWebHostEnvironment env,
+                             IUser repository,
+                             ILogger<UserPresenter> logger):base(env,logger)
         {
             _repository = repository;
         }
@@ -68,11 +70,13 @@ namespace TestManagementCore.Presenter
         }
 
 
-        public async Task<object> EditUserInRole(UserRoleViewModel model, string roleId)
+        public async Task<object> EditUserInRole(UserRoleViewModel model, 
+                                                 string roleId)
         {
             try
             {
-                return await _repository.EditUserInRole(model, roleId);
+                return await _repository.EditUserInRole(model,
+                                                        roleId);
             }
             catch (Exception ex)
             {
@@ -128,11 +132,13 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public async Task<object> UpdateUser(UserViewModelById model, string id)
+        public async Task<object> UpdateUser(UserViewModelById model, 
+                                             string id)
         {
             try
             {
-                return await _repository.UpdateUser(model, id);
+                return await _repository.UpdateUser(model, 
+                                                    id);
             }
             catch (Exception ex)
             {
@@ -143,11 +149,13 @@ namespace TestManagementCore.Presenter
             
         }
 
-        public async Task<object> ChangePassword(ChangePasswordViewModel model, string id)
+        public async Task<object> ChangePassword(ChangePasswordViewModel model,
+                                                 string id)
         {
             try
             {
-                return await _repository.ChangePassword(model, id);
+                return await _repository.ChangePassword(model,
+                                                        id);
             }
             catch (Exception ex)
             {
@@ -220,11 +228,13 @@ namespace TestManagementCore.Presenter
            
         }
 
-        public async Task<object> ConfirmEmail(string email, string token)
+        public async Task<object> ConfirmEmail(string email, 
+                                               string token)
         {
             try
             {
-                return await _repository.ConfirmEmail(email, token);
+                return await _repository.ConfirmEmail(email,
+                                                      token);
             }
             catch (Exception ex)
             {
