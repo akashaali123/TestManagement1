@@ -249,6 +249,21 @@ namespace TestManagement1.SqlRepository
 
 
 
+        public int NoOfCandidates()
+        {
+            try
+            {
+                int noOfCandidate = _context.TblCandidate.Count();
+                return noOfCandidate;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate NoOfCandidates Methode in Sql Repository" + ex);
+                return 0; ;
+            }
+        }
+
 
 
     }

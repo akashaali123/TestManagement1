@@ -25,7 +25,9 @@ namespace TestManagement1.Model
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
-        public String CategoryId { get; set; }
+        public string CategoryId { get; set; }
+
+        public string token { get; set; }
 
 
     }

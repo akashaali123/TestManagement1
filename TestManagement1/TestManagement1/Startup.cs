@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.Infrastructure;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-
+using Microsoft.Win32;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.SqlRepository;
@@ -68,6 +73,10 @@ namespace TestManagement1
             //make for future configuration if we want trigger Like functionality in Future so we use it 
             services.AddScoped<TriggerClass>();
 
+            //services.AddSingleton<TokenProviderDescriptor>();
+            //services.AddSingleton<IdentityBuilder>();
+
+        
 
 
 
@@ -76,23 +85,15 @@ namespace TestManagement1
                     .AddEntityFrameworkStores<TestManagementContext>()
                     .AddDefaultTokenProviders();
 
-            //For Session Create of User id
-
-            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
-                                                  //services.AddSession();
-            services.AddSession(options =>
-            {
-                // Set a short timeout for easy testing.  
-                options.IdleTimeout = TimeSpan.FromHours(4);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
 
 
-            services.AddControllers().AddNewtonsoftJson();
 
 
-            
+
+            services.AddDataProtection();
+
+
+          
 
             //To remove identity Validation 
 
@@ -103,10 +104,19 @@ namespace TestManagement1
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
                 option.Password.RequiredLength = 4;
-               
-                
+
+
 
             });
+
+
+
+
+
+                    
+
+
+           
 
 
 
@@ -125,7 +135,19 @@ namespace TestManagement1
             });
 
 
+            //For Session Create of User id
 
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+                                                  //services.AddSession();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.  
+                options.IdleTimeout = TimeSpan.FromHours(4);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddControllers().AddNewtonsoftJson();
 
 
             //For Jwt
@@ -152,6 +174,7 @@ namespace TestManagement1
             });
 
 
+            
 
             //For Email Services
             var emailConfig = Configuration

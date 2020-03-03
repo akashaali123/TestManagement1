@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using TestManagement1.Model;
 using TestManagement1.Presenter;
 using TestManagement1.RepositoryInterface;
@@ -63,11 +68,16 @@ namespace TestManagementApi
             //make for future configuration if we want trigger Like functionality in Future so we use it 
             services.AddScoped<TriggerClass>();
 
+          
+            
 
 
             services.AddIdentity<TblUser, IdentityRole>()
                   .AddEntityFrameworkStores<TestManagementContext>()
                   .AddDefaultTokenProviders();
+
+            services.AddDataProtection() ;
+
 
 
 
@@ -81,6 +91,7 @@ namespace TestManagementApi
 
 
             });
+
 
             //For Cors
 
@@ -97,11 +108,11 @@ namespace TestManagementApi
             });
 
 
+
             //For Session Create of User id
 
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
-            //services.AddSession();
-
+                                                  //services.AddSession();
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.  
@@ -110,7 +121,25 @@ namespace TestManagementApi
                 options.Cookie.IsEssential = true;
             });
 
+
+
+
+
+           
+
+            
+
+
+           
+
             services.AddControllers().AddNewtonsoftJson();
+
+
+
+        
+
+
+
 
 
             //For Jwt

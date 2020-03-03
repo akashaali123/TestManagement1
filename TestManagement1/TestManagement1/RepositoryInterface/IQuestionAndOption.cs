@@ -39,5 +39,8 @@ namespace TestManagementCore.RepositoryInterface
 
         public QuestionOptionByIdViewModel GetQuestionByRoleAndId(int id);
 
+
+        public int NoOfQuestion();
+
     }
 }

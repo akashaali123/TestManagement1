@@ -207,6 +207,7 @@ namespace TestManagement1.SqlRepository
                     RoleId = model.roleId,
                    
                     //CategoryId = model.categoryId.ToString(),
+                   // CategoryId = model.categoryId,
                 
                     IsActive = true,
 
@@ -619,9 +620,11 @@ namespace TestManagement1.SqlRepository
                 if (user != null)
                 {
                     //generate token for reset password
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
+                      var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
 
-                   
+                    //var token = await _userManager.CreateSecurityTokenAsync(user);
+                    //user.token = token.ToString();
+                    //await _userManager.UpdateAsync(user);
 
                     return token;
 
@@ -650,8 +653,14 @@ namespace TestManagement1.SqlRepository
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
+                     //await _userManager.RemovePasswordAsync(user);
+
+
                     //set  reset password
                     var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                       // var   result = await _userManager.AddPasswordAsync(user, model.Password);
+
                     if (result.Succeeded)
                     {
                         return new { message = "Reset Password Successfully" };
@@ -677,6 +686,29 @@ namespace TestManagement1.SqlRepository
            
         
         }
+
+
+
+        public int NoOfUser()
+        {
+            try
+            {
+
+                var noOfUser =  _context.Users.Count();
+
+                return noOfUser;
+                
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+
+
+        }
+
+
 
 
 

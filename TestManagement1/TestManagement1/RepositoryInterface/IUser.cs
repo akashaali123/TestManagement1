@@ -46,6 +46,8 @@ namespace TestManagement1.RepositoryInterface
                                           string token);
 
 
+        public int NoOfUser();
+
 
 
     }

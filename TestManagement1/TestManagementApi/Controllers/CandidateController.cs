@@ -264,5 +264,14 @@ namespace TestManagementApi.Controllers
         }
 
 
+
+        [HttpGet]
+        [Route("/candidate/candidatecount")]
+        public IActionResult NoOfCandidate()
+        {
+            int noOfCandidate = cp.NoOfCandidates();
+            return helperMethode(noOfCandidate, "candidate");
+        }
+
     }
 }

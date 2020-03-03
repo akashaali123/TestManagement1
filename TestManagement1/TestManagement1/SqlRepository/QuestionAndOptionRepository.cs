@@ -455,17 +455,20 @@ namespace TestManagementCore.SqlRepository
                 var question = _context.TblQuestion.Where(e=>e.QuestionId == id)
                                                     .Select(x=> new 
                                                     { 
-                                                        x.Description
-                                                        ,x.QuestionId
+                                                        x.Description,
+                                                        x.QuestionId,
+                                                        x.CategoryId,
+                                                        x.ExperienceLevelId
                                                     })
                                                     .SingleOrDefault();
 
-               
+
                 var options = _context.TblOption.Where(x => x.QuestionId == id)
-                                                .Select(x => new OptionViewModel 
-                                                { 
+                                                .Select(x => new OptionViewModel
+                                                {
                                                     optionId = x.OptionId,
-                                                    option = x.OptionDescription 
+                                                    option = x.OptionDescription,
+                                                    correctOption = x.IsCorrect
                                                 })
                                                 .ToList();//get option assign to option
 
@@ -474,6 +477,9 @@ namespace TestManagementCore.SqlRepository
                 QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
                 model.questionId = question.QuestionId;
                 model.question= question.Description;//assign question in vm question 
+
+                model.categoryId = question.CategoryId;
+                model.experienceLevelId = question.ExperienceLevelId;
                 
                 model.option = options;//assign option in vm option
                 
@@ -827,6 +833,23 @@ namespace TestManagementCore.SqlRepository
             }
         }
 
+
+
+        public int NoOfQuestion()
+        {
+            try
+            {
+                int noOfQuestion = _context.TblQuestion.Count();
+                return noOfQuestion;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionRepository NoOfQuestion Methode in Sql Repository" + ex);
+
+                return 0;
+            }
+        }
 
 
 

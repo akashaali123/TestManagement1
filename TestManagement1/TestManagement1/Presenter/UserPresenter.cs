@@ -245,7 +245,19 @@ namespace TestManagementCore.Presenter
             
         }
 
+        public int NoOfUser()
+        {
+            try
+            {
+                return _repository.NoOfUser();
+            }
+            catch (Exception ex)
+            {
 
+                _logger.LogError("Error in User NoOfUser Methode in UserPresenter" + ex);
+                return 0;
+            }
+        }
 
     }
 }

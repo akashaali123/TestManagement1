@@ -10,5 +10,7 @@ namespace TestManagementCore.ViewModel
         public int optionId { get; set; }
 
         public string option { get; set; }
+
+        public bool? correctOption { get; set; }
     }
 }

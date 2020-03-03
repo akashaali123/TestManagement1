@@ -346,24 +346,16 @@ namespace TestManagementApi.Controllers
             if (token != null)
             {
                 //Generate url with token for reset password send the user email
-                var callback = Url.Action("ResetPassword","User", new { email = model.Email, token = token }, Request.Scheme);
-
-               // var callback = new Uri(string.Format("{0}{1}/resetpassword?email={2}&token={3}",Request.Scheme, _appSettings.ResetPassword_URL, model.Email, WebUtility.UrlEncode(token.ToString())));
-
-                // string url = string.Format("yoursite/controller/action?userId={0}&code={1}",
-                //HttpUtility.UrlEncode(userId),
-                //HttpUtility.UrlEncode(code));
-                //For http and https both   //has 4200 port Url    //params type email             //params type password    
+               // var callback = Url.Action("ResetPassword","User", new { email = model.Email, token =  HttpUtility.UrlEncode(token.ToString()) }, Request.Scheme);
 
 
-                // var url = Request.Scheme + _appSettings.ResetPassword_URL + "?email=" +HttpUtility.UrlEncode(model.Email) + "&token=" + HttpUtility.UrlEncode(token.ToString());
+                
+                // var url = string.Format("{0}{1}?email={2}&token={3}",Request.Scheme,_appSettings.ResetPassword_URL, model.Email,HttpUtility.UrlEncode(token.ToString()));
+                
 
-                //var url = "http://localhost:55377/resetpassword?email=" + model.Email + "&token=" + token;
+                var url = string.Format("{0}://localhost:7500/resetpassword?email={2}&token={3}", Request.Scheme, _appSettings.ResetPassword_URL, model.Email, HttpUtility.UrlEncode(token.ToString()));
 
-                //var url = string.Format("{0}{1}?email={2}&token={3}",Request.Scheme,_appSettings.ResetPassword_URL, model.Email,token);
-
-
-                var message = new Message(new string[] {"akashaali2012@gmail.com" }, "ResetPasswordlink", "Reset password token " + callback);
+                var message = new Message(new string[] {"akashaali2012@gmail.com" }, "ResetPasswordlink", "Reset password token " + url);
                 _emailSender.SendEmail(message);
 
             }
@@ -383,12 +375,15 @@ namespace TestManagementApi.Controllers
                                                         PasswordModelBinding modelBinding)
         {
 
-            
+            //string tt = "CfDJ8OKmzg4eTYhBq9Oj3yQfTgqs7HrR+RggfmxEbS4OsHz8MD3UVqiKBQN80oabvZjcSe4SO5sZSdp+J5qjAyHv2UA4hH+Hh1cL4zReK7x67DtG4D3yfsNUef3zNJZwpMvyOWH3lTdH5L4zmC/x+zVKlFs/lrk4ax6sbjJEiRtObhvejinBmEBb5Pac0yA6JTRqDgnY+krf6yrWvG3nVgJn2PVyJaBmD6UbicHYdAkZ/HHi";
+            string decode = HttpUtility.UrlDecode(token);
+            decode = decode.Replace(" ", "+");
 
+           
             var model = new ResestPasswordViewModel 
                                 { 
                                     Email = email,
-                                    Token = token,
+                                    Token = decode,
                                     Password = modelBinding.Password,
                                     ConfirmPassword = modelBinding.ConfirmPassword 
                                 };
@@ -397,6 +392,16 @@ namespace TestManagementApi.Controllers
 
             return helperMethode(resetPasswordEmail, "resetpasswordemail");
         }
+
+
+        [HttpGet]
+        [Route("/user/noofuser")]
+        public IActionResult NoOfUser()
+        {
+            int noOfUsers = userPresenter.NoOfUser();
+            return helperMethode(noOfUsers, "users");
+        }
+
 
 
     }

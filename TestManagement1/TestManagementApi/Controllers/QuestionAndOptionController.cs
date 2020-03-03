@@ -21,14 +21,14 @@ namespace TestManagementApi.Controllers
     [Authorize]
     public class QuestionAndOptionController : BaseController<QuestionAndOptionPresenter>
     {
-        
+
         QuestionAndOptionPresenter questionAndOptionPresenter;
         public QuestionAndOptionController(IWebHostEnvironment webHostEnvironment,
-                                           IQuestionAndOption repository, 
+                                           IQuestionAndOption repository,
                                            ILogger<QuestionAndOptionPresenter> logger) : base(webHostEnvironment, logger)
         {
-           questionAndOptionPresenter = new QuestionAndOptionPresenter(webHostEnvironment, repository, logger);
-            
+            questionAndOptionPresenter = new QuestionAndOptionPresenter(webHostEnvironment, repository, logger);
+
         }
 
 
@@ -131,7 +131,7 @@ namespace TestManagementApi.Controllers
         /// </returns>
 
         #region createQuestion
-        
+
         [HttpPost]
         [Route("/question/create")]
         public IActionResult Add(QuestionAndOptionViewModel model)
@@ -180,7 +180,7 @@ namespace TestManagementApi.Controllers
         /// </returns>
 
         #region Delete Question
-        
+
         [HttpDelete]
         [Route("/question/delete")]
         public IActionResult Delete(int id)
@@ -249,7 +249,7 @@ namespace TestManagementApi.Controllers
         /// <returns></returns>
 
         #region get Question By Id
-        
+
         [HttpGet]
         [Route("/question/getquesbyid")]
         public IActionResult GetQuestById(int id)
@@ -300,7 +300,7 @@ namespace TestManagementApi.Controllers
         ///</returns>      
 
         #region Get All question
-        
+
         [HttpGet]
         [Route("/question/getallques")]
         public IActionResult GetQuestAll()
@@ -354,7 +354,7 @@ namespace TestManagementApi.Controllers
         /// </returns>
 
         #region Get Question By Category
-        
+
         [HttpGet]
         [Route("/question/getbycat")]
         public IActionResult GetQuestionByCategory(int categoryId)
@@ -379,7 +379,7 @@ namespace TestManagementApi.Controllers
         /// </returns>
 
         #region Get Question by Category and Experience
-        
+
         [HttpGet]
         [Route("/question/getbycatandexp")]
         public IActionResult GetQuestionByCategoryAndExperience(int categoryId,
@@ -405,11 +405,11 @@ namespace TestManagementApi.Controllers
         /// <param name="number"></param>
         /// <returns></returns>
         #region Get Question by Category and Experience And Number
-        
+
         [HttpGet]
         [Route("/question/getbycatandexpandnum")]
-        public IActionResult GetQuestionByCategoryAndExperienceAndNo(int categoryId, 
-                                                                     int experienceLevelId, 
+        public IActionResult GetQuestionByCategoryAndExperienceAndNo(int categoryId,
+                                                                     int experienceLevelId,
                                                                      int number)
         {
             var question = questionAndOptionPresenter.GetQuestionByCategoryAndExperienceAndNo(categoryId,
@@ -489,8 +489,8 @@ namespace TestManagementApi.Controllers
         ///</returns>      
 
         #region Get All question
-       
-        
+
+
         [HttpGet]
         [Route("/question/getquesbyrole")]
         public IActionResult GetAllByRole()
@@ -513,7 +513,13 @@ namespace TestManagementApi.Controllers
         }
 
 
-
+        [HttpGet]
+        [Route("/question/questioncount")]
+        public IActionResult NoOfQuestion()
+        {
+            var noOfQuestion = questionAndOptionPresenter.NoOfQuestion();
+            return helperMethode(noOfQuestion, "question");
+        }
 
 
 

@@ -168,7 +168,7 @@ namespace TestManagementApi.Controllers
 
 
 
-        [HttpPut]
+        [HttpGet]
         [Route("/category/getbyid")]
         public IActionResult GetById(int id)
         {

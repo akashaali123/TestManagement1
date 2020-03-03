@@ -24,6 +24,9 @@ namespace TestManagement1.RepositoryInterface
 
 
 
+        public int NoOfCandidates();
+
+
 
     }
 }

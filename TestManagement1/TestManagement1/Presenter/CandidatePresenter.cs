@@ -137,5 +137,20 @@ namespace TestManagement1.Presenter
         }
 
 
+
+        public int NoOfCandidates()
+        {
+            try
+            {
+                return _repository.NoOfCandidates();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate NoOfCandidates Methode in CandidatePresenter" + ex);
+                return 0;
+            }
+        }
+
     }
 }

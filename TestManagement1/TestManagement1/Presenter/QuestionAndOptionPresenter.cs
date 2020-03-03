@@ -199,6 +199,20 @@ namespace TestManagementCore.Presenter
         }
 
 
+        public int NoOfQuestion()
+        {
+            try
+            {
+                return _repository.NoOfQuestion();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in QuestionAndOptionPresenter NoOfQuestion Methode in QuestionAndOptionPresenter" + ex);
+                return 0;
+            }
+        }
+
 
 
     }
