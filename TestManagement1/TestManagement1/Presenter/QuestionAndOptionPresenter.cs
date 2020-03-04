@@ -151,7 +151,7 @@ namespace TestManagementCore.Presenter
         }
 
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+        public List<ShuffleQuestionViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
                                                                                                          int number)
         {
             try

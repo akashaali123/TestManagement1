@@ -180,7 +180,7 @@ namespace TestManagementApi.Controllers
 
 
 
-        [HttpDelete]
+        [HttpGet]
         [Route("/experiencelevel/getbyid")]
         //DELETE : api/ExperienceLevel/Delete
         public IActionResult GetById(int id)

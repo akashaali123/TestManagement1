@@ -39,18 +39,12 @@ namespace TestManagementCore.SqlRepository
                 //Convert correctOption Array into , separated string
                 var correctOptionString = string.Join(",", correctoption);
 
-                //int[] myArray = Array.ConvertAll(correctOptionString.Split(','), s => int.Parse(s));
-                //int[] myArray2 = Array.ConvertAll(model.SelectedOptionId.Split(','), s => int.Parse(s));
-
-                //if (myArray.ItemsEqual(myArray2))
-                //{
-
-                //}
+              
 
 
                 TblTestDetails testDetails = new TblTestDetails
                 {
-                    // TestId = model.TestId,
+                   
                     CandidateId = model.Candidateid,
                     QuestionId = model.QuestionId,
                     SelectedOptionId = model.SelectedOptionId,
@@ -63,7 +57,7 @@ namespace TestManagementCore.SqlRepository
 
                 };
 
-                //int[] myArray = StringToIntArray(myNumbers);
+                
 
                 _context.TblTestDetails.Add(testDetails);
                int count =  _context.SaveChanges();

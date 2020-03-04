@@ -32,7 +32,7 @@ namespace TestManagementCore.RepositoryInterface
                                                                                   int number);
 
 
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+        public List<ShuffleQuestionViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
                                                                                                          int number);
 
         public List<AllQuestionViewModel> GetAllByRole();

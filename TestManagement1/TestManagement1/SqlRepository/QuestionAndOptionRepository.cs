@@ -64,6 +64,10 @@ namespace TestManagementCore.SqlRepository
                     foreach (var item in model.option)
                     {
                         item.QuestionId = model.question.QuestionId;
+                        item.CreatedBy = GetUserId();
+                        item.CreatedDate = DateTime.Today;
+                        
+                        
                         _context.TblOption.AddRange(model.option);
 
                     }
@@ -211,40 +215,69 @@ namespace TestManagementCore.SqlRepository
         {
             try
             {
+                var question = _context.TblQuestion.Where(e => e.QuestionId == id &&
+                                                               e.Roleid == GetRoleId() &&
+                                                               e.CreatedBy == GetUserId())
+                                      .Select(x => new QuestionOptionByIdViewModel
+                                      {
+                                          questionId = x.QuestionId,
+                                          question = x.Description,
+                                          categoryId = x.CategoryId,
+                                          experienceLevelId = x.ExperienceLevelId,
+                                          option = _context.TblOption.Where(x => x.QuestionId == id)
+                                                           .Select(x => new OptionViewModel
+                                                           {
+                                                               optionId = x.OptionId,
+                                                               option = x.OptionDescription,
+                                                               correctOption = x.IsCorrect
+                                                           })
+                                                           .ToList()
+
+                                      })
+                                      .SingleOrDefault();
+
+
+                return question;
+
+
+
+                #region above query is replica of comment code
                 //var question = _context.TblQuestion.Find(id);//get Question
 
-                var question = _context.TblQuestion.Where(e => e.QuestionId == id && 
-                                                               e.Roleid == GetRoleId() && 
-                                                               e.CreatedBy == GetUserId())
-                                                    .Select(x => new
-                                                    {
-                                                        x.Description,
-                        
-                                                        x.QuestionId
-                                                    })
-                                                    .SingleOrDefault();
+                //var question = _context.TblQuestion.Where(e => e.QuestionId == id && 
+                //                                               e.Roleid == GetRoleId() && 
+                //                                               e.CreatedBy == GetUserId())
+                //                                    .Select(x => new
+                //                                    {
+                //                                        x.Description,
 
-
-               
-                var options = _context.TblOption.Where(x => x.QuestionId == id)
-                                                .Select(x => new OptionViewModel
-                                                {
-                                                    optionId = x.OptionId,
-                                                    option = x.OptionDescription
-                                                })
-                                                .ToList();//get option assign to option
+                //                                        x.QuestionId
+                //                                    })
+                //                                    .SingleOrDefault();
 
 
 
-                QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
-                model.questionId = question.QuestionId;
-                model.question = question.Description;//assign question in vm question 
+                //var options = _context.TblOption.Where(x => x.QuestionId == id)
+                //                                .Select(x => new OptionViewModel
+                //                                {
+                //                                    optionId = x.OptionId,
+                //                                    option = x.OptionDescription
+                //                                })
+                //                                .ToList();//get option assign to option
 
-                model.option = options;//assign option in vm option
+
+
+                //QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
+                //model.questionId = question.QuestionId;
+                //model.question = question.Description;//assign question in vm question 
+
+                //model.option = options;//assign option in vm option
 
 
 
-                return model;
+                //return model;
+                #endregion
+
             }
             catch (Exception ex)
             {
@@ -368,12 +401,7 @@ namespace TestManagementCore.SqlRepository
             {
                 try
                 {
-                    ////get role id of current user
-                    //var roleId = _context.UserRoles.Where(e => e.UserId == sessionManager.getSession("userid"))
-                    //    .Select(x => x.RoleId)
-                    //    .SingleOrDefault();
-
-
+                    
 
 
                     var questionChanges = _context.TblQuestion
@@ -420,6 +448,10 @@ namespace TestManagementCore.SqlRepository
                             optionChanges[counter].Duration = item.Duration;
                             optionChanges[counter].IsCorrect = item.IsCorrect;
                             optionChanges[counter].IsActive = item.IsActive;
+                            optionChanges[counter].CreatedBy = GetUserId();
+                            optionChanges[counter].CreatedDate = DateTime.Today;
+                            optionChanges[counter].UpdatedBy = GetUserId();
+                            optionChanges[counter].UpdatedDate = DateTime.Today;
                             break;
                         }
                         counter++; //Increment in counter to get the next element of list
@@ -441,51 +473,77 @@ namespace TestManagementCore.SqlRepository
                 
           
         }
-       
-        
-        
-        
-        
+
+
+
+
+
         public QuestionOptionByIdViewModel GetQuestionById(int id)
         {
             try
             {
                 //var question = _context.TblQuestion.Find(id);//get Question
 
-                var question = _context.TblQuestion.Where(e=>e.QuestionId == id)
-                                                    .Select(x=> new 
-                                                    { 
-                                                        x.Description,
-                                                        x.QuestionId,
-                                                        x.CategoryId,
-                                                        x.ExperienceLevelId
-                                                    })
-                                                    .SingleOrDefault();
+                var question = _context.TblQuestion.Where(e => e.QuestionId == id)
+                                       .Select(x => new QuestionOptionByIdViewModel
+                                       {
+                                           questionId = x.QuestionId,
+                                           question = x.Description,
+                                           categoryId = x.CategoryId,
+                                           experienceLevelId = x.ExperienceLevelId,
+                                           option = _context.TblOption.Where(x => x.QuestionId == id)
+                                                            .Select(x => new OptionViewModel
+                                                            {
+                                                                optionId = x.OptionId,
+                                                                option = x.OptionDescription,
+                                                                correctOption = x.IsCorrect
+                                                            })
+                                                            .ToList()
+
+                                       })
+                                       .SingleOrDefault();
 
 
-                var options = _context.TblOption.Where(x => x.QuestionId == id)
-                                                .Select(x => new OptionViewModel
-                                                {
-                                                    optionId = x.OptionId,
-                                                    option = x.OptionDescription,
-                                                    correctOption = x.IsCorrect
-                                                })
-                                                .ToList();//get option assign to option
+                return question;
 
-               
-                
-                QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
-                model.questionId = question.QuestionId;
-                model.question= question.Description;//assign question in vm question 
+                #region above query is replica of comment code
+                //var question = _context.TblQuestion.Where(e=>e.QuestionId == id)
+                //                                    .Select(x=> new 
+                //                                    { 
+                //                                        x.Description,
+                //                                        x.QuestionId,
+                //                                        x.CategoryId,
+                //                                        x.ExperienceLevelId
+                //                                    })
+                //                                    .SingleOrDefault();
 
-                model.categoryId = question.CategoryId;
-                model.experienceLevelId = question.ExperienceLevelId;
-                
-                model.option = options;//assign option in vm option
-                
-               
 
-                return model;
+                //var options = _context.TblOption.Where(x => x.QuestionId == id)
+                //                                .Select(x => new OptionViewModel
+                //                                {
+                //                                    optionId = x.OptionId,
+                //                                    option = x.OptionDescription,
+                //                                    correctOption = x.IsCorrect
+                //                                })
+                //                                .ToList();//get option assign to option
+
+
+
+                //QuestionOptionByIdViewModel model = new QuestionOptionByIdViewModel();//instantiate class
+                //model.questionId = question.QuestionId;
+                //model.question= question.Description;//assign question in vm question 
+
+                //model.categoryId = question.CategoryId;
+                //model.experienceLevelId = question.ExperienceLevelId;
+
+                //model.option = options;//assign option in vm option
+
+
+
+                //return model;
+                #endregion
+
+
             }
             catch (Exception ex)
             {
@@ -735,7 +793,7 @@ namespace TestManagementCore.SqlRepository
         
         
         
-        public List<QuestionOptionByIdViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
+        public List<ShuffleQuestionViewModel> GetQuestionByCategoryAndExperienceAndNumberAndShuffling(int candidateId,
                                                                                                          int number)
         {
             try
@@ -760,12 +818,12 @@ namespace TestManagementCore.SqlRepository
                 var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId &&
                                                                e.ExperienceLevelId == experienceLevelId &&
                                                                e.IsActive == true)
-                                       .Select(x => new QuestionOptionByIdViewModel 
+                                       .Select(x => new ShuffleQuestionViewModel
                                        { 
                                                 questionId = x.QuestionId,
                                                 question   =  x.Description,
                                                 option = _context.TblOption.Where(e=>e.QuestionId == x.QuestionId)
-                                                                 .Select(x=>new OptionViewModel
+                                                                 .Select(x=>new ShuffleOptionViewModel
                                                                  { 
                                                                          optionId = x.OptionId,
                                                                          option = x.OptionDescription
@@ -776,8 +834,10 @@ namespace TestManagementCore.SqlRepository
                                        .OrderBy(r => Guid.NewGuid())
                                        .Take(number)
                                        .ToList();
-
-
+                
+                
+                //Extension Methode For shuffling
+                question.Shuffle();
                 return question;
 
                 #region above query modified form of this comment section

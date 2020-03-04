@@ -38,7 +38,10 @@ namespace TestManagement1.SqlRepository
        private readonly TestManagementContext _context;
 
 
-       
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+
+
+
 
         //For Session
         //private readonly IHttpContextAccessor _httpContextAccessor;
@@ -60,10 +63,11 @@ namespace TestManagement1.SqlRepository
             
             _roleManager = roleManager;
 
-            //For session
-            //_httpContextAccessor = httpContextAccessor;
+           
              sessionManager =   new SessionManager(httpContextAccessor);
             _context = context;
+
+            _httpContextAccessor = httpContextAccessor;
 
            
         }
@@ -118,17 +122,7 @@ namespace TestManagement1.SqlRepository
                     
                     user.JwtToken = token; //take Jwt value in db for temporary
                     var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-
-                        //Session Created its implementation in SessionManager Class
-                        sessionManager.SetSession("userid",user.Id.ToString());
-                        
-                       
-                        
-                        //sessionManager.getSession("userid");
-
-                    }
+                    
                     return token;  
                 }
                 else
@@ -155,9 +149,9 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-                var userId = sessionManager.getSession("userid");
-                var user = await _userManager.FindByIdAsync(userId);
-                sessionManager._session.Remove("userid");
+                
+                var user = await _userManager.FindByIdAsync(GetUserId());
+                
                 user.JwtToken = null;
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -193,27 +187,31 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-               
+
 
 
 
                 var applicationUser = new TblUser()
                 {
-                    
+
                     UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
 
                     Email = model.email,
 
                     RoleId = model.roleId,
-                   
+
                     //CategoryId = model.categoryId.ToString(),
-                   // CategoryId = model.categoryId,
-                
+                    // CategoryId = model.categoryId,
+
                     IsActive = true,
 
                     JwtToken = null,
 
-                    CreatedDate = System.DateTime.Now
+                    CreatedDate = System.DateTime.Now,
+
+                    CreatedBy = GetUserId()
+
+                     
 
                 };
 
@@ -710,6 +708,18 @@ namespace TestManagement1.SqlRepository
 
 
 
+
+
+        //To find the current login user id which is used in created by
+        public string GetUserId()
+        {
+            string userId = _httpContextAccessor.HttpContext
+                                                .User
+                                                .Claims.
+                                                FirstOrDefault(c => c.Type == "userid")
+                                                .Value;
+            return userId;
+        }
 
 
 
