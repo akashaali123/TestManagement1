@@ -517,8 +517,8 @@ namespace TestManagementApi.Controllers
         [Route("/question/questioncount")]
         public IActionResult NoOfQuestion()
         {
-            var noOfQuestion = questionAndOptionPresenter.NoOfQuestion();
-            return helperMethode(noOfQuestion, "question");
+            var count = questionAndOptionPresenter.NoOfQuestion();
+            return helperMethode(count, "count");
         }
 
 

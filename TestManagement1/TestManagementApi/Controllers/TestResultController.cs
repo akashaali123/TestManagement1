@@ -701,9 +701,32 @@ namespace TestManagementApi.Controllers
         #endregion
 
 
+        [HttpGet]
+        [Route("/test/testcount")]
+        public IActionResult TestCount()
+        {
+            int count = testResultPresenter.TestCount();
+            return helperMethode(count,"count");
+        }
 
 
 
+
+        [HttpGet]
+        [Route("/test/passcandidatecount")]
+        public IActionResult PasscandidateCount()
+        {
+            int count = testResultPresenter.PasscandidateCount();
+            return helperMethode(count, "count");
+        }
+
+        [HttpGet]
+        [Route("/test/failcandidatecount")]
+        public IActionResult FailcandidateCount()
+        {
+            int count = testResultPresenter.FailcandidateCount();
+            return helperMethode(count, "count");
+        }
 
 
 

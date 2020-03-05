@@ -95,7 +95,13 @@ namespace TestManagementCore.RepositoryInterface
                                                                                     int categoryId);
 
 
+        public int TestCount();
 
+
+        public int PasscandidateCount();
+
+
+        public int FailcandidateCount();
 
     }
 }

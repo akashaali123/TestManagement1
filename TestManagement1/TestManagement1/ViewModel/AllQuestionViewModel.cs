@@ -12,6 +12,8 @@ namespace TestManagementCore.ViewModel
 
         public string category { get; set; }
 
+        public int? time { get; set; }
+
       
 
     }

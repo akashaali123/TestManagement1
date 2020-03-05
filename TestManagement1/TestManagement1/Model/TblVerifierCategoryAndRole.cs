@@ -10,10 +10,14 @@ namespace TestManagementCore.Model
     {
         [Key]
         public int Id { get; set; }
+
+        [StringLength(500)]
         public string UserId { get; set; }
 
+        [StringLength(500)]
         public string CategoryId { get; set; }
 
+        [StringLength(500)]
         public string RoleId { get; set; }
     }
 }

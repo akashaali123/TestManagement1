@@ -125,7 +125,7 @@ namespace TestManagement1.SqlRepository
             try
             {
 
-                return _context.TblCandidate;
+                return _context.TblCandidate.Where(e=>e.IsActive == true);
                  
                     
                 

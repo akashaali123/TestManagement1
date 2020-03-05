@@ -16,6 +16,10 @@
     <Compile Remove="Migrations\20200221104210_change data type DateTime to Date of createdDate in TblTest.Designer.cs" />
     <Compile Remove="Migrations\20200224114821_Formatting Of date in all table.cs" />
     <Compile Remove="Migrations\20200224114821_Formatting Of date in all table.Designer.cs" />
+    <Compile Remove="Migrations\20200305112059_change datattype of time to int in tblquestion.cs" />
+    <Compile Remove="Migrations\20200305112059_change datattype of time to int in tblquestion.Designer.cs" />
+    <Compile Remove="Migrations\20200305124425_change datatype attempted in duration to int in tbltestdetails.cs" />
+    <Compile Remove="Migrations\20200305124425_change datatype attempted in duration to int in tbltestdetails.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

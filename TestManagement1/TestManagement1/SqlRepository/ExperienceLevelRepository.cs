@@ -100,7 +100,7 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-                return _context.TblExperienceLevel;
+                return _context.TblExperienceLevel.Where(e=>e.IsActive ==  true);
             }
             catch (Exception ex)
             {

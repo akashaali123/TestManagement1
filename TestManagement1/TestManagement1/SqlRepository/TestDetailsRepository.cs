@@ -31,7 +31,8 @@ namespace TestManagementCore.SqlRepository
             {
                 //get correct option Id of attempted question and save in array
                 var correctoption = _context.TblOption.Where(e => e.QuestionId == model.QuestionId &&
-                                                                  e.IsCorrect == true)
+                                                                  e.IsCorrect == true &&
+                                                                  e.IsActive == true)
                                                       .Select(x => x.OptionId)
                                                       .ToArray();
 
@@ -50,7 +51,7 @@ namespace TestManagementCore.SqlRepository
                     SelectedOptionId = model.SelectedOptionId,
                     CorrectOptionId = correctOptionString,
                     AttemptedInDuration = model.AttemptedInDuration,
-                    IsActive = model.IsActive,
+                    IsActive = true,
 
 
 

@@ -139,11 +139,13 @@ namespace TestManagementCore.SqlRepository
                 //Get question by role and with category
                 var question = _context.TblQuestion
                                        .Where(e => e.Roleid == GetRoleId() &&
-                                                    e.CreatedBy == GetUserId())
+                                                    e.CreatedBy == GetUserId()  &&
+                                                    e.IsActive == true)
                                        .Select(x => new AllQuestionViewModel
                                        {
                                            questionId = x.QuestionId,
                                            question = x.Description,
+                                           time = x.Time,
                                            category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId)
                                                                           .Select(e => e.Name)
                                                                           .SingleOrDefault()
@@ -217,13 +219,15 @@ namespace TestManagementCore.SqlRepository
             {
                 var question = _context.TblQuestion.Where(e => e.QuestionId == id &&
                                                                e.Roleid == GetRoleId() &&
-                                                               e.CreatedBy == GetUserId())
+                                                               e.CreatedBy == GetUserId() &&
+                                                               e.IsActive == true)
                                       .Select(x => new QuestionOptionByIdViewModel
                                       {
                                           questionId = x.QuestionId,
                                           question = x.Description,
                                           categoryId = x.CategoryId,
                                           experienceLevelId = x.ExperienceLevelId,
+                                          time = x.Time,
                                           option = _context.TblOption.Where(x => x.QuestionId == id)
                                                            .Select(x => new OptionViewModel
                                                            {
@@ -304,16 +308,17 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 //Get all question and their Respective Category
-                var question = _context.TblQuestion
-                   .Select(x => new AllQuestionViewModel
-                   {
-                       question = x.Description,
-                       questionId = x.QuestionId,
-                       category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId)
-                       .Select(x => x.Name)
-                       .SingleOrDefault()
-                   })
-                   .ToList();
+                var question = _context.TblQuestion.Where(e=>e.IsActive == true)
+                                       .Select(x => new AllQuestionViewModel
+                                       {
+                                            question = x.Description,
+                                            questionId = x.QuestionId,
+                                            time = x.Time,
+                                            category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
+                                                                           .Select(x => x.Name)
+                                                                           .SingleOrDefault()
+                                       })
+                                       .ToList();
 
                 return question;
 
@@ -415,7 +420,7 @@ namespace TestManagementCore.SqlRepository
                         questionChanges.Description = questionAndOptionViewModel.question.Description;
                         questionChanges.Type = questionAndOptionViewModel.question.Type;
                         questionChanges.Time = questionAndOptionViewModel.question.Time;
-                        questionChanges.IsActive = questionAndOptionViewModel.question.IsActive;
+                        questionChanges.IsActive = true;
                         questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
                         questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
 
@@ -447,7 +452,7 @@ namespace TestManagementCore.SqlRepository
                             optionChanges[counter].OptionDescription = item.OptionDescription;
                             optionChanges[counter].Duration = item.Duration;
                             optionChanges[counter].IsCorrect = item.IsCorrect;
-                            optionChanges[counter].IsActive = item.IsActive;
+                            optionChanges[counter].IsActive = true;
                             optionChanges[counter].CreatedBy = GetUserId();
                             optionChanges[counter].CreatedDate = DateTime.Today;
                             optionChanges[counter].UpdatedBy = GetUserId();
@@ -484,19 +489,21 @@ namespace TestManagementCore.SqlRepository
             {
                 //var question = _context.TblQuestion.Find(id);//get Question
 
-                var question = _context.TblQuestion.Where(e => e.QuestionId == id)
+                var question = _context.TblQuestion.Where(e => e.QuestionId == id && e.IsActive == true)
                                        .Select(x => new QuestionOptionByIdViewModel
                                        {
                                            questionId = x.QuestionId,
                                            question = x.Description,
                                            categoryId = x.CategoryId,
                                            experienceLevelId = x.ExperienceLevelId,
-                                           option = _context.TblOption.Where(x => x.QuestionId == id)
+                                           time = x.Time,
+                                           option = _context.TblOption.Where(x => x.QuestionId == id && x.IsActive == true)
                                                             .Select(x => new OptionViewModel
                                                             {
                                                                 optionId = x.OptionId,
                                                                 option = x.OptionDescription,
-                                                                correctOption = x.IsCorrect
+                                                                correctOption = x.IsCorrect,
+                                                                
                                                             })
                                                             .ToList()
 
@@ -565,12 +572,14 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 
-                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId)
+                var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId && e.IsActive == true)
                                                     .Select(x => new AllQuestionViewModel
                                                     {
                                                         questionId = x.QuestionId,
                                                         question = x.Description,
-                                                        category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId).Select(x => x.Name).SingleOrDefault()
+                                                        category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
+                                                                                       .Select(x => x.Name)
+                                                                                       .SingleOrDefault()
                                                     })
                                                    .ToList();
 
@@ -646,12 +655,13 @@ namespace TestManagementCore.SqlRepository
             {
 
                 var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId &&
-                                                               e.ExperienceLevelId == experienceLevelId)
+                                                               e.ExperienceLevelId == experienceLevelId &&
+                                                               e.IsActive ==true)
                                                     .Select(x => new AllQuestionViewModel
                                                     {
                                                         question = x.Description,
                                                         questionId = x.QuestionId,
-                                                        category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId)
+                                                        category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive ==true)
                                                                                        .Select(x => x.Name)
                                                                                        .SingleOrDefault()
                                                     })
@@ -721,12 +731,13 @@ namespace TestManagementCore.SqlRepository
             try
             {
                 var question = _context.TblQuestion.Where(e => e.CategoryId == categoryId &&
-                                                              e.ExperienceLevelId == experienceLevelId)
+                                                              e.ExperienceLevelId == experienceLevelId &&
+                                                              e.IsActive == true)
                                                    .Select(x => new AllQuestionViewModel
                                                    {
                                                        questionId = x.QuestionId,
                                                        question = x.Description,
-                                                       category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId)
+                                                       category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
                                                                                       .Select(e => e.Name)
                                                                                       .SingleOrDefault()
                                                    })
@@ -799,7 +810,7 @@ namespace TestManagementCore.SqlRepository
             try
             {
 
-                var candidate = _context.TblCandidate.Where(e => e.CandidateId == candidateId)
+                var candidate = _context.TblCandidate.Where(e => e.CandidateId == candidateId && e.IsActive == true)
                                                      .Select(x=> new 
                                                      {
                                                           x.CategoryId,
@@ -822,7 +833,8 @@ namespace TestManagementCore.SqlRepository
                                        { 
                                                 questionId = x.QuestionId,
                                                 question   =  x.Description,
-                                                option = _context.TblOption.Where(e=>e.QuestionId == x.QuestionId)
+                                                time = x.Time,
+                                                option = _context.TblOption.Where(e=>e.QuestionId == x.QuestionId && e.IsActive == true)
                                                                  .Select(x=>new ShuffleOptionViewModel
                                                                  { 
                                                                          optionId = x.OptionId,

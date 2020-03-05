@@ -46,12 +46,14 @@ namespace TestManagement1.Model
 
         public bool? IsActive { get; set; }
 
+        [StringLength(500)]
         public string CreatedBy { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? CreatedDate { get; set; }
 
+        [StringLength(500)]
         public string UpdatedBy { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

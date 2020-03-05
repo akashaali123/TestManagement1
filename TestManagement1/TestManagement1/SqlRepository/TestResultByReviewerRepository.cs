@@ -38,20 +38,20 @@ namespace TestManagementCore.SqlRepository
                 
 
 
-                var test = _context.TblTest.Where(e => e.CategoryId == Convert.ToInt32(categoryId))
+                var test = _context.TblTest.Where(e => e.CategoryId == Convert.ToInt32(categoryId) && e.IsActive == true)
                                     .Select(x => new TestResultViewModel
                                     {
                                         candidateId = x.CandidateId,
                                         
-                                        candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                                        candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                              .Select(c => c.FirstName)
                                                                              .SingleOrDefault(),
                                         
-                                        category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId)
+                                        category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                                        .Select(c => c.Name)
                                                                        .SingleOrDefault(),
                                         
-                                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                                      .Select(e => e.Name)
                                                                                      .SingleOrDefault(),
                                         
@@ -125,20 +125,21 @@ namespace TestManagementCore.SqlRepository
 
 
                 var test = _context.TblTest.Where(x => x.CandidateId == candidateId &&
-                                                    x.CategoryId == Convert.ToInt32(categoryId))
+                                                    x.CategoryId == Convert.ToInt32(categoryId) &&
+                                                    x.IsActive == true)
                                      .Select(x => new TestResultViewModel
                                      {
                                          candidateId = x.CandidateId,
 
-                                         candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                                         candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                              .Select(c => c.FirstName)
                                                                              .SingleOrDefault(),
 
-                                         category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId)
+                                         category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                                        .Select(c => c.Name)
                                                                        .SingleOrDefault(),
 
-                                         experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                                         experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                                      .Select(e => e.Name)
                                                                                      .SingleOrDefault(),
 
@@ -429,19 +430,20 @@ namespace TestManagementCore.SqlRepository
                                    .Where(e => e.TestDate >= fromDate)
                                    .Where(e => e.TestDate <= toDate)
                                    .Where(e => e.CategoryId == Convert.ToInt32(categoryId))
+                                   .Where(e => e.IsActive == true)
                                    .Select(x =>new TestResultViewModel //select statement give anonyms type so we map it in TestResultMapModel
                                    {
                                        candidateId = x.CandidateId,
 
-                                       candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                                       candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                             .Select(c => c.FirstName)
                                                                             .SingleOrDefault(),
 
-                                       category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId)
+                                       category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                                       .Select(c => c.Name)
                                                                       .SingleOrDefault(),
 
-                                       experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                                       experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                                     .Select(e => e.Name)
                                                                                     .SingleOrDefault(),
 
@@ -512,12 +514,12 @@ namespace TestManagementCore.SqlRepository
                   .SingleOrDefault();
 
                 var test = _context.TblTest
-                             .Where(e => e.CategoryId == Convert.ToInt32(categoryId))
+                             .Where(e => e.CategoryId == Convert.ToInt32(categoryId) && e.IsActive == true)
                              .Select(x => new TestResultViewModel //select statement give anonyms type so we map it in TestResultMapModel
                              {
                                  candidateId = x.CandidateId,
 
-                                 candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                                 candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                       .Select(c => c.FirstName)
                                                                       .SingleOrDefault(),
 
@@ -525,7 +527,7 @@ namespace TestManagementCore.SqlRepository
                                                                 .Select(c => c.Name)
                                                                 .SingleOrDefault(),
 
-                                 experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                                 experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                               .Select(e => e.Name)
                                                                               .SingleOrDefault(),
 
@@ -596,20 +598,20 @@ namespace TestManagementCore.SqlRepository
                  .SingleOrDefault();
 
                 var test = _context.TblTest
-                                  .Where(e => e.CategoryId == Convert.ToInt32(categoryId))
+                                  .Where(e => e.CategoryId == Convert.ToInt32(categoryId) && e.IsActive == true)
                                   .Select(x => new TestResultViewModel  //select statement give anonyms type so we map it in TestResultMapModel
                                   {
                                       candidateId = x.CandidateId,
 
-                                      candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                                      candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                            .Select(c => c.FirstName)
                                                                            .SingleOrDefault(),
 
-                                      category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId)
+                                      category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                                      .Select(c => c.Name)
                                                                      .SingleOrDefault(),
 
-                                      experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                                      experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                                    .Select(e => e.Name)
                                                                                    .SingleOrDefault(),
 
@@ -680,20 +682,20 @@ namespace TestManagementCore.SqlRepository
                 .SingleOrDefault();
 
                 var test = _context.TblTest
-                    .Where(e => e.TestStatus == status && e.CategoryId == Convert.ToInt32(categoryId))
+                    .Where(e => e.TestStatus == status && e.CategoryId == Convert.ToInt32(categoryId) && e.IsActive == true)
                     .Select(x => new TestResultViewModel  //select statement give anonyms type so we map it in TestResultMapModel
                     {
                         candidateId = x.CandidateId,
 
-                        candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId)
+                        candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                              .Select(c => c.FirstName)
                                                              .SingleOrDefault(),
 
-                        category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId)
+                        category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                        .Select(c => c.Name)
                                                        .SingleOrDefault(),
 
-                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId)
+                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                      .Select(e => e.Name)
                                                                      .SingleOrDefault(),
 

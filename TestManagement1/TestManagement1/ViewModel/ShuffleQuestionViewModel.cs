@@ -11,6 +11,7 @@ namespace TestManagementCore.ViewModel
 
         public string question { get; set; }
 
+        public int? time { get; set; }
         public List<ShuffleOptionViewModel> option { get; set; }
     }
 }

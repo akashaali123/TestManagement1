@@ -498,5 +498,54 @@ namespace TestManagementCore.Presenter
             }
             
         }
+
+        public int TestCount()
+        {
+            try
+            {
+                return _repository.TestCount();
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultPresenter TestCount Methode in CategoryPresenter" + ex);
+                return 0;
+            }
+        }
+
+        public int PasscandidateCount()
+        {
+            try
+            {
+                return _repository.PasscandidateCount();
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultPresenter PasscandidateCount Methode in CategoryPresenter" + ex);
+                return 0;
+            }
+        }
+
+
+        public int FailcandidateCount()
+        {
+            try
+            {
+                return _repository.FailcandidateCount();
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in TestResultPresenter FailcandidateCount Methode in CategoryPresenter" + ex);
+                return 0;
+            }
+        }
+
+
+
     }
 }

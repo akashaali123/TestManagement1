@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestManagement1.Model;
 
 namespace TestManagement1.Migrations
 {
     [DbContext(typeof(TestManagementContext))]
-    partial class TestManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200305102326_change length of Description in tblquestion")]
+    partial class changelengthofDescriptionintblquestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,8 +471,8 @@ namespace TestManagement1.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<int?>("Time")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(250)")
@@ -630,8 +632,8 @@ namespace TestManagement1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AttemptedInDuration")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("AttemptedInDuration")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");

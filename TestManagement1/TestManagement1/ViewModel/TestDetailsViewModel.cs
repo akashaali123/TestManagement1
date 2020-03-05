@@ -18,8 +18,8 @@ namespace TestManagementCore.ViewModel
 
         //public int[] CorrectOptionId { get; set; }
 
-        [DataType(DataType.Time)]
-        public DateTime? AttemptedInDuration { get; set; }
+       
+        public int? AttemptedInDuration { get; set; }
 
         public bool? IsActive { get; set; }
 

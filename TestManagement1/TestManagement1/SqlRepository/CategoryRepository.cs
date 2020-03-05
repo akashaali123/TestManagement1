@@ -102,7 +102,7 @@ namespace TestManagement1.SqlRepository
         {
             try 
             {
-                return _context.TblCategory;
+                return _context.TblCategory.Where(e=>e.IsActive ==  true);
             }
             catch(Exception ex)
             {

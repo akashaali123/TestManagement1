@@ -24,6 +24,8 @@ namespace TestManagementCore.ViewModel
 
         public int? experienceLevelId { get; set; }
 
+        public int? time { get; set; }
+
         
         //public int optionId { get; set; }
         // public List<string> option { get; set; }

@@ -353,9 +353,9 @@ namespace TestManagementApi.Controllers
                 // var url = string.Format("{0}{1}?email={2}&token={3}",Request.Scheme,_appSettings.ResetPassword_URL, model.Email,HttpUtility.UrlEncode(token.ToString()));
                 
 
-                var url = string.Format("{0}://localhost:7500/resetpassword?email={2}&token={3}", Request.Scheme, _appSettings.ResetPassword_URL, model.Email, HttpUtility.UrlEncode(token.ToString()));
+                var url = string.Format("{0}{1}?email={2}&token={3}", Request.Scheme, _appSettings.ResetPassword_URL, model.Email, HttpUtility.UrlEncode(token.ToString()));
 
-                var message = new Message(new string[] {"akashaali2012@gmail.com" }, "ResetPasswordlink", "Reset password token " + url);
+                var message = new Message(new string[] {model.Email }, "ResetPasswordlink", "Reset password token " + url);
                 _emailSender.SendEmail(message);
 
             }
@@ -379,7 +379,6 @@ namespace TestManagementApi.Controllers
             string decode = HttpUtility.UrlDecode(token);
             decode = decode.Replace(" ", "+");
 
-           
             var model = new ResestPasswordViewModel 
                                 { 
                                     Email = email,
@@ -398,8 +397,8 @@ namespace TestManagementApi.Controllers
         [Route("/user/noofuser")]
         public IActionResult NoOfUser()
         {
-            int noOfUsers = userPresenter.NoOfUser();
-            return helperMethode(noOfUsers, "users");
+            int count = userPresenter.NoOfUser();
+            return helperMethode(count, "count");
         }
 
 

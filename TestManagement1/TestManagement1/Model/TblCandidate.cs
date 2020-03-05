@@ -29,7 +29,7 @@ namespace TestManagement1.Model
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        
+        [StringLength(200)]
         public string Email { get; set; }
 
 
@@ -44,6 +44,8 @@ namespace TestManagement1.Model
 
         public int? VacancyId { get; set; }
 
+
+        [StringLength(500)]
         public string CreatedBy { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -51,6 +53,7 @@ namespace TestManagement1.Model
         public DateTime CreatedDate { get; set; }
 
 
+        [StringLength(500)]
         public string UpdatedBy { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
