@@ -41,8 +41,8 @@ namespace TestManagement1.Model
 
         public int? QuestionSkipped { get; set; }
 
-        [DataType(DataType.Time)]
-        public DateTime? Duration { get; set; }
+        
+        public string Duration { get; set; }
 
         public bool? IsActive { get; set; }
 
@@ -59,5 +59,8 @@ namespace TestManagement1.Model
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
         public DateTime? UpdatedDate { get; set; }
+
+
+        public string TotalTimeForTest { get; set; }
     }
 }

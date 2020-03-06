@@ -229,7 +229,7 @@ namespace TestManagementApi.Controllers
 
 
         /// <summary>
-        /// Url : http://localhost:55377/candidate/generatetest?candidateId=45&numberOfQuestion=1
+        /// Url : http://localhost:55377/candidate/generatetest?candidateId=45&numberOfQuestion=1&time=1
         /// 
         /// 
         /// </summary>
@@ -247,9 +247,9 @@ namespace TestManagementApi.Controllers
         /// </returns>
         [HttpPost]
         [Route("/candidate/generatetest")]
-        public IActionResult JwtForCandidate(int candidateId,int numberOfQuestion)
+        public IActionResult JwtForCandidate(int candidateId,int numberOfQuestion, int time)
         {
-            var jwt = cp.JwtForCandidate(candidateId, numberOfQuestion);
+            var jwt = cp.JwtForCandidate(candidateId, numberOfQuestion,time);
             return helperMethode(jwt,"jwttoken");
         }
 

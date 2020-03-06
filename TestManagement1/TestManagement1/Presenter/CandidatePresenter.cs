@@ -120,12 +120,14 @@ namespace TestManagement1.Presenter
 
 
         public object JwtForCandidate(int candidateId,
-                                      int numberOfQuestion)
+                                      int numberOfQuestion,
+                                      int time)
         {
             try
             {
                 return _repository.JwtForCandidate(candidateId,
-                                                   numberOfQuestion);
+                                                   numberOfQuestion,
+                                                   time);
             }
             catch (Exception ex)
             {

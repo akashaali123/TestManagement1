@@ -201,7 +201,8 @@ namespace TestManagement1.SqlRepository
         
 
         public  object JwtForCandidate(int candidateId,
-                                       int numberOfQuestion)
+                                       int numberOfQuestion,
+                                       int time)
         {
             try
             {
@@ -214,8 +215,8 @@ namespace TestManagement1.SqlRepository
                            {
                                 new Claim("role", "candidate"),//We access this userID in UserProfile Controller
                                  new Claim("candidateid", candidate.CandidateId.ToString()),
-                                 new Claim("number",numberOfQuestion.ToString())//sending no of question in jwt which is used to get test question
-
+                                 new Claim("number",numberOfQuestion.ToString()),//sending no of question in jwt which is used to get test question
+                                 new Claim("time",time.ToString())
 
                            }),
 

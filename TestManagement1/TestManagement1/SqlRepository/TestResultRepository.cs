@@ -64,7 +64,9 @@ namespace TestManagementCore.SqlRepository
                             {
                                 x.SelectedOptionId,
                                 x.CorrectOptionId,
-                                x.CandidateId 
+                                x.CandidateId,
+                                
+                                
                             });
 
                         foreach (var item in test)
@@ -103,7 +105,7 @@ namespace TestManagementCore.SqlRepository
                                 skippedQuestion++;//If  selectedOptionId in null so increment in skipped Question
                             }
 
-
+                            
                         }
 
                         totalQusetion = skippedQuestion + correctAnswer + wrongAnswer;
@@ -113,6 +115,21 @@ namespace TestManagementCore.SqlRepository
                         percentage = (Convert.ToDouble(correctAnswer) / Convert.ToDouble(totalQusetion)) * 100;
 
                         roundof = Math.Round(percentage, 2);//roundOf the percentage
+
+
+                        
+                        
+                        
+                        
+                        int? totalTimeForAttempted = _context.TblTestDetails.Where(e => e.CandidateId == candidateId)
+                                                                .Sum(x => x.AttemptedInDuration);
+
+                        int? min = totalTimeForAttempted / 60;
+                        int? sec = totalTimeForAttempted % 60;
+
+                        string timeFormat =string.Format("{0}:{1}",min,sec);
+
+
 
                         TblTest postTest = new TblTest
                         {
@@ -126,7 +143,7 @@ namespace TestManagementCore.SqlRepository
                             CorrectAnswer = correctAnswer,
                             WrongAnswer = wrongAnswer,
                             QuestionSkipped = skippedQuestion,
-                            Duration = null,
+                            Duration = timeFormat,
                             IsActive = true,
                             CreatedBy = null,
                             CreatedDate = DateTime.Today,/*DateTime.Now.ToString("dd/MM/yyyy")*/
@@ -330,7 +347,7 @@ namespace TestManagementCore.SqlRepository
                                       skippedQuestion = x.QuestionSkipped,
                                       percentage = x.Percentage,
                                       Duration = x.Duration
-                                   })
+            })
                                    .SingleOrDefault();
 
                 return test;

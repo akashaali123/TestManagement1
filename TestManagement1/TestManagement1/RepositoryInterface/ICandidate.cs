@@ -20,7 +20,8 @@ namespace TestManagement1.RepositoryInterface
         TblCandidate Add(CandidateViewModel candidateModel);
 
         public object JwtForCandidate(int candidateId, 
-                                      int numberOfQuestion);
+                                      int numberOfQuestion,
+                                      int time);
 
 
 

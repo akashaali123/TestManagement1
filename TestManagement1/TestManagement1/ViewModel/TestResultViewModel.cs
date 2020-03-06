@@ -18,7 +18,7 @@ namespace TestManagementCore.ViewModel
 
         public string experienceLevel { get; set; }
 
-
+        
         [DataType(DataType.Date)]
         public DateTime? testDate { get; set; }
 
@@ -37,7 +37,7 @@ namespace TestManagementCore.ViewModel
         public double? percentage { get; set; }
 
 
-        [DataType(DataType.Time)]
-        public DateTime? Duration { get; set; }
+       
+        public string Duration { get; set; }
     }
 }
