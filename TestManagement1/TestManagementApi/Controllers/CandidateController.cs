@@ -15,7 +15,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]                                  //Pass the ILogger class
-    //[Authorize]
+    [Authorize]
     public class CandidateController : BaseController<CandidatePresenter> //generic methode implement for Logger and WebHostEnviroment
     {
         //When we need to implement WebHostEnviroment and Logger so Inherit from base controller in which

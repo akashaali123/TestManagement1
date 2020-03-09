@@ -39,6 +39,8 @@ namespace TestManagementCore.SqlRepository
 
 
                 var test = _context.TblTest.Where(e => e.CategoryId == Convert.ToInt32(categoryId) && e.IsActive == true)
+                                           .OrderByDescending(e => e.TestDate)
+                                           .ThenByDescending(x => x.TestId)
                                     .Select(x => new TestResultViewModel
                                     {
                                         candidateId = x.CandidateId,
@@ -285,16 +287,16 @@ namespace TestManagementCore.SqlRepository
 
 
                     //Find Option Of Candidate Attempted Question
-                    var options = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
-                                                    .Select(x => x.OptionDescription)
-                                                    .ToList();
+                    //var options = _context.TblOption.Where(e => e.QuestionId == item.QuestionId)
+                    //                                .Select(x => x.OptionDescription)
+                    //                                .ToList();
 
 
 
 
 
-                    //Set List Of Option In ViewModel List options
-                    model.option = options;
+                    ////Set List Of Option In ViewModel List options
+                    //model.option = options;
 
 
 
@@ -305,35 +307,45 @@ namespace TestManagementCore.SqlRepository
                     /*##################################### For Finding Selected Option ###################################*/
 
 
-
-                    //Get selected Option Id for each Question which is attempted by candidate and parse into array
-                    int[] selectOption = Array.ConvertAll(item.SelectedOptionId.Split(','), s => int.Parse(s));
-
-
-
-
-                    //Initialize the List of Select optionList in which we add the option of selected by candidate 
                     List<string> selectOptionList = new List<string>();
 
+                    //Check whether Candidate Attempt Question Or not 
 
-
-                    // Loop is required because sometime candidate select multiple Question
-                    foreach (var selectoption in selectOption)
+                    if (!string.IsNullOrEmpty(item.SelectedOptionId))
                     {
+                        //Get selected Option Id for each Question which is attempted by candidate and parse into array
+                        int[] selectOption = Array.ConvertAll(item.SelectedOptionId.Split(','), s => int.Parse(s));
+
+                        //Initialize the List of Select optionList in which we add the option of selected by candidate 
+                       
 
 
-                        //Find the option which is select by candidate One by one
-                        var option = _context.TblOption.Where(e => e.OptionId == selectoption)
-                                                       .Select(x => x.OptionDescription)
-                                                       .SingleOrDefault();
+
+                        // Loop is required because sometime candidate select multiple Question
+                        foreach (var selectoption in selectOption)
+                        {
 
 
-                        //And add them in  select option List
-                        selectOptionList.Add(option);
+                            //Find the option which is select by candidate One by one
+                            var option = _context.TblOption.Where(e => e.OptionId == selectoption)
+                                                           .Select(x => x.OptionDescription)
+                                                           .SingleOrDefault();
 
 
+                            //And add them in  select option List
+                            selectOptionList.Add(option);
+
+
+                        }
+
+
+                     
                     }
-
+                    else
+                    {
+                        selectOptionList.Add("");
+                        
+                    }
 
                     //We make a viewModel of TestQuestionOptionViewModel in which we declare selectOption List type variable
                     //so we have a selected option in select optionList which is assigning in TestQuestionOptionViewModel 
@@ -341,16 +353,7 @@ namespace TestManagementCore.SqlRepository
                     model.selectOption = selectOptionList;
 
 
-
-
-
                     /*##################################### For Finding Correct Option ######################################*/
-
-
-
-
-                    //Get Correct Option Id for each Question which is attempted by candidate and parse into array
-                    int[] correctOption = Array.ConvertAll(item.CorrectOptionId.Split(','), s => int.Parse(s));
 
 
 
@@ -358,24 +361,43 @@ namespace TestManagementCore.SqlRepository
                     //Initialize the List of Select correctOptionList in which we add the option which is correct 
                     List<string> correctOptionList = new List<string>();
 
+                    //Check that the question have their options or empty 
 
-
-                    // Loop is required because sometime multiple option set to correct
-                    foreach (var correctoption in correctOption)
+                    if (!string.IsNullOrEmpty(item.CorrectOptionId))
                     {
+                        //Get Correct Option Id for each Question which is attempted by candidate and parse into array
+                        int[] correctOption = Array.ConvertAll(item.CorrectOptionId.Split(','), s => int.Parse(s));
 
 
-                        //Find the option which is correct One by One
-                        var option = _context.TblOption.Where(e => e.OptionId == correctoption)
-                                                       .Select(x => x.OptionDescription)
-                                                       .SingleOrDefault();
 
 
-                        //And add them in  correct Option List
-                        correctOptionList.Add(option);
 
+
+
+                        // Loop is required because sometime multiple option set to correct
+                        foreach (var correctoption in correctOption)
+                        {
+
+
+                            //Find the option which is correct One by One
+                            var option = _context.TblOption.Where(e => e.OptionId == correctoption)
+                                                           .Select(x => x.OptionDescription)
+                                                           .SingleOrDefault();
+
+
+                            //And add them in  correct Option List
+                            correctOptionList.Add(option);
+
+
+                        }
 
                     }
+                    else
+                    {
+                        correctOptionList.Add("");
+                    }
+
+                     
 
 
                     //We make a viewModel of TestQuestionOptionViewModel in which we declare correctOption List type variable

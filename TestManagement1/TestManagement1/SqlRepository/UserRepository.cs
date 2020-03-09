@@ -82,7 +82,7 @@ namespace TestManagement1.SqlRepository
             try
             {
                 var user = await _userManager.FindByNameAsync(model.userName);
-
+               // var user = await _userManager.FindByEmailAsync(model.email);
 
                 ////Get the Role of signing User save in it a list
                 var userRole = await _userManager.GetRolesAsync(user);
@@ -95,41 +95,51 @@ namespace TestManagement1.SqlRepository
 
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.password))
                 {
-                    var tokenDescriptor = new SecurityTokenDescriptor
+                   
+                    if(await _userManager.IsEmailConfirmedAsync(user))
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
+                        var tokenDescriptor = new SecurityTokenDescriptor
                         {
+                            Subject = new ClaimsIdentity(new Claim[]
+                                               {
                         new Claim("userid", user.Id.ToString()),//We access this userID in UserProfile Controller
                         new Claim("email", user.Email.ToString()),
                         new Claim("role",  role.Name.ToString()),
                         new Claim("roleid",  role.Id.ToString()),
                         new Claim("username",user.UserName.ToString()),
                         new Claim("isactive",user.IsActive.ToString()),
-                        //new Claim(ClaimTypes.Role,roles.ToString())
-                        
-                        }),
-                        
-                        Expires = DateTime.UtcNow.AddHours(5),
+                                                   //new Claim(ClaimTypes.Role,roles.ToString())
 
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var tokenHandler = new JwtSecurityTokenHandler();
+                                               }),
 
-                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                            Expires = DateTime.UtcNow.AddHours(5),
 
-                    var token = tokenHandler.WriteToken(securityToken);
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                        };
+                        var tokenHandler = new JwtSecurityTokenHandler();
 
-                    
-                    user.JwtToken = token; //take Jwt value in db for temporary
-                    var result = await _userManager.UpdateAsync(user);
-                    
-                    return token;  
+                        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+
+                        var token = tokenHandler.WriteToken(securityToken);
+
+
+                        user.JwtToken = token; //take Jwt value in db for temporary
+                        var result = await _userManager.UpdateAsync(user);
+
+                        return token;
+                    }
+                    else
+                    {
+                        return new { message = "Your mail is not confirmed yet " };
+
+                    }
                 }
                 else
                 {
                     return null;
-                    
                 }
+
+                   
             }
             catch (Exception ex)
             {
@@ -431,13 +441,31 @@ namespace TestManagement1.SqlRepository
 
         }
 
-        public List<UserListViewModel> UserList()
+        public  List<UserListViewModel> UserList()
         {
             try
             {
-                
+
+               
+
                 var allusers =  _context.Users.ToList();
-                var userVM = allusers.Select(user => new UserListViewModel { id = user.Id, userName = user.UserName, email = user.Email }).ToList();
+                var userVM = allusers.Select(user => new UserListViewModel
+                {
+                    id = user.Id,
+                    userName = user.UserName,
+                    email = user.Email,
+                    Role = _context.UserRoles.Where(e => e.UserId == user.Id).Select(x =>new RoleViewModel 
+                    { 
+                        name =_context.Roles.Where(e=>e.Id == x.RoleId)
+                                            .SingleOrDefault()
+                                            .ToString()
+                    })
+                    .SingleOrDefault(),
+                   
+                    
+
+                })
+                .ToList();
                 return userVM;
             }
             catch (Exception)

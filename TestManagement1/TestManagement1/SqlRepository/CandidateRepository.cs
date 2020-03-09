@@ -125,7 +125,11 @@ namespace TestManagement1.SqlRepository
             try
             {
 
-                return _context.TblCandidate.Where(e=>e.IsActive == true);
+                return _context.TblCandidate.Where(e => e.IsActive == true)
+                    .OrderByDescending(x => x.CreatedDate)
+                    .ThenByDescending(x=>x.CandidateId)
+                    .ThenByDescending(e => e.UpdatedDate);
+                    
                  
                     
                 

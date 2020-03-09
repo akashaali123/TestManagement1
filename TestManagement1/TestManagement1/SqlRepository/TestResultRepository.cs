@@ -242,6 +242,8 @@ namespace TestManagementCore.SqlRepository
             {
 
                 var test = _context.TblTest.Where(c => c.IsActive == true)
+                    .OrderByDescending(e=>e.TestDate)
+                    .ThenByDescending(x => x.TestId)
                     .Select(x => new TestResultViewModel//select statement give anonyms type so we map it in TestResultMapModel
                     {                                  //which is pass as a parameter in helperMethode which implementation is below
                         candidateId = x.CandidateId,
@@ -347,7 +349,7 @@ namespace TestManagementCore.SqlRepository
                                       skippedQuestion = x.QuestionSkipped,
                                       percentage = x.Percentage,
                                       Duration = x.Duration
-            })
+                                   })
                                    .SingleOrDefault();
 
                 return test;

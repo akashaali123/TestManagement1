@@ -8,7 +8,7 @@ namespace TestManagement1.ViewModel
     public class LoginModel
     {
 
-        
+        //public string email { get; set; }
 
         public string userName { get; set; }
 

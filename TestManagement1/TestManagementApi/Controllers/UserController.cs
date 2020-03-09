@@ -70,10 +70,12 @@ namespace TestManagementApi.Controllers
             //For confirmation Account Via Email
             if (user != null)
             {
-               //generate url with token and send to the user
-                var callback = Url.Action("ConfirmEmail", "User", new { email = model.email, token = user }, Request.Scheme);
+                //generate url with token and send to the user
+                //var callback = Url.Action("ConfirmEmail", "User", new { email = model.email, token = user }, Request.Scheme);
 
-                var message = new Message(new string[] { model.email }, "Account Confirmation link", "Account Confirmation Link " + callback);
+                var url = string.Format("{0}{1}?email={2}&token={3}", Request.Scheme, _appSettings.ConfirmEmail_URL, model.email, HttpUtility.UrlEncode(user.ToString()));
+
+                var message = new Message(new string[] { model.email }, "Account Confirmation link", "Account Confirmation Link " + url);
                 _emailSender.SendEmail(message);
 
             }
@@ -88,12 +90,23 @@ namespace TestManagementApi.Controllers
         //when user register their account it generate the url for confirm email
         //whe he hit url this api is call and account is confirm
         [HttpGet]
-        [Route("/user/confirmemail")]
+        [Route("/confirmemail")]
         public async Task<IActionResult> ConfirmEmail(string email,
                                                       string token)
         {
+
+          //  string real = "CfDJ8OKmzg4eTYhBq9Oj3yQfTgqugt+zxUI/+LzxzirfJ6Ve1yySnXbd7Kf5YjyPaF6vfiB8CZrEX60H9i49mRdN0+t0LQdTpEKPuluXExuAuwwu8ci9/0sSpiEJZ64Z3mER4j5gKPYG4s7o7dUuXHcsjjONnEkthfAXg+guAA/p9f1BdnONN2WIHtg5Iz0PnF6RPLCqyvJkWN8I+v6XCx/5z7iA8L0h9UST0eCthD96ZSQKLBrnIsFhYFrKXNvlZfoe0A==";
+
+            string decode = HttpUtility.UrlDecode(token);
+            decode = decode.Replace(" ", "+");
+
+            //if(real ==  decode)
+            //{
+
+            //}
+
             var confirmEmail = await userPresenter.ConfirmEmail(email,
-                                                                token);
+                                                                decode);
 
             return helperMethode(confirmEmail, "confirmemail");
         }

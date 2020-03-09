@@ -11,7 +11,7 @@ namespace TestManagement1.Model
         public TblQuestion()
         {
             IsActive = true;
-            
+            Time = 2;
         }
         [Key]
         public int QuestionId { get; set; }

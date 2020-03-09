@@ -9,7 +9,7 @@ namespace TestManagementCore.ViewModel
     {
         public string Description { get; set; }
        
-        public List<string> option { get; set; }
+       // public List<string> option { get; set; }
 
 
         public List<string> correctOption { get; set; }

@@ -93,6 +93,12 @@ namespace TestManagement1
             services.AddDataProtection();
 
 
+            //For expiration of token for reset password and Email confirmed
+            services.Configure<DataProtectionTokenProviderOptions>(o => 
+                                     o.TokenLifespan = TimeSpan.FromMinutes(15)
+                                     );
+
+
           
 
             //To remove identity Validation 
@@ -104,7 +110,7 @@ namespace TestManagement1
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
                 option.Password.RequiredLength = 6;
-
+                //option.SignIn.RequireConfirmedEmail = true;
 
 
             });

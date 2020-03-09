@@ -100,7 +100,10 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-                return _context.TblExperienceLevel.Where(e=>e.IsActive ==  true);
+                return _context.TblExperienceLevel.Where(e=>e.IsActive ==  true)
+                    .OrderByDescending(x=>x.CreatedDate)
+                    .ThenByDescending(x => x.Id)
+                    .ThenByDescending(e => e.UpdatedDate);
             }
             catch (Exception ex)
             {

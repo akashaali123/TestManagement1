@@ -141,6 +141,9 @@ namespace TestManagementCore.SqlRepository
                                        .Where(e => e.Roleid == GetRoleId() &&
                                                     e.CreatedBy == GetUserId()  &&
                                                     e.IsActive == true)
+                                       .OrderByDescending(e=>e.CreatedDate)
+                                       .ThenByDescending(e => e.UpdatedDate)
+                                       .ThenByDescending(x => x.QuestionId)
                                        .Select(x => new AllQuestionViewModel
                                        {
                                            questionId = x.QuestionId,
@@ -309,6 +312,9 @@ namespace TestManagementCore.SqlRepository
             {
                 //Get all question and their Respective Category
                 var question = _context.TblQuestion.Where(e=>e.IsActive == true)
+                                       .OrderByDescending(e=>e.CreatedDate)
+                                       .ThenByDescending(e => e.UpdatedDate)
+                                       .ThenByDescending(x => x.QuestionId)
                                        .Select(x => new AllQuestionViewModel
                                        {
                                             question = x.Description,
@@ -316,7 +322,10 @@ namespace TestManagementCore.SqlRepository
                                             time = x.Time,
                                             category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
                                                                            .Select(x => x.Name)
-                                                                           .SingleOrDefault()
+                                                                           .SingleOrDefault(),
+                                            CreatedName = _context.Users.Where(e=>e.Id == x.CreatedBy)
+                                                                        .SingleOrDefault()
+                                                                        .ToString()
                                        })
                                        .ToList();
 
@@ -579,7 +588,10 @@ namespace TestManagementCore.SqlRepository
                                                         question = x.Description,
                                                         category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
                                                                                        .Select(x => x.Name)
-                                                                                       .SingleOrDefault()
+                                                                                       .SingleOrDefault(),
+                                                        CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
+                                                                                    .SingleOrDefault()
+                                                                                    .ToString()
                                                     })
                                                    .ToList();
 
@@ -663,7 +675,10 @@ namespace TestManagementCore.SqlRepository
                                                         questionId = x.QuestionId,
                                                         category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive ==true)
                                                                                        .Select(x => x.Name)
-                                                                                       .SingleOrDefault()
+                                                                                       .SingleOrDefault(),
+                                                        CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
+                                                                                    .SingleOrDefault()
+                                                                                    .ToString()
                                                     })
                                                     .ToList();
                 return question;
@@ -739,7 +754,10 @@ namespace TestManagementCore.SqlRepository
                                                        question = x.Description,
                                                        category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
                                                                                       .Select(e => e.Name)
-                                                                                      .SingleOrDefault()
+                                                                                      .SingleOrDefault(),
+                                                       CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
+                                                                                   .SingleOrDefault()
+                                                                                   .ToString()
                                                    })
                                                    .Take(number)
                                                    .ToList();

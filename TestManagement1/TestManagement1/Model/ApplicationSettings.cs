@@ -14,7 +14,8 @@ namespace TestManagement1.Model
 
         public string ResetPassword_URL { get; set; }
         //URL of front end Port
-
+       
+        public string ConfirmEmail_URL { get; set; }
 
         //for example Client_Url
     }

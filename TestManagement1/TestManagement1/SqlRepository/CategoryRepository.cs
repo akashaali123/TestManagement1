@@ -102,7 +102,12 @@ namespace TestManagement1.SqlRepository
         {
             try 
             {
-                return _context.TblCategory.Where(e=>e.IsActive ==  true);
+            
+                return _context.TblCategory.Where(e=>e.IsActive ==  true)
+                    .OrderByDescending(x=>x.CreatedDate)
+                    .ThenByDescending(x => x.CategoryId)
+                    .ThenByDescending(e => e.UpdatedDate);
+                
             }
             catch(Exception ex)
             {

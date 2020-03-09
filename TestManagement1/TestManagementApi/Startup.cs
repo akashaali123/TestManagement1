@@ -68,8 +68,8 @@ namespace TestManagementApi
             //make for future configuration if we want trigger Like functionality in Future so we use it 
             services.AddScoped<TriggerClass>();
 
-          
-            
+
+
 
 
             services.AddIdentity<TblUser, IdentityRole>()
@@ -78,6 +78,11 @@ namespace TestManagementApi
 
             services.AddDataProtection() ;
 
+
+            //For expiration of token for reset password and Email confirmed
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+                                    o.TokenLifespan = TimeSpan.FromMinutes(15)
+                                    );
 
 
 

@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20200305112059_change datattype of time to int in tblquestion.Designer.cs" />
     <Compile Remove="Migrations\20200305124425_change datatype attempted in duration to int in tbltestdetails.cs" />
     <Compile Remove="Migrations\20200305124425_change datatype attempted in duration to int in tbltestdetails.Designer.cs" />
+    <Compile Remove="Migrations\20200309072447_initialize 2 min in tbl question Time field.cs" />
+    <Compile Remove="Migrations\20200309072447_initialize 2 min in tbl question Time field.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

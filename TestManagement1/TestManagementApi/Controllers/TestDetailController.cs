@@ -14,6 +14,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class TestDetailController :  BaseController<TestDetailPresenter>
     {
 

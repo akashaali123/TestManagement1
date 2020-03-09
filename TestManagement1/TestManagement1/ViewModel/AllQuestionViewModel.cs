@@ -14,6 +14,8 @@ namespace TestManagementCore.ViewModel
 
         public int? time { get; set; }
 
+        public string CreatedName { get; set; }
+
       
 
     }

@@ -15,7 +15,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="verifier")]
+    [Authorize]
     public class TestResultByReviewerController : BaseController<TestResultByReviewerPresenter>
     {
 
