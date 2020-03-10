@@ -16,6 +16,8 @@ namespace TestManagementCore.ViewModel
 
         public string CreatedName { get; set; }
 
+        public string experienceLevel { get; set; }
+
       
 
     }

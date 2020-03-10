@@ -111,6 +111,8 @@ namespace TestManagement1
                 option.Password.RequireUppercase = false;
                 option.Password.RequiredLength = 6;
                 //option.SignIn.RequireConfirmedEmail = true;
+                option.User.RequireUniqueEmail = true;
+                
 
 
             });

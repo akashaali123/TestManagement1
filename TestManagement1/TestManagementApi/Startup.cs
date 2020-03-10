@@ -93,7 +93,8 @@ namespace TestManagementApi
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
                 option.Password.RequiredLength = 6;
-                
+                option.User.RequireUniqueEmail = true;
+
 
 
             });

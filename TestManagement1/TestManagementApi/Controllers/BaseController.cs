@@ -47,27 +47,30 @@ namespace TestManagementApi.Controllers
         {
             try
             {
-                // Data Dictionary added as per the standard policy
-                Dictionary<string, object> data = new Dictionary<string, object>();
+               
+                    // Data Dictionary added as per the standard policy
+                    Dictionary<string, object> data = new Dictionary<string, object>();
 
-                if (variable != null)
-                {
-                    // Add the data in the JSON Data field below
-                    data.Add(dicName, variable);
+                    if (variable != null)
+                    {
+                        // Add the data in the JSON Data field below
+                        data.Add(dicName, variable);
 
 
-                    // Return Data 
-                   
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(true, StatusCodes.Status200OK, dicName, data);
-                }
-                else
-                {
-                    // Error Returned
+                        // Return Data 
 
-                    //MyReturnMethode Return the data in Ok result its implementation in base controller
-                    return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
-                }
+                        //MyReturnMethode Return the data in Ok result its implementation in base controller
+                        return MyReturnMethode(true, StatusCodes.Status200OK, dicName, data);
+                    }
+                    else
+                    {
+                        // Error Returned
+
+                        //MyReturnMethode Return the data in Ok result its implementation in base controller
+                        return MyReturnMethode(false, StatusCodes.Status400BadRequest, "Invalid Attempt", data);
+                    }
+                
+               
 
 
             }

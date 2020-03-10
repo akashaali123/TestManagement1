@@ -46,6 +46,10 @@ namespace TestManagementCore.SqlRepository
             {
                 try
                 {
+                    if(model.question.Time == 0)
+                    {
+                        model.question.Time = 2;
+                    }
 
                     model.question.CreatedBy = GetUserId(); //set userid in created by
                     model.question.CreatedDate = DateTime.Today;//set date in created date
@@ -151,7 +155,10 @@ namespace TestManagementCore.SqlRepository
                                            time = x.Time,
                                            category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId)
                                                                           .Select(e => e.Name)
-                                                                          .SingleOrDefault()
+                                                                          .SingleOrDefault(),
+                                           experienceLevel = _context.TblExperienceLevel.Where(e=>e.Id == x.ExperienceLevelId)
+                                                                                        .Select(e=>e.Name)
+                                                                                        .SingleOrDefault()
 
                                        })
                                        .ToList();
@@ -325,7 +332,10 @@ namespace TestManagementCore.SqlRepository
                                                                            .SingleOrDefault(),
                                             CreatedName = _context.Users.Where(e=>e.Id == x.CreatedBy)
                                                                         .SingleOrDefault()
-                                                                        .ToString()
+                                                                        .ToString(),
+                                           experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExperienceLevelId)
+                                                                                        .Select(e => e.Name)
+                                                                                        .SingleOrDefault()
                                        })
                                        .ToList();
 
@@ -433,8 +443,8 @@ namespace TestManagementCore.SqlRepository
                         questionChanges.ExperienceLevelId = questionAndOptionViewModel.question.ExperienceLevelId;
                         questionChanges.CategoryId = questionAndOptionViewModel.question.CategoryId;
 
-                        questionChanges.CreatedBy = GetUserId();
-                        questionChanges.CreatedDate = DateTime.Today;
+                        questionChanges.CreatedBy = questionChanges.CreatedBy;
+                        questionChanges.CreatedDate = questionChanges.CreatedDate;
                         questionChanges.UpdatedBy = GetUserId();
                         questionChanges.UpdatedDate = DateTime.Today;
                         questionChanges.Roleid = GetRoleId();
@@ -462,8 +472,8 @@ namespace TestManagementCore.SqlRepository
                             optionChanges[counter].Duration = item.Duration;
                             optionChanges[counter].IsCorrect = item.IsCorrect;
                             optionChanges[counter].IsActive = true;
-                            optionChanges[counter].CreatedBy = GetUserId();
-                            optionChanges[counter].CreatedDate = DateTime.Today;
+                            optionChanges[counter].CreatedBy = optionChanges[counter].CreatedBy;
+                            optionChanges[counter].CreatedDate = optionChanges[counter].CreatedDate;
                             optionChanges[counter].UpdatedBy = GetUserId();
                             optionChanges[counter].UpdatedDate = DateTime.Today;
                             break;
@@ -591,7 +601,10 @@ namespace TestManagementCore.SqlRepository
                                                                                        .SingleOrDefault(),
                                                         CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
                                                                                     .SingleOrDefault()
-                                                                                    .ToString()
+                                                                                    .ToString(),
+                                                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExperienceLevelId)
+                                                                                        .Select(e => e.Name)
+                                                                                        .SingleOrDefault()
                                                     })
                                                    .ToList();
 
@@ -678,7 +691,10 @@ namespace TestManagementCore.SqlRepository
                                                                                        .SingleOrDefault(),
                                                         CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
                                                                                     .SingleOrDefault()
-                                                                                    .ToString()
+                                                                                    .ToString(),
+                                                        experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExperienceLevelId)
+                                                                                        .Select(e => e.Name)
+                                                                                        .SingleOrDefault()
                                                     })
                                                     .ToList();
                 return question;
@@ -757,7 +773,10 @@ namespace TestManagementCore.SqlRepository
                                                                                       .SingleOrDefault(),
                                                        CreatedName = _context.Users.Where(e => e.Id == x.CreatedBy)
                                                                                    .SingleOrDefault()
-                                                                                   .ToString()
+                                                                                   .ToString(),
+                                                       experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExperienceLevelId)
+                                                                                        .Select(e => e.Name)
+                                                                                        .SingleOrDefault()
                                                    })
                                                    .Take(number)
                                                    .ToList();

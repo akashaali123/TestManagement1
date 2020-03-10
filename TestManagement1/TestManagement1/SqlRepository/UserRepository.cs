@@ -203,8 +203,9 @@ namespace TestManagement1.SqlRepository
 
                 var applicationUser = new TblUser()
                 {
+                    User_Name = model.userName,
 
-                    UserName = model.userName, //the value pass to the model and we assign the model value in application user constructor to take a value in database
+                    UserName = model.email, //the value pass to the model and we assign the model value in application user constructor to take a value in database
 
                     Email = model.email,
 
@@ -219,9 +220,7 @@ namespace TestManagement1.SqlRepository
 
                     CreatedDate = System.DateTime.Now,
 
-                    CreatedBy = GetUserId()
-
-                     
+                    CreatedBy = GetUserId()                          
 
                 };
 
@@ -448,11 +447,12 @@ namespace TestManagement1.SqlRepository
 
                
 
-                var allusers =  _context.Users.ToList();
+               // var allusers =  _context.Users.ToList();
+                var allusers = _userManager.Users.ToList();
                 var userVM = allusers.Select(user => new UserListViewModel
                 {
                     id = user.Id,
-                    userName = user.UserName,
+                    userName = user.User_Name,
                     email = user.Email,
                     Role = _context.UserRoles.Where(e => e.UserId == user.Id).Select(x =>new RoleViewModel 
                     { 
@@ -490,7 +490,7 @@ namespace TestManagement1.SqlRepository
                 }
                 else
                 {
-                    userList.userName = user.UserName;
+                    userList.userName = user.User_Name;
                     userList.email = user.Email;
                     return userList;
                 }
@@ -547,7 +547,8 @@ namespace TestManagement1.SqlRepository
                 var user = await _userManager.FindByIdAsync(id);
                 if (user != null)
                 {
-                    user.UserName = model.userName;
+                    user.User_Name = model.userName;
+                    user.UserName = model.email;
                     user.Email = model.email;
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
@@ -734,6 +735,22 @@ namespace TestManagement1.SqlRepository
 
         }
 
+        public List<string> GetEmail()
+        {
+            try
+            {
+                return _userManager.Users.Select(e => e.Email)
+                              .ToList();
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+        }
+
+
 
 
 
@@ -741,14 +758,25 @@ namespace TestManagement1.SqlRepository
         //To find the current login user id which is used in created by
         public string GetUserId()
         {
-            string userId = _httpContextAccessor.HttpContext
-                                                .User
-                                                .Claims.
-                                                FirstOrDefault(c => c.Type == "userid")
-                                                .Value;
-            return userId;
+            try
+            {
+                string userId = _httpContextAccessor.HttpContext
+                                               .User
+                                               .Claims.
+                                               FirstOrDefault(c => c.Type == "userid")
+                                               .Value;
+                return userId;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
         }
 
+
+      
 
 
     }

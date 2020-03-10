@@ -9,9 +9,9 @@ using TestManagementCore.StoredProcedure;
 
 namespace TestManagement1.Model
 {
-    public class TestManagementContext:IdentityDbContext
+    public class TestManagementContext : IdentityDbContext
     {
-        public TestManagementContext(DbContextOptions options):base(options)
+        public TestManagementContext(DbContextOptions options) : base(options)
         {
 
         }
@@ -47,7 +47,7 @@ namespace TestManagement1.Model
 
         public DbSet<TblAction> TblAction { get; set; }
 
-       // public virtual DbSet<RetriveQuestionAndOptionById> RetriveQuestionAndOptionById { get; set; } //For sp no need to run migration
+        // public virtual DbSet<RetriveQuestionAndOptionById> RetriveQuestionAndOptionById { get; set; } //For sp no need to run migration
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
@@ -57,5 +57,23 @@ namespace TestManagement1.Model
         //{
         // builder.Entity<TblCandidate>().MapToStoredProcedures();
         //}
+
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+
+            builder.Entity<TblCandidate>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+         
+
+
+
+
+        }
     }
 }

@@ -48,6 +48,8 @@ namespace TestManagement1.RepositoryInterface
 
         public int NoOfUser();
 
+        public List<string> GetEmail();
+
 
 
     }

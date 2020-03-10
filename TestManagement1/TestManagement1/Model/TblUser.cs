@@ -27,8 +27,11 @@ namespace TestManagement1.Model
 
         public string CategoryId { get; set; }
 
-        public string token { get; set; }
+       
 
+        //For display
+        [StringLength(500)]
+        public string User_Name { get; set; }
 
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TestManagement1.Model
 {
@@ -25,8 +26,7 @@ namespace TestManagement1.Model
         [StringLength(250)]
         public string LastName { get; set; }
 
-
-
+        
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [StringLength(200)]

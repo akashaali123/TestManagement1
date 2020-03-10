@@ -416,5 +416,14 @@ namespace TestManagementApi.Controllers
 
 
 
+        [HttpGet]
+        [Route("/user/getemail")]
+        public IActionResult GetEmail()
+        {
+            var email = userPresenter.GetEmail();
+            return helperMethode(email, "email");
+        }
+
+
     }
 }

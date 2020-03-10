@@ -259,5 +259,20 @@ namespace TestManagementCore.Presenter
             }
         }
 
+
+        public List<string> GetEmail()
+        {
+            try
+            {
+                return _repository.GetEmail();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User GetEmail Methode in UserPresenter" + ex);
+                return null;
+            }
+        }
+
     }
 }

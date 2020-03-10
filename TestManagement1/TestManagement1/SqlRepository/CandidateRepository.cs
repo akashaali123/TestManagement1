@@ -60,7 +60,7 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-                
+
                 TblCandidate candidate = new TblCandidate
                 {
                     CandidateId=candidateModel.CandidateId,
