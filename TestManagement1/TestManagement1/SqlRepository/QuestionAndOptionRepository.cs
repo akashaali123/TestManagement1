@@ -330,15 +330,15 @@ namespace TestManagementCore.SqlRepository
                                             category = _context.TblCategory.Where(e => e.CategoryId == x.CategoryId && e.IsActive == true)
                                                                            .Select(x => x.Name)
                                                                            .SingleOrDefault(),
-                                            CreatedName = _context.Users.Where(e=>e.Id == x.CreatedBy)
-                                                                        .SingleOrDefault()
-                                                                        .ToString(),
+                                            CreatedName =_context.TblUser.Where(e=>e.Id == x.CreatedBy)
+                                                                         .Select(x=>x.User_Name)
+                                                                         .SingleOrDefault(),
                                            experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExperienceLevelId)
                                                                                         .Select(e => e.Name)
                                                                                         .SingleOrDefault()
                                        })
                                        .ToList();
-
+                
                 return question;
 
 

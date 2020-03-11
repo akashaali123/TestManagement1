@@ -84,6 +84,7 @@ namespace TestManagement1.SqlRepository
                 var user = await _userManager.FindByNameAsync(model.userName);
                // var user = await _userManager.FindByEmailAsync(model.email);
 
+               
                 ////Get the Role of signing User save in it a list
                 var userRole = await _userManager.GetRolesAsync(user);
 
@@ -492,6 +493,9 @@ namespace TestManagement1.SqlRepository
                 {
                     userList.userName = user.User_Name;
                     userList.email = user.Email;
+                    userList.role = _context.Roles.Where(e => e.Id == user.RoleId)
+                                                  .Select(e => e.Name)
+                                                  .SingleOrDefault();
                     return userList;
                 }
             }
@@ -739,7 +743,7 @@ namespace TestManagement1.SqlRepository
         {
             try
             {
-                return _userManager.Users.Select(e => e.Email)
+                return _userManager.Users.Select(e => e.User_Name)
                               .ToList();
             }
             catch (Exception)
@@ -749,6 +753,78 @@ namespace TestManagement1.SqlRepository
             }
 
         }
+
+
+
+       //For Admin
+        
+        public async Task<object> ForgotPasswordForAdmin(string email)
+        {
+            try
+            {
+                //find user by their mail
+                var user = await _userManager.FindByEmailAsync(email);
+
+                if (user != null)
+                {
+                    //generate token for reset password
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
+
+                    //var token = await _userManager.CreateSecurityTokenAsync(user);
+                    //user.token = token.ToString();
+                    //await _userManager.UpdateAsync(user);
+
+                    return token;
+
+                }
+                else
+                {
+                    return new { message = "Invalid Email" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository ForgotPassword   " + ex };
+            }
+
+        }
+
+
+
+
+        public async Task<object> ForgotPasswordForNewUser(string email)
+        {
+            try
+            {
+                //find user by their mail
+                var user = await _userManager.FindByEmailAsync(email);
+
+                if (user != null)
+                {
+                    //generate token for reset password
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
+
+                    //var token = await _userManager.CreateSecurityTokenAsync(user);
+                    //user.token = token.ToString();
+                    //await _userManager.UpdateAsync(user);
+
+                    return token;
+
+                }
+                else
+                {
+                    return new { message = "Invalid Email" };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = "Exception found in User repository ForgotPassword   " + ex };
+            }
+
+        }
+
 
 
 
@@ -772,11 +848,11 @@ namespace TestManagement1.SqlRepository
 
                 return null;
             }
-           
+
         }
 
 
-      
+
 
 
     }

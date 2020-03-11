@@ -274,5 +274,38 @@ namespace TestManagementCore.Presenter
             }
         }
 
+
+        public async Task<object> ForgotPasswordForAdmin(string email)
+        {
+            try
+            {
+                return await _repository.ForgotPasswordForAdmin(email);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ForgotPasswordForAdmin Methode in UserPresenter" + ex);
+                return null;
+            }
+        }
+
+
+
+
+        public async Task<object> ForgotPasswordForNewUser(string email)
+        {
+            try
+            {
+                return await _repository.ForgotPasswordForNewUser(email);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in User ForgotPasswordForNewUser Methode in UserPresenter" + ex);
+                return null;
+            }
+        }
+
+
     }
 }

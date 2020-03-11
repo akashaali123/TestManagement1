@@ -33,11 +33,18 @@ namespace TestManagementApi.Controllers
         private readonly ApplicationSettings _appSettings;//For Jwt
 
 
+        private UserManager<TblUser> _userManager;
+
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+
+
         public UserController(IWebHostEnvironment webHostEnvironment,
                               IUser repository,
                               ILogger<UserPresenter> logger,
                               IEmailSender emailSender,
-                               IOptions<ApplicationSettings> appSettings) : base(webHostEnvironment, logger)
+                               IOptions<ApplicationSettings> appSettings,
+                               UserManager<TblUser> userManager,
+                               IHttpContextAccessor httpContextAccessor) : base(webHostEnvironment, logger)
         {
             userPresenter = new UserPresenter(webHostEnvironment, repository, logger);
 
@@ -45,6 +52,9 @@ namespace TestManagementApi.Controllers
 
             _appSettings = appSettings.Value;//For jwt
 
+            _userManager = userManager;
+
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -108,6 +118,16 @@ namespace TestManagementApi.Controllers
             var confirmEmail = await userPresenter.ConfirmEmail(email,
                                                                 decode);
 
+
+            if(confirmEmail != null)
+            {
+                var resetPasswordToken = await userPresenter.ForgotPasswordForNewUser(email);
+
+                var url = string.Format("{0}{1}?email={2}&token={3}", Request.Scheme, _appSettings.ResetPassword_URL, email, HttpUtility.UrlEncode(resetPasswordToken.ToString()));
+                return Redirect(url);
+            }
+
+            
             return helperMethode(confirmEmail, "confirmemail");
         }
 
@@ -423,6 +443,59 @@ namespace TestManagementApi.Controllers
             var email = userPresenter.GetEmail();
             return helperMethode(email, "email");
         }
+
+
+
+        //Reset Password For Admin
+
+        [HttpPost]
+        [Route("/user/forgotpasswordadmin")]
+        public async Task<IActionResult> ForgotPasswordForAdmin(string email)
+        {
+            //First get email  of user which we want to reset pass word
+            //then generate Link and send to the superadmin user
+            var token = await userPresenter.ForgotPasswordForAdmin(email);
+            if (token != null)
+            {
+                var url = string.Format("{0}{1}?email={2}&token={3}", Request.Scheme, _appSettings.ResetPassword_URL, email, HttpUtility.UrlEncode(token.ToString()));
+
+                //For Finding Current SuperAdmin User
+                try
+                {
+                    string userId = _httpContextAccessor.HttpContext
+                                                   .User
+                                                   .Claims
+                                                   .FirstOrDefault(c => c.Type == "userid")
+                                                   .Value;
+
+                    var user = await _userManager.FindByIdAsync(userId);
+
+
+                    var message = new Message(new string[] { user.Email}, "ResetPasswordlink", "Reset password token " + url);
+                    _emailSender.SendEmail(message);
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+               
+                
+              
+
+            }
+
+            return helperMethode(token, "token");
+        }
+
+
+
+     
+
+
+
+
+
 
 
     }

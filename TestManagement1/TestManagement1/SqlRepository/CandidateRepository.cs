@@ -14,6 +14,7 @@ using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
 using TestManagementCore.MyTriggerMethode;
+using TestManagementCore.ViewModel;
 
 namespace TestManagement1.SqlRepository
 {
@@ -140,6 +141,36 @@ namespace TestManagement1.SqlRepository
                 return null;
             }
 
+        }
+
+
+        public List<CandidateNameViewModel> GetAllCandidateName()
+        {
+            try
+            {
+              var nameFormat = _context.TblCandidate.Select(x => new CandidateNameViewModel
+              {
+                    Id = x.CandidateId,
+                    NameFormat = string.Format(
+                                               "{0} {1} ({2})",
+                                               x.FirstName,
+                                               x.LastName,
+                                               _context.TblCategory.Where(e=>e.CategoryId == x.CategoryId)
+                                                                   .Select(e=>e.Name)
+                                                                   .SingleOrDefault()
+                                              )
+
+              })
+              .ToList();
+
+                return nameFormat;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate GetAllCandidateName Methode in Sql Repository" + ex);
+                return null;
+            }
         }
 
        

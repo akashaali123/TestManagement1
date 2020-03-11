@@ -273,5 +273,15 @@ namespace TestManagementApi.Controllers
             return helperMethode(count, "count");
         }
 
+
+        
+
+        [HttpGet]
+        [Route("/candidate/getcandidatename")]
+        public IActionResult GetAllCandidateName()
+        {
+            var name = cp.GetAllCandidateName();
+            return helperMethode(name, "name");
+        }
     }
 }

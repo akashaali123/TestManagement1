@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.RepositoryInterface;
 using TestManagement1.ViewModel;
-
+using TestManagementCore.ViewModel;
 
 namespace TestManagement1.Presenter
 {
@@ -154,5 +154,20 @@ namespace TestManagement1.Presenter
             }
         }
 
+
+        public List<CandidateNameViewModel> GetAllCandidateName()
+        {
+            try
+            {
+                return _repository.GetAllCandidateName();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Error in Candidate GetAllCandidateName Methode in CandidatePresenter" + ex);
+                return null;
+            }
+
+        }
     }
 }

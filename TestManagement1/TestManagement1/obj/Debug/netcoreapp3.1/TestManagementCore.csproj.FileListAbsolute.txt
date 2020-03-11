@@ -135,7 +135,6 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\bin\Deb
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.csprojAssemblyReference.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementCore.StaticWebAssets.Manifest.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementCore.StaticWebAssets.xml
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.MvcApplicationPartsAssemblyInfo.cache

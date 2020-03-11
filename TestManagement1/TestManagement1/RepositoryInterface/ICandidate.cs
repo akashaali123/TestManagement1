@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestManagement1.Model;
 using TestManagement1.ViewModel;
+using TestManagementCore.ViewModel;
 
 namespace TestManagement1.RepositoryInterface
 {
@@ -26,6 +27,9 @@ namespace TestManagement1.RepositoryInterface
 
 
         public int NoOfCandidates();
+
+
+        public List<CandidateNameViewModel> GetAllCandidateName();
 
 
 

@@ -52,5 +52,10 @@ namespace TestManagement1.RepositoryInterface
 
 
 
+        public Task<object> ForgotPasswordForAdmin(string email);
+
+
+        public  Task<object> ForgotPasswordForNewUser(string email);
+
     }
 }
