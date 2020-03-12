@@ -144,3 +144,4 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Deb
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.csproj.CopyComplete
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.pdb
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagement1\obj\Debug\netcoreapp3.1\TestManagementCore.csprojAssemblyReference.cache

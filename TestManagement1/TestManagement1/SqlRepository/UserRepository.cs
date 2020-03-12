@@ -199,9 +199,6 @@ namespace TestManagement1.SqlRepository
             try
             {
 
-
-
-
                 var applicationUser = new TblUser()
                 {
                     User_Name = model.userName,
@@ -653,9 +650,7 @@ namespace TestManagement1.SqlRepository
                     //generate token for reset password
                       var token = await _userManager.GeneratePasswordResetTokenAsync(user); //set LifeTime span for email and password differently
 
-                    //var token = await _userManager.CreateSecurityTokenAsync(user);
-                    //user.token = token.ToString();
-                    //await _userManager.UpdateAsync(user);
+                    
 
                     return token;
 

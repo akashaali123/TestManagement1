@@ -30,9 +30,10 @@ namespace TestManagementCore.SqlRepository
             _emailSender = emailSender;
         }
 
-       
-        
-        public Dictionary<string,bool> AddResult(int candidateId)
+
+        #region AddResult
+
+        public Dictionary<string, bool> AddResult(int candidateId)
         {
             try
             {
@@ -48,25 +49,25 @@ namespace TestManagementCore.SqlRepository
                 double roundof = 0;//For round Of percentage
 
                 //For avoid the duplicate Record of candidate
-               int checkCandidate =  _context.TblTest.Where(e => e.CandidateId == candidateId)
-                    .Select(x=>x.CandidateId)
-                    .Count();
+                int checkCandidate = _context.TblTest.Where(e => e.CandidateId == candidateId)
+                     .Select(x => x.CandidateId)
+                     .Count();
 
                 //If test Not Found in TblTest than added 
-                if (checkCandidate == 0) 
+                if (checkCandidate == 0)
                 {
                     var candidate = _context.TblCandidate.Find(candidateId);//First we find that candidate Register 
                     if (candidate != null)//If candidate not register so we did'nt save his result
                     {
                         //get their data of test Table
                         var test = _context.TblTestDetails.Where(e => e.CandidateId == candidateId)
-                            .Select(x => new 
+                            .Select(x => new
                             {
                                 x.SelectedOptionId,
                                 x.CorrectOptionId,
                                 x.CandidateId,
-                                
-                                
+
+
                             });
 
                         foreach (var item in test)
@@ -105,7 +106,7 @@ namespace TestManagementCore.SqlRepository
                                 skippedQuestion++;//If  selectedOptionId in null so increment in skipped Question
                             }
 
-                            
+
                         }
 
                         totalQusetion = skippedQuestion + correctAnswer + wrongAnswer;
@@ -117,17 +118,17 @@ namespace TestManagementCore.SqlRepository
                         roundof = Math.Round(percentage, 2);//roundOf the percentage
 
 
-                        
-                        
-                        
-                        
+
+
+
+
                         int? totalTimeForAttempted = _context.TblTestDetails.Where(e => e.CandidateId == candidateId)
                                                                 .Sum(x => x.AttemptedInDuration);
 
                         int? min = totalTimeForAttempted / 60;
                         int? sec = totalTimeForAttempted % 60;
 
-                        string timeFormat =string.Format("{0}:{1}",min,sec);
+                        string timeFormat = string.Format("{0}:{1}", min, sec);
 
 
 
@@ -150,12 +151,12 @@ namespace TestManagementCore.SqlRepository
                             UpdatedBy = null,
                             UpdatedDate = null,
                             TestDate = DateTime.Today,
-                            
-                             
+
+
 
                         };
-                        
-                        if(percentage > 50)
+
+                        if (percentage > 50)
                         {
                             postTest.TestStatus = "Pass";
                         }
@@ -170,22 +171,49 @@ namespace TestManagementCore.SqlRepository
                             .Select(x => new
                             {
                                 x.FirstName,
-                                x.CreatedBy
+                                x.CreatedBy,
+                                x.CategoryId,
+                                x.LastName
                             })
                             .SingleOrDefault();
 
-
+                        //Get Email Address of Admin Who created the candidate For test
                         string sendEmailAdmin = _context.Users.Where(e => e.Id == candidateInfo.CreatedBy)
                                                               .Select(x => x.Email)
                                                               .SingleOrDefault();
 
+
+                        //Get Verifier Id related to the candidate category
+                        List<string> getIdVerifier = _context.TblVerifierCategoryAndRole
+                                                       .Where(e => Convert.ToInt32(e.CategoryId) == candidateInfo.CategoryId)
+                                                       .Select(x => x.UserId)
+                                                       .ToList();
+
+
+                        List<string> allEmailAddress = new List<string>();
+
+
+
+                        foreach (var item in getIdVerifier)
+                        {
+
+                            //get verifier Email Address
+                            string emailAddress = _context.Users.Where(e => e.Id == item)
+                                                                           .Select(e => e.Email)
+                                                                           .SingleOrDefault();
+                            allEmailAddress.Add(emailAddress);
+
+                        }
+
+
+                        allEmailAddress.Add(sendEmailAdmin);
 
                         _context.TblTest.Add(postTest);
                         int result = _context.SaveChanges();
                         if (result != 0)
                         {
                             //For Email when Test Finish the Test
-                            var message = new Message(new string[] { sendEmailAdmin }, "Test Completed", candidateInfo.FirstName + " Finish the test");
+                            var message = new Message(allEmailAddress, "Test Completed", candidateInfo.FirstName + " " + candidateInfo.LastName + " Finish the test");
                             _emailSender.SendEmail(message);
 
 
@@ -210,39 +238,42 @@ namespace TestManagementCore.SqlRepository
                 }
                 else
                 {
-                    proceed.Add("Already Record Added",false);
+                    proceed.Add("Already Record Added", false);
                     return proceed;
                 }
 
-               
+
 
 
             }
             catch (Exception ex)
             {
-              
+
                 _logger.LogError("Error in TestResultRepository AddResult Methode in Sql Repository" + ex);
 
                 var proceed = new Dictionary<string, bool>();
-                proceed.Add("Exception Found",false);
+                proceed.Add("Exception Found", false);
 
                 return proceed;
             }
-            
+
         }
 
-       
-       /// <summary>
-       /// 
-       /// </summary>
-       /// <returns></returns>
+        #endregion
+
+        #region DisplayResultAllCandidate
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<TestResultViewModel> DisplayResultAllCandidate()
         {
             try
             {
 
                 var test = _context.TblTest.Where(c => c.IsActive == true)
-                    .OrderByDescending(e=>e.TestDate)
+                    .OrderByDescending(e => e.TestDate)
                     .ThenByDescending(x => x.TestId)
                     .Select(x => new TestResultViewModel//select statement give anonyms type so we map it in TestResultMapModel
                     {                                  //which is pass as a parameter in helperMethode which implementation is below
@@ -304,51 +335,48 @@ namespace TestManagementCore.SqlRepository
             {
 
                 _logger.LogError("Error in TestResultRepository DisplayResultAllCandidate Methode in Sql Repository" + ex);
-                 return null;
+                return null;
             }
-                
+
 
         }
 
 
-       
+        #endregion
 
-
-
-
-
+        #region DisplayResultcandidateById
 
         public TestResultViewModel DisplayResultcandidateById(int candidateId)
         {
 
             try
             {
-                var test = _context.TblTest.Where(e=>e.CandidateId == candidateId && e.IsActive == true)
+                var test = _context.TblTest.Where(e => e.CandidateId == candidateId && e.IsActive == true)
                                    .Select(x => new TestResultViewModel//select statement give anonyms type so we map it in TestResultMapModel
                                    {                                  //which is pass as a parameter in helperMethode which implementation is below
-                                      candidateId = x.CandidateId,
+                                       candidateId = x.CandidateId,
 
-                                      candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
+                                       candidateName = _context.TblCandidate.Where(c => c.CandidateId == x.CandidateId && c.IsActive == true)
                                                                            .Select(c => c.FirstName)
                                                                            .SingleOrDefault(),
 
-                                      category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
+                                       category = _context.TblCategory.Where(c => c.CategoryId == x.CategoryId && c.IsActive == true)
                                                                      .Select(c => c.Name)
                                                                      .SingleOrDefault(),
 
-                                      experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
+                                       experienceLevel = _context.TblExperienceLevel.Where(e => e.Id == x.ExpLevelId && e.IsActive == true)
                                                                                    .Select(e => e.Name)
                                                                                    .SingleOrDefault(),
 
-                                      testDate = x.TestDate,
-                                      testStatus = x.TestStatus,
-                                      totalQuestion = x.TotalQuestion,
-                                      attemptedQuestion = x.AttemptedQuestion,
-                                      correctAnswer = x.CorrectAnswer,
-                                      wrongQuestion = x.WrongAnswer,
-                                      skippedQuestion = x.QuestionSkipped,
-                                      percentage = x.Percentage,
-                                      Duration = x.Duration
+                                       testDate = x.TestDate,
+                                       testStatus = x.TestStatus,
+                                       totalQuestion = x.TotalQuestion,
+                                       attemptedQuestion = x.AttemptedQuestion,
+                                       correctAnswer = x.CorrectAnswer,
+                                       wrongQuestion = x.WrongAnswer,
+                                       skippedQuestion = x.QuestionSkipped,
+                                       percentage = x.Percentage,
+                                       Duration = x.Duration
                                    })
                                    .SingleOrDefault();
 
@@ -428,14 +456,18 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultcandidateById Methode in Sql Repository" + ex);
                 return null;
             }
-          
+
 
         }
 
 
 
+        #endregion
+
+        #region DisplayResultbyDate
+
         public List<TestResultViewModel> DisplayResultbyDate(DateTime fromDate,
-                                                             DateTime toDate)
+                                                           DateTime toDate)
         {
             try
             {
@@ -444,7 +476,7 @@ namespace TestManagementCore.SqlRepository
                    .Where(e => e.TestDate >= fromDate)
                    .Where(e => e.TestDate <= toDate)
                    .Where(e => e.IsActive == true)
-                   .Select(x =>new TestResultViewModel //select statement give anonyms type so we map it in TestResultMapModel
+                   .Select(x => new TestResultViewModel //select statement give anonyms type so we map it in TestResultMapModel
                    {
                        candidateId = x.CandidateId,
 
@@ -471,8 +503,8 @@ namespace TestManagementCore.SqlRepository
                        Duration = x.Duration
                    })
                    .ToList();
-                
-                
+
+
                 return test;
 
                 #region Above query is replica of comment code
@@ -511,14 +543,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyDate Methode in Sql Repository" + ex);
                 return null;
             }
-           
+
 
         }
 
+        #endregion
+ 
+        #region DisplayResultbyPercentage
 
-      
-        
-        
         public List<TestResultViewModel> DisplayResultbyPercentage()
         {
             try
@@ -589,9 +621,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyPercentage Methode in Sql Repository" + ex);
                 return null;
             }
-           
-            
+
+
         }
+
+
+        #endregion
+
+        #region DisplayResultbyPercentageAndCategory
 
         public List<TestResultViewModel> DisplayResultbyPercentageAndCategory(int categoryId)
         {
@@ -659,12 +696,17 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndCategory Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
         }
 
+
+        #endregion
+
+        #region DisplayResultbyPercentageAndCategoryAndExperience
+
         public List<TestResultViewModel> DisplayResultbyPercentageAndCategoryAndExperience(int categoryId,
-                                                                                           int experienceLevelId)
+                                                                                         int experienceLevelId)
         {
             try
             {
@@ -734,11 +776,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndCategoryAndExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
         }
 
 
+        #endregion
+ 
+        #region DisplayResultbyPercentageAndExperience
 
         public List<TestResultViewModel> DisplayResultbyPercentageAndExperience(int experienceId)
         {
@@ -808,11 +853,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
         }
 
 
+        #endregion
+
+        #region DisplayResultbyCategory
 
         public List<TestResultViewModel> DisplayResultbyCategory(int categoryId)
         {
@@ -882,11 +930,13 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyPercentageAndExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-            
+
+
         }
 
+        #endregion
 
+        #region DisplayResultbyExperience
 
         public List<TestResultViewModel> DisplayResultbyExperience(int experienceId)
         {
@@ -955,15 +1005,18 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
-           
+
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyCategoryAndExperience
 
         public List<TestResultViewModel> DisplayResultbyCategoryAndExperience(int categoryId,
-                                                                              int experienceId)
+                                                                             int experienceId)
         {
             try
             {
@@ -1032,19 +1085,16 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyCategoryAndExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-            
-            
-            
-           
-           
 
         }
 
+        #endregion
+
+        #region DisplayResultbyCategoryFromDate
 
         public List<TestResultViewModel> DisplayResultbyCategoryFromDate(int categoryId,
-                                                                         DateTime fromDate,
-                                                                         DateTime toDate)
+                                                                     DateTime fromDate,
+                                                                     DateTime toDate)
         {
             try
             {
@@ -1116,14 +1166,18 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyCategoryFromDate Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyExpFromDate
+
         public List<TestResultViewModel> DisplayResultbyExpFromDate(int experienceId,
-                                                                    DateTime fromDate,
-                                                                    DateTime toDate)
+                                                                   DateTime fromDate,
+                                                                   DateTime toDate)
         {
             try
             {
@@ -1197,16 +1251,20 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyExpFromDate Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
 
         }
 
 
+        #endregion
+
+        #region DisplayResultbyCatAndExpFromDate
+
         public List<TestResultViewModel> DisplayResultbyCatAndExpFromDate(int categoryId,
-                                                                          int experienceId,
-                                                                          DateTime fromDate,
-                                                                          DateTime toDate)
+                                                                         int experienceId,
+                                                                         DateTime fromDate,
+                                                                         DateTime toDate)
         {
             try
             {
@@ -1280,10 +1338,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyCatAndExpFromDate Methode in Sql Repository" + ex);
                 return null;
             }
-            
-            
+
+
 
         }
+
+        #endregion
+
+        #region DisplayResultbyTestStatus
 
         public List<TestResultViewModel> DisplayResultbyTestStatus(string status)
         {
@@ -1350,11 +1412,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatus Methode in Sql Repository" + ex);
                 return null;
             }
-            
-           
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyTestStatusAndCat
 
         public List<TestResultViewModel> DisplayResultbyTestStatusAndCat(string status,
                                                                          int categoryId)
@@ -1426,13 +1491,17 @@ namespace TestManagementCore.SqlRepository
                 return null;
 
             }
-            
-            
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyTestStatusAndExp
+
         public List<TestResultViewModel> DisplayResultbyTestStatusAndExp(string status,
-                                                                         int experienceId)
+                                                                      int experienceId)
         {
             try
             {
@@ -1500,15 +1569,18 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusAndCat Methode in Sql Repository" + ex);
                 return null;
 
-            }  
-            
-            
+            }
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyTestStatusAndExpAndCat
         public List<TestResultViewModel> DisplayResultbyTestStatusAndExpAndCat(string status,
-                                                                               int experienceId,
-                                                                               int categoryId)
+                                                                              int experienceId,
+                                                                              int categoryId)
         {
             try
             {
@@ -1578,16 +1650,17 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusAndExpAndCat Methode in Sql Repository" + ex);
                 return null;
             }
-            
-           
+
+
 
         }
+        #endregion
 
-
+        #region DisplayResultbyTestStatusFromDate
 
         public List<TestResultViewModel> DisplayResultbyTestStatusFromDate(string status,
-                                                                           DateTime fromDate,
-                                                                           DateTime toDate)
+                                                                          DateTime fromDate,
+                                                                          DateTime toDate)
         {
             try
             {
@@ -1656,17 +1729,16 @@ namespace TestManagementCore.SqlRepository
                 return null;
 
             }
-           
-           
 
         }
 
+        #endregion
 
-
+        #region DisplayResultbyTestStatusandCatFromDate
         public List<TestResultViewModel> DisplayResultbyTestStatusandCatFromDate(string status,
-                                                                                 int categoryId,
-                                                                                 DateTime fromDate,
-                                                                                 DateTime toDate)
+                                                                                int categoryId,
+                                                                                DateTime fromDate,
+                                                                                DateTime toDate)
         {
             try
             {
@@ -1736,11 +1808,13 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTestStatusandCatFromDate Methode in Sql Repository" + ex);
                 return null;
             }
-           
-           
+
+
 
         }
+        #endregion
 
+        #region DisplayResultbyTestStatusandCatAndExpFromDate
 
         public List<TestResultViewModel> DisplayResultbyTestStatusandCatAndExpFromDate(string status,
                                                                                        int categoryId,
@@ -1819,10 +1893,13 @@ namespace TestManagementCore.SqlRepository
                 return null;
 
             }
-           
-          
+
+
         }
 
+        #endregion
+
+        #region DisplayResultbyTop10Percentage
         public List<TestResultViewModel> DisplayResultbyTop10Percentage()
         {
 
@@ -1892,10 +1969,12 @@ namespace TestManagementCore.SqlRepository
                 return null;
 
             }
-            
-           
-        }
 
+
+        }
+        #endregion
+
+        #region DisplayResultbyTop10PercentageAndCategory
         public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategory(int categoryId)
         {
             try
@@ -1964,9 +2043,12 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10PercentageAndCategory Methode in Sql Repository" + ex);
                 return null;
             }
-            
-           
+
+
         }
+        #endregion
+
+        #region DisplayResultbyTop10PercentageAndCategoryAndExperience
 
         public List<TestResultViewModel> DisplayResultbyTop10PercentageAndCategoryAndExperience(int categoryId,
                                                                                                 int experienceLevelId)
@@ -2038,14 +2120,12 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10PercentageAndCategoryAndExperience Methode in Sql Repository" + ex);
                 return null;
             }
-           
-            
-            
-            
-            
+
         }
 
+        #endregion
 
+        #region DisplayResultbyTop10PercentageAndExperience
         public List<TestResultViewModel> DisplayResultbyTop10PercentageAndExperience(int experienceId)
         {
             try
@@ -2115,9 +2195,12 @@ namespace TestManagementCore.SqlRepository
                 return null;
 
             }
-            
-            
+
+
         }
+        #endregion
+
+        #region DisplayResultbyTop10TestStatus
 
         public List<TestResultViewModel> DisplayResultbyTop10TestStatus(string status)
         {
@@ -2186,13 +2269,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatus Methode in Sql Repository" + ex);
                 return null;
             }
-            
-           
+
+
 
         }
 
+        #endregion
 
-
+        #region DisplayResultbyTop10TestStatusAndCat
 
         public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndCat(string status,
                                                                               int categoryId)
@@ -2265,13 +2349,17 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndCat Methode in Sql Repository" + ex);
                 return null;
             }
-            
-            
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyTop10TestStatusAndExp
+
         public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExp(string status,
-                                                                              int experienceId)
+                                                                            int experienceId)
         {
             try
             {
@@ -2341,15 +2429,19 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndExp Methode in Sql Repository" + ex);
                 return null;
             }
-            
-           
-            
+
+
+
 
         }
 
+        #endregion
+
+        #region DisplayResultbyTop10TestStatusAndExpAndCat
+
         public List<TestResultViewModel> DisplayResultbyTop10TestStatusAndExpAndCat(string status,
-                                                                                    int experienceId,
-                                                                                    int categoryId)
+                                                                                   int experienceId,
+                                                                                   int categoryId)
         {
             try
             {
@@ -2421,12 +2513,16 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository DisplayResultbyTop10TestStatusAndExpAndCat Methode in Sql Repository" + ex);
                 return null;
             }
-           
-          
+
+
         }
 
+        #endregion
 
-
+     
+        
+        
+        #region TestCount
         public int TestCount()
         {
             try
@@ -2440,10 +2536,14 @@ namespace TestManagementCore.SqlRepository
                 return 0;
 
             }
-           
+
         }
+        #endregion
 
-
+        
+        
+        
+        #region PasscandidateCount
         public int PasscandidateCount()
         {
             try
@@ -2457,10 +2557,14 @@ namespace TestManagementCore.SqlRepository
                 _logger.LogError("Error in TestResultRepository PasscandidateCount Methode in Sql Repository" + ex);
                 return 0;
             }
-           
+
         }
+        #endregion
 
-
+        
+        
+        
+        #region FailcandidateCount
         public int FailcandidateCount()
         {
             try
@@ -2476,6 +2580,21 @@ namespace TestManagementCore.SqlRepository
             }
 
         }
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
