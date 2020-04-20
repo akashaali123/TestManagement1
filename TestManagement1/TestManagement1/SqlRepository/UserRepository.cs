@@ -447,7 +447,7 @@ namespace TestManagement1.SqlRepository
 
                // var allusers =  _context.Users.ToList();
                 var allusers = _userManager.Users.ToList();
-                var userVM = allusers.Select(user => new UserListViewModel
+                var userVM = allusers.Where(x=>x.RoleId != "7e7b9bf4-a3a9-43a9-8ff1-6a5ee9f3e191").Select(user => new UserListViewModel
                 {
                     id = user.Id,
                     userName = user.User_Name,
@@ -459,9 +459,6 @@ namespace TestManagement1.SqlRepository
                                             .ToString()
                     })
                     .SingleOrDefault(),
-                   
-                    
-
                 })
                 .ToList();
                 return userVM;
@@ -616,7 +613,7 @@ namespace TestManagement1.SqlRepository
             try
             {
                 var vmList = new List<RoleViewModel>();
-                var role = _context.Roles.Select(e => new { e.Id, e.Name }).ToList();
+                var role = _context.Roles.Where(x=>x.Name != "SuperAdmin").Select(e => new { e.Id, e.Name }).ToList();
 
                 foreach (var item in role)
                 {

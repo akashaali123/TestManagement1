@@ -14,7 +14,7 @@ namespace TestManagementApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TestResultController : BaseController<TestResultPresenter>
     {
         TestResultPresenter testResultPresenter;

@@ -25,7 +25,7 @@ namespace TestManagementApi.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public OkObjectResult MyReturnMethode(bool success,
+        protected OkObjectResult MyReturnMethode(bool success,
                                               int status,
                                               string message,
                                               Dictionary<string, object> data)
@@ -41,7 +41,7 @@ namespace TestManagementApi.Controllers
 
         
         
-        public OkObjectResult helperMethode(object variable,
+        protected OkObjectResult helperMethode(object variable,
                                             string dicName)
 
         {

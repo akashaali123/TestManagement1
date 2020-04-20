@@ -29,6 +29,9 @@ using TestManagementCore.Email_Services;
 using TestManagementCore.MyTriggerMethode;
 using TestManagementCore.RepositoryInterface;
 using TestManagementCore.SqlRepository;
+using Microsoft.OpenApi.Models;
+using TestManagementApi.Swaggerheader;
+using System.Reflection;
 
 namespace TestManagementApi
 {
@@ -53,6 +56,15 @@ namespace TestManagementApi
 
             services.AddDbContext<TestManagementContext>(option =>
              option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v2" });
+               
+            });
+
 
 
             services.AddScoped<IUser, UserRepository>();
@@ -187,6 +199,17 @@ namespace TestManagementApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
+            });
+
             app.UseSession();
             
             app.UseRouting();

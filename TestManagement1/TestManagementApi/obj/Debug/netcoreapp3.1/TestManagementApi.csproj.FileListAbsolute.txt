@@ -141,11 +141,15 @@ C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\D
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.csprojAssemblyReference.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementApi.StaticWebAssets.Manifest.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\staticwebassets\TestManagementApi.StaticWebAssets.xml
-C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.AssemblyInfoInputs.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.AssemblyInfo.cs
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.RazorTargetAssemblyInfo.cache
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.csproj.CopyComplete
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.dll
 C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.pdb
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\akasha.nasir\Desktop\TestSystem\TestManagement1\TestManagementApi\obj\Debug\netcoreapp3.1\TestManagementApi.MvcApplicationPartsAssemblyInfo.cache
